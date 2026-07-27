@@ -149,6 +149,7 @@ Public Class Main
     Private Const MAXIMUM As Integer = 2
     Private Const MINCURMAXPOINTER As Integer = 3
     Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents btnLanguage As System.Windows.Forms.Button
 
 #End Region
 #Region "SimpleDyno Function Declarations"
@@ -527,6 +528,7 @@ Public Class Main
         Me.cmbBufferSize = New System.Windows.Forms.ComboBox()
         Me.btnPerformanceTest = New System.Windows.Forms.Button()
         Me.Button1 = New System.Windows.Forms.Button()
+        Me.btnLanguage = New System.Windows.Forms.Button()
         Me.pnlSignalWindow = New SimpleDyno.DoubleBufferPanel()
         Me.SuspendLayout()
         '
@@ -891,6 +893,16 @@ Public Class Main
         Me.Button1.TabIndex = 185
         Me.Button1.Text = "Correction"
         '
+        'btnLanguage
+        '
+        Me.btnLanguage.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnLanguage.Location = New System.Drawing.Point(630, 40)
+        Me.btnLanguage.Name = "btnLanguage"
+        Me.btnLanguage.Size = New System.Drawing.Size(85, 30)
+        Me.btnLanguage.TabIndex = 186
+        Me.btnLanguage.Text = "PT-BR / EN"
+        Me.btnLanguage.UseVisualStyleBackColor = True
+        '
         'pnlSignalWindow
         '
         Me.pnlSignalWindow.BackColor = System.Drawing.SystemColors.Control
@@ -906,7 +918,7 @@ Public Class Main
         Me.AutoScaleBaseSize = New System.Drawing.Size(5, 14)
         Me.AutoScroll = True
         Me.CausesValidation = False
-        Me.ClientSize = New System.Drawing.Size(626, 112)
+        Me.ClientSize = New System.Drawing.Size(716, 112)
         Me.Controls.Add(Me.txtThreshold1)
         Me.Controls.Add(Me.pnlSignalWindow)
         Me.Controls.Add(Me.txtThreshold2)
@@ -942,6 +954,7 @@ Public Class Main
         Me.Controls.Add(Me.btnPerformanceTest)
         Me.Controls.Add(Me.cmbBufferSize)
         Me.Controls.Add(Me.Button1)
+        Me.Controls.Add(Me.btnLanguage)
         Me.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
@@ -1040,6 +1053,17 @@ Public Class Main
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
         btnHide_Click(Me, EventArgs.Empty)
         frmCorrection.ShowDialog()
+    End Sub
+    Private Sub btnLanguage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnLanguage.Click
+        If My.Settings.Idioma = "pt-BR" Then
+            My.Settings.Idioma = "en-US"
+            My.Settings.Save()
+            MsgBox("Language changed to English. Please restart the application to apply.", MsgBoxStyle.Information)
+        Else
+            My.Settings.Idioma = "pt-BR"
+            My.Settings.Save()
+            MsgBox("Idioma alterado para Português. Reinicie o aplicativo para aplicar.", MsgBoxStyle.Information)
+        End If
     End Sub
     Private Sub pnlSignalWindow_MouseClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pnlSignalWindow.MouseClick
         If e.Button = MouseButtons.Right Then
