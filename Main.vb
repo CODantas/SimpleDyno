@@ -2884,10 +2884,10 @@ Public Class Main
         ClosingCOMPort = True
         If mySerialPort.IsOpen Then
             RemoveHandler mySerialPort.DataReceived, AddressOf DataReceivedHandler
-            Dim t As Integer
-            'CHECK - this is a real hack
-            Do Until t = 100000
-                t += 1
+            'Give any in-flight read/write a moment to settle before closing the port.
+            Dim closeWait As New System.Diagnostics.Stopwatch()
+            closeWait.Start()
+            Do Until closeWait.ElapsedMilliseconds >= 300
                 Application.DoEvents()
             Loop
             mySerialPort.Close()
