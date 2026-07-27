@@ -239,6 +239,9 @@
     <EmbeddedResource Include="Correction.resx">
       <DependentUpon>Correction.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Correction.pt-BR.resx">
+      <DependentUpon>Correction.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.vb</DependentUpon>
     </EmbeddedResource>

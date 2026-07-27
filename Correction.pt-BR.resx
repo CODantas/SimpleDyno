@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Fatores de Correção do Dinamômetro</value>
+  </data>
+  <data name="chkUseRunDown.Text" xml:space="preserve">
+    <value>Usar Coast Down</value>
+  </data>
+  <data name="grpRunDown.Text" xml:space="preserve">
+    <value>Opções de Coast Down</value>
+  </data>
+  <data name="rdoRollerAndWheel.Text" xml:space="preserve">
+    <value>Rolo + Roda</value>
+  </data>
+  <data name="chkUseCoastDownFile.Text" xml:space="preserve">
+    <value>Usar rodagem salva</value>
+  </data>
+  <data name="lblCoastDownFile.Text" xml:space="preserve">
+    <value>Nenhum Arquivo Carregado</value>
+  </data>
+  <data name="btnLoadCoastDown.Text" xml:space="preserve">
+    <value>Carregar</value>
+  </data>
+  <data name="rdoRollerAndDrivetrain.Text" xml:space="preserve">
+    <value>Rolo + Transmissão</value>
+  </data>
+  <data name="rdoFreeRoller.Text" xml:space="preserve">
+    <value>Rolo Livre</value>
+  </data>
+  <data name="GroupBox1.Text" xml:space="preserve">
+    <value>Opções de Correção STD/SAE</value>
+  </data>
+  <data name="CheckBox1.Text" xml:space="preserve">
+    <value>Usar Correção STD/SAE</value>
+  </data>
+  <data name="Correction_NoFileLoaded" xml:space="preserve">
+    <value>Nenhum arquivo carregado</value>
+  </data>
+  <data name="Correction_PowerRunFileFilter" xml:space="preserve">
+    <value>Arquivos de Power Run v6.3 (*.sdp)|*.sdp</value>
+  </data>
+  <data name="Correction_UsingFilePrefix" xml:space="preserve">
+    <value>Usando </value>
+  </data>
+  <data name="Correction_MsgBox_NoCoastDownFileSelected" xml:space="preserve">
+    <value>Nenhum arquivo de coast down foi selecionado. Confirme sua seleção de coast down</value>
+  </data>
+  <data name="Correction_MsgBox_NoCoastDownDataFound" xml:space="preserve">
+    <value>Nenhum dado de coast down encontrado.</value>
+  </data>
+  <data name="Correction_MsgBox_CoastDownNotApplied" xml:space="preserve">
+    <value>Coast Down não aplicado a esta rodagem</value>
+  </data>
+  <data name="Correction_MsgBox_FreeRollerFound" xml:space="preserve">
+    <value>Dados de Coast Down de Rolo Livre encontrados.</value>
+  </data>
+  <data name="Correction_MsgBox_FreeRollerWheelFound" xml:space="preserve">
+    <value>Dados de Coast Down de Rolo Livre + Roda encontrados.</value>
+  </data>
+  <data name="Correction_MsgBox_RollerDrivetrainFound" xml:space="preserve">
+    <value>Dados de Coast Down de Rolo + Transmissão encontrados</value>
+  </data>
+</root>

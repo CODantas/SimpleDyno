@@ -17,12 +17,15 @@ Partial Class Correction
     'Required by the Windows Form Designer
     Private components As System.ComponentModel.IContainer
 
+    'Resource manager for translated (resx satellite) strings. Promoted to a class
+    'field so Correction.vb can also look up localized text outside InitializeComponent.
+    Private ReadOnly resources As New System.ComponentModel.ComponentResourceManager(GetType(Correction))
+
     'NOTE: The following procedure is required by the Windows Form Designer
-    'It can be modified using the Windows Form Designer.  
+    'It can be modified using the Windows Form Designer.
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Correction))
         Me.chkUseRunDown = New System.Windows.Forms.CheckBox()
         Me.grpRunDown = New System.Windows.Forms.GroupBox()
         Me.rdoRollerAndWheel = New System.Windows.Forms.RadioButton()
@@ -47,7 +50,7 @@ Partial Class Correction
         Me.chkUseRunDown.Name = "chkUseRunDown"
         Me.chkUseRunDown.Size = New System.Drawing.Size(106, 17)
         Me.chkUseRunDown.TabIndex = 0
-        Me.chkUseRunDown.Text = "Use Coast Down"
+        Me.chkUseRunDown.Text = resources.GetString("chkUseRunDown.Text")
         Me.chkUseRunDown.UseVisualStyleBackColor = True
         '
         'grpRunDown
@@ -64,7 +67,7 @@ Partial Class Correction
         Me.grpRunDown.Size = New System.Drawing.Size(200, 153)
         Me.grpRunDown.TabIndex = 1
         Me.grpRunDown.TabStop = False
-        Me.grpRunDown.Text = "Coast Down Options"
+        Me.grpRunDown.Text = resources.GetString("grpRunDown.Text")
         '
         'rdoRollerAndWheel
         '
@@ -73,7 +76,7 @@ Partial Class Correction
         Me.rdoRollerAndWheel.Name = "rdoRollerAndWheel"
         Me.rdoRollerAndWheel.Size = New System.Drawing.Size(95, 17)
         Me.rdoRollerAndWheel.TabIndex = 5
-        Me.rdoRollerAndWheel.Text = "Roller + Wheel"
+        Me.rdoRollerAndWheel.Text = resources.GetString("rdoRollerAndWheel.Text")
         Me.rdoRollerAndWheel.UseVisualStyleBackColor = True
         '
         'chkUseCoastDownFile
@@ -83,7 +86,7 @@ Partial Class Correction
         Me.chkUseCoastDownFile.Name = "chkUseCoastDownFile"
         Me.chkUseCoastDownFile.Size = New System.Drawing.Size(95, 17)
         Me.chkUseCoastDownFile.TabIndex = 4
-        Me.chkUseCoastDownFile.Text = "Use saved run"
+        Me.chkUseCoastDownFile.Text = resources.GetString("chkUseCoastDownFile.Text")
         Me.chkUseCoastDownFile.UseVisualStyleBackColor = True
         '
         'lblCoastDownFile
@@ -93,7 +96,7 @@ Partial Class Correction
         Me.lblCoastDownFile.Name = "lblCoastDownFile"
         Me.lblCoastDownFile.Size = New System.Drawing.Size(79, 13)
         Me.lblCoastDownFile.TabIndex = 3
-        Me.lblCoastDownFile.Text = "No File Loaded"
+        Me.lblCoastDownFile.Text = resources.GetString("lblCoastDownFile.Text")
         '
         'btnLoadCoastDown
         '
@@ -103,7 +106,7 @@ Partial Class Correction
         Me.btnLoadCoastDown.Name = "btnLoadCoastDown"
         Me.btnLoadCoastDown.Size = New System.Drawing.Size(74, 21)
         Me.btnLoadCoastDown.TabIndex = 2
-        Me.btnLoadCoastDown.Text = "Load"
+        Me.btnLoadCoastDown.Text = resources.GetString("btnLoadCoastDown.Text")
         Me.btnLoadCoastDown.UseVisualStyleBackColor = True
         '
         'rdoRollerAndDrivetrain
@@ -113,7 +116,7 @@ Partial Class Correction
         Me.rdoRollerAndDrivetrain.Name = "rdoRollerAndDrivetrain"
         Me.rdoRollerAndDrivetrain.Size = New System.Drawing.Size(109, 17)
         Me.rdoRollerAndDrivetrain.TabIndex = 1
-        Me.rdoRollerAndDrivetrain.Text = "Roller + Drivetrain"
+        Me.rdoRollerAndDrivetrain.Text = resources.GetString("rdoRollerAndDrivetrain.Text")
         Me.rdoRollerAndDrivetrain.UseVisualStyleBackColor = True
         '
         'rdoFreeRoller
@@ -125,7 +128,7 @@ Partial Class Correction
         Me.rdoFreeRoller.Size = New System.Drawing.Size(76, 17)
         Me.rdoFreeRoller.TabIndex = 0
         Me.rdoFreeRoller.TabStop = True
-        Me.rdoFreeRoller.Text = "Free Roller"
+        Me.rdoFreeRoller.Text = resources.GetString("rdoFreeRoller.Text")
         Me.rdoFreeRoller.UseVisualStyleBackColor = True
         '
         'GroupBox1
@@ -139,7 +142,7 @@ Partial Class Correction
         Me.GroupBox1.Size = New System.Drawing.Size(200, 100)
         Me.GroupBox1.TabIndex = 3
         Me.GroupBox1.TabStop = False
-        Me.GroupBox1.Text = "STD/SAE Correction Options"
+        Me.GroupBox1.Text = resources.GetString("GroupBox1.Text")
         '
         'RadioButton1
         '
@@ -181,7 +184,7 @@ Partial Class Correction
         Me.CheckBox1.Name = "CheckBox1"
         Me.CheckBox1.Size = New System.Drawing.Size(147, 17)
         Me.CheckBox1.TabIndex = 2
-        Me.CheckBox1.Text = "Use STD/SAE Correction"
+        Me.CheckBox1.Text = resources.GetString("CheckBox1.Text")
         Me.CheckBox1.UseVisualStyleBackColor = True
         '
         'Correction
@@ -199,7 +202,7 @@ Partial Class Correction
         Me.MinimizeBox = False
         Me.Name = "Correction"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Dyno Correction Factors"
+        Me.Text = resources.GetString("$this.Text")
         Me.grpRunDown.ResumeLayout(False)
         Me.grpRunDown.PerformLayout()
         Me.GroupBox1.ResumeLayout(False)
