@@ -7,6 +7,10 @@ Imports System.Collections.Generic
 Imports System.Runtime.InteropServices
 Public Class Main
     Inherits System.Windows.Forms.Form
+
+    'Resource manager for translated (resx satellite) strings. Used both by
+    'InitializeComponent and by code elsewhere in this class (e.g. MsgBox).
+    Private ReadOnly resources As New System.ComponentModel.ComponentResourceManager(GetType(Main))
 #Region "Compiler Constants"
     'These constants are used to control how the app is compiled
 #Const QueryPerformance = 0 'Triggers performance monitoring
@@ -491,7 +495,6 @@ Public Class Main
     Friend WithEvents cmbBufferSize As System.Windows.Forms.ComboBox
     Friend WithEvents btnPerformanceTest As System.Windows.Forms.Button
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Main))
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
         Me.btnStartLoggingRaw = New System.Windows.Forms.Button()
         Me.btnResetMaxima = New System.Windows.Forms.Button()
@@ -543,7 +546,7 @@ Public Class Main
         Me.btnStartLoggingRaw.Name = "btnStartLoggingRaw"
         Me.btnStartLoggingRaw.Size = New System.Drawing.Size(68, 21)
         Me.btnStartLoggingRaw.TabIndex = 42
-        Me.btnStartLoggingRaw.Text = "Log Raw Data"
+        Me.btnStartLoggingRaw.Text = resources.GetString("btnStartLoggingRaw.Text")
         '
         'btnResetMaxima
         '
@@ -552,7 +555,7 @@ Public Class Main
         Me.btnResetMaxima.Name = "btnResetMaxima"
         Me.btnResetMaxima.Size = New System.Drawing.Size(68, 21)
         Me.btnResetMaxima.TabIndex = 41
-        Me.btnResetMaxima.Text = "Reset"
+        Me.btnResetMaxima.Text = resources.GetString("btnResetMaxima.Text")
         '
         'btnStartPowerRun
         '
@@ -590,7 +593,7 @@ Public Class Main
         Me.btnAnalysis.Name = "btnAnalysis"
         Me.btnAnalysis.Size = New System.Drawing.Size(68, 21)
         Me.btnAnalysis.TabIndex = 171
-        Me.btnAnalysis.Text = "Analysis"
+        Me.btnAnalysis.Text = resources.GetString("btnAnalysis.Text")
         Me.btnAnalysis.UseVisualStyleBackColor = True
         '
         'txtThreshold2
@@ -629,7 +632,7 @@ Public Class Main
         Me.btnClose.Name = "btnClose"
         Me.btnClose.Size = New System.Drawing.Size(68, 21)
         Me.btnClose.TabIndex = 86
-        Me.btnClose.Text = "Close"
+        Me.btnClose.Text = resources.GetString("btnClose.Text")
         Me.btnClose.UseVisualStyleBackColor = True
         '
         'btnMultiYTime
@@ -639,7 +642,7 @@ Public Class Main
         Me.btnMultiYTime.Name = "btnMultiYTime"
         Me.btnMultiYTime.Size = New System.Drawing.Size(68, 21)
         Me.btnMultiYTime.TabIndex = 85
-        Me.btnMultiYTime.Text = "Y vs Time"
+        Me.btnMultiYTime.Text = resources.GetString("btnMultiYTime.Text")
         Me.btnMultiYTime.UseVisualStyleBackColor = True
         '
         'btnLoad
@@ -650,7 +653,7 @@ Public Class Main
         Me.btnLoad.Name = "btnLoad"
         Me.btnLoad.Size = New System.Drawing.Size(68, 21)
         Me.btnLoad.TabIndex = 77
-        Me.btnLoad.Text = "Load"
+        Me.btnLoad.Text = resources.GetString("btnLoad.Text")
         Me.btnLoad.UseVisualStyleBackColor = True
         '
         'btnSave
@@ -662,7 +665,7 @@ Public Class Main
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(68, 21)
         Me.btnSave.TabIndex = 78
-        Me.btnSave.Text = "Save"
+        Me.btnSave.Text = resources.GetString("btnSave.Text")
         Me.btnSave.UseVisualStyleBackColor = True
         '
         'btnNewGauge
@@ -672,7 +675,7 @@ Public Class Main
         Me.btnNewGauge.Name = "btnNewGauge"
         Me.btnNewGauge.Size = New System.Drawing.Size(68, 21)
         Me.btnNewGauge.TabIndex = 83
-        Me.btnNewGauge.Text = "Gauge"
+        Me.btnNewGauge.Text = resources.GetString("btnNewGauge.Text")
         Me.btnNewGauge.UseVisualStyleBackColor = True
         '
         'btnSaveAs
@@ -683,7 +686,7 @@ Public Class Main
         Me.btnSaveAs.Name = "btnSaveAs"
         Me.btnSaveAs.Size = New System.Drawing.Size(68, 21)
         Me.btnSaveAs.TabIndex = 79
-        Me.btnSaveAs.Text = "Save As"
+        Me.btnSaveAs.Text = resources.GetString("btnSaveAs.Text")
         Me.btnSaveAs.UseVisualStyleBackColor = True
         '
         'Label17
@@ -694,7 +697,7 @@ Public Class Main
         Me.Label17.Name = "Label17"
         Me.Label17.Size = New System.Drawing.Size(66, 13)
         Me.Label17.TabIndex = 58
-        Me.Label17.Text = "Run Start at"
+        Me.Label17.Text = resources.GetString("Label17.Text")
         Me.Label17.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'btnNewLabel
@@ -704,7 +707,7 @@ Public Class Main
         Me.btnNewLabel.Name = "btnNewLabel"
         Me.btnNewLabel.Size = New System.Drawing.Size(68, 21)
         Me.btnNewLabel.TabIndex = 82
-        Me.btnNewLabel.Text = "Label"
+        Me.btnNewLabel.Text = resources.GetString("btnNewLabel.Text")
         Me.btnNewLabel.UseVisualStyleBackColor = True
         '
         'btnHide
@@ -715,7 +718,7 @@ Public Class Main
         Me.btnHide.Name = "btnHide"
         Me.btnHide.Size = New System.Drawing.Size(68, 21)
         Me.btnHide.TabIndex = 80
-        Me.btnHide.Text = "Hide"
+        Me.btnHide.Text = resources.GetString("btnHide.Text")
         Me.btnHide.UseVisualStyleBackColor = True
         '
         'btnShow
@@ -726,7 +729,7 @@ Public Class Main
         Me.btnShow.Name = "btnShow"
         Me.btnShow.Size = New System.Drawing.Size(68, 21)
         Me.btnShow.TabIndex = 81
-        Me.btnShow.Text = "Show"
+        Me.btnShow.Text = resources.GetString("btnShow.Text")
         Me.btnShow.UseVisualStyleBackColor = True
         '
         'txtPowerRunThreshold
@@ -761,7 +764,7 @@ Public Class Main
         Me.lblZeroDetect.Name = "lblZeroDetect"
         Me.lblZeroDetect.Size = New System.Drawing.Size(64, 13)
         Me.lblZeroDetect.TabIndex = 32
-        Me.lblZeroDetect.Text = "Zero Detect"
+        Me.lblZeroDetect.Text = resources.GetString("lblZeroDetect.Text")
         Me.lblZeroDetect.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'btnStartAcquisition
@@ -770,7 +773,7 @@ Public Class Main
         Me.btnStartAcquisition.Name = "btnStartAcquisition"
         Me.btnStartAcquisition.Size = New System.Drawing.Size(105, 21)
         Me.btnStartAcquisition.TabIndex = 163
-        Me.btnStartAcquisition.Text = "Start"
+        Me.btnStartAcquisition.Text = resources.GetString("btnStartAcquisition.Text")
         Me.btnStartAcquisition.UseVisualStyleBackColor = True
         '
         'cmbAcquisition
@@ -821,7 +824,7 @@ Public Class Main
         Me.lblCOMActive.Name = "lblCOMActive"
         Me.lblCOMActive.Size = New System.Drawing.Size(66, 19)
         Me.lblCOMActive.TabIndex = 157
-        Me.lblCOMActive.Text = "COM Active"
+        Me.lblCOMActive.Text = resources.GetString("lblCOMActive.Text")
         Me.lblCOMActive.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'OpenFileDialog1
@@ -835,7 +838,7 @@ Public Class Main
         Me.lblInterface.Name = "lblInterface"
         Me.lblInterface.Size = New System.Drawing.Size(205, 13)
         Me.lblInterface.TabIndex = 174
-        Me.lblInterface.Text = "Currently using:"
+        Me.lblInterface.Text = resources.GetString("lblInterface.Text")
         Me.lblInterface.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'txtInterface
@@ -891,7 +894,7 @@ Public Class Main
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(68, 21)
         Me.Button1.TabIndex = 185
-        Me.Button1.Text = "Correction"
+        Me.Button1.Text = resources.GetString("Button1.Text")
         '
         'btnLanguage
         '
@@ -1261,7 +1264,7 @@ Public Class Main
             End If
         Catch e1 As Exception
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox("btnStartPowerRun_Click Error: " & e1.Message, MsgBoxStyle.Exclamation)
+            MsgBox(resources.GetString("Main_MsgBox_BtnStartPowerRunError") & e1.Message, MsgBoxStyle.Exclamation)
             btnShow_Click(Me, EventArgs.Empty)
             End
         End Try
@@ -1415,7 +1418,7 @@ Public Class Main
             End If
         Catch e1 As Exception
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox("btnStartLoggingRaw Error: " & e1.Message, MsgBoxStyle.Exclamation)
+            MsgBox(resources.GetString("Main_MsgBox_BtnStartLoggingRawError") & e1.Message, MsgBoxStyle.Exclamation)
             btnShow_Click(Me, EventArgs.Empty)
             End
         End Try
@@ -1470,7 +1473,7 @@ Public Class Main
             WaitForNewSignal = TempDouble
         Else
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+            MsgBox(CType(sender, TextBox).Name & resources.GetString("Main_ValueMustBeBetween") & LocalMin & resources.GetString("Main_And") & LocalMax, MsgBoxStyle.Exclamation)
             btnShow_Click(Me, EventArgs.Empty)
             With CType(sender, TextBox)
                 .Text = WaitForNewSignal.ToString
@@ -1489,7 +1492,7 @@ Public Class Main
             MinimumPowerRunPoints = frmDyno.SignalsPerRPM * 10 'This somewhat arbitrary 
         Else
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+            MsgBox(CType(sender, TextBox).Name & resources.GetString("Main_ValueMustBeBetween") & LocalMin & resources.GetString("Main_And") & LocalMax, MsgBoxStyle.Exclamation)
             btnShow_Click(Me, EventArgs.Empty)
             With CType(sender, TextBox)
                 .Text = PowerRunThreshold.ToString
@@ -1644,7 +1647,7 @@ Public Class Main
             End If
         Catch e As Exception
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox("LoadParametersFromFile Error: " & e.Message, MsgBoxStyle.Exclamation)
+            MsgBox(resources.GetString("Main_MsgBox_LoadParametersFromFileError") & e.Message, MsgBoxStyle.Exclamation)
             End
         End Try
     End Sub
@@ -1749,7 +1752,7 @@ Public Class Main
 
         Catch e As Exception
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox("From SaveParameters Error: " & e.Message, MsgBoxStyle.Exclamation)
+            MsgBox(resources.GetString("Main_MsgBox_SaveParametersError") & e.Message, MsgBoxStyle.Exclamation)
             End
         End Try
     End Sub
@@ -2076,7 +2079,7 @@ Public Class Main
 
         Catch e As Exception
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox("PrepareGraphicsParameters Error: " & e.Message, MsgBoxStyle.Exclamation)
+            MsgBox(resources.GetString("Main_MsgBox_PrepareGraphicsParametersError") & e.Message, MsgBoxStyle.Exclamation)
             End
 
         End Try
@@ -2096,7 +2099,7 @@ Public Class Main
 
         Catch e As Exception
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox("ResetValues Error: " & e.Message, MsgBoxStyle.Exclamation)
+            MsgBox(resources.GetString("Main_MsgBox_ResetValuesError") & e.Message, MsgBoxStyle.Exclamation)
             End
         End Try
     End Sub
@@ -2118,7 +2121,7 @@ Public Class Main
         i = waveInOpen(WaveInHandle, IntPtr.op_Explicit(WAVE_MAPPER), waveFormat, myCallBackFunction, IntPtr.Zero, CALLBACK_FUNCTION)
         If i <> 0 Then
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox("InitializeWaveInput / WaveInOpen Error", MsgBoxStyle.Exclamation)
+            MsgBox(resources.GetString("Main_MsgBox_WaveInOpenError"), MsgBoxStyle.Exclamation)
             End
         End If
 
@@ -2182,7 +2185,7 @@ Public Class Main
             i = waveInPrepareHeader(WaveInHandle, WaveBufferHeaders(j), Marshal.SizeOf(WaveBufferHeaders(j)))
             If i <> 0 Then
                 btnHide_Click(Me, EventArgs.Empty)
-                MsgBox("InitializeWaveInput / waveInPrepareHeader Error", MsgBoxStyle.Exclamation)
+                MsgBox(resources.GetString("Main_MsgBox_WaveInPrepareHeaderError"), MsgBoxStyle.Exclamation)
                 End
             End If
         Next
@@ -2191,7 +2194,7 @@ Public Class Main
             i = waveInAddBuffer(WaveInHandle, WaveBufferHeaders(j), Marshal.SizeOf(WaveBufferHeaders(j)))
             If i <> 0 Then
                 btnHide_Click(Me, EventArgs.Empty)
-                MsgBox("InitializeWaveInput / waveInAddBuffer Error", MsgBoxStyle.Exclamation)
+                MsgBox(resources.GetString("Main_MsgBox_WaveInAddBufferError"), MsgBoxStyle.Exclamation)
                 End
             End If
         Next
@@ -2199,7 +2202,7 @@ Public Class Main
         i = waveInStart(WaveInHandle)
         If i <> 0 Then
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox("InitializeWaveInput / waveInStart Error", MsgBoxStyle.Exclamation)
+            MsgBox(resources.GetString("Main_MsgBox_WaveInStartError"), MsgBoxStyle.Exclamation)
             End
         Else
             WavesStarted = True
@@ -2225,7 +2228,7 @@ Public Class Main
                 i = waveInAddBuffer(WaveInHandle, WaveBufferHeaders(BufferCount), Marshal.SizeOf(WaveBufferHeaders(BufferCount)))  '...and add the buffer back to the queue
                 If i <> 0 Then 'Check that there were no problems adding back the buffer.'This could be skipped in a release version using a compiler constant
                     btnHide_Click(Me, EventArgs.Empty)
-                    MsgBox("myWaveHandler_ProcessWave / waveInAddBuffer Error" & i, MsgBoxStyle.Exclamation)
+                    MsgBox(resources.GetString("Main_MsgBox_ProcessWaveAddBufferError") & i, MsgBoxStyle.Exclamation)
                     End
                 End If
 
@@ -2555,7 +2558,7 @@ Public Class Main
 #End If
         Catch e As Exception
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox("myWaveHandler_ProcessWave Error: " & e.Message, MsgBoxStyle.Exclamation)
+            MsgBox(resources.GetString("Main_MsgBox_ProcessWaveError") & e.Message, MsgBoxStyle.Exclamation)
             End
         End Try
     End Sub
@@ -2576,20 +2579,20 @@ Public Class Main
                 i = waveInReset(WaveInHandle)
                 If i <> 0 Then
                     btnHide_Click(Me, EventArgs.Empty)
-                    MsgBox("ShutDownWaves / waveInReset Error", MsgBoxStyle.Exclamation)
+                    MsgBox(resources.GetString("Main_MsgBox_ShutDownWavesResetError"), MsgBoxStyle.Exclamation)
                     End
                 End If
                 i = waveInStop(WaveInHandle)
                 If i <> 0 Then
                     btnHide_Click(Me, EventArgs.Empty)
-                    MsgBox("ShutDownWaves / waveInStop Error", MsgBoxStyle.Exclamation)
+                    MsgBox(resources.GetString("Main_MsgBox_ShutDownWavesStopError"), MsgBoxStyle.Exclamation)
                     End
                 End If
                 For j = 0 To NUMBER_OF_BUFFERS - 1
                     i = waveInUnprepareHeader(WaveInHandle, WaveBufferHeaders(j), Marshal.SizeOf(WaveBufferHeaders(j)))
                     If i <> 0 Then
                         btnHide_Click(Me, EventArgs.Empty)
-                        MsgBox("ShutDownWaves / waveInUnprepareHeader Error" & i, MsgBoxStyle.Exclamation)
+                        MsgBox(resources.GetString("Main_MsgBox_ShutDownWavesUnprepareHeaderError") & i, MsgBoxStyle.Exclamation)
                         End
                     End If
                 Next
@@ -2616,7 +2619,7 @@ Public Class Main
                 i = waveInClose(WaveInHandle)
                 If i <> 0 Then
                     btnHide_Click(Me, EventArgs.Empty)
-                    MsgBox("ShutDownWaves / waveInClose Error", MsgBoxStyle.Exclamation)
+                    MsgBox(resources.GetString("Main_MsgBox_ShutDownWavesCloseError"), MsgBoxStyle.Exclamation)
                     End
                 Else
 
@@ -2626,7 +2629,7 @@ Public Class Main
                 WavesStarted = False
             Catch e As Exception
                 btnHide_Click(Me, EventArgs.Empty)
-                MsgBox("ShutDownWaves Error: " & e.Message, MsgBoxStyle.Exclamation)
+                MsgBox(resources.GetString("Main_MsgBox_ShutDownWavesError") & e.Message, MsgBoxStyle.Exclamation)
                 End
             End Try
         End If
@@ -2807,7 +2810,7 @@ Public Class Main
             'MsgBox("No Problems Found", MsgBoxStyle.OkOnly)
         Catch ex As Exception
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox("Error found is " & Problem & " " & ex.Message, MsgBoxStyle.Exclamation)
+            MsgBox(resources.GetString("Main_MsgBox_ErrorFoundIs") & Problem & " " & ex.Message, MsgBoxStyle.Exclamation)
             btnShow_Click(Me, EventArgs.Empty)
         End Try
     End Sub
@@ -2836,7 +2839,7 @@ Public Class Main
             Next
         Catch e As Exception
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox("Error reading COM Port.", CType(vbOK, MsgBoxStyle))
+            MsgBox(resources.GetString("Main_MsgBox_ErrorReadingCOMPort"), CType(vbOK, MsgBoxStyle))
             If mySerialPort.IsOpen Then mySerialPort.Close()
             'Enable Calibration buttons on com form
             For Each c As Control In frmCOM.Controls
@@ -3099,7 +3102,7 @@ Public Class Main
                 End If
             Catch ex As Exception
                 btnHide_Click(Me, EventArgs.Empty)
-                MsgBox("Serial Port Data Received Error: " & ex.Message, MsgBoxStyle.Exclamation)
+                MsgBox(resources.GetString("Main_MsgBox_SerialPortDataReceivedError") & ex.Message, MsgBoxStyle.Exclamation)
                 'btnShow_Click(Me, EventArgs.Empty)
                 End
             End Try
@@ -3225,7 +3228,7 @@ Public Class Main
                     btnSave_Click(Me, EventArgs.Empty) ' This added here to make sure any version changes are saved
                 Case Else
                     btnHide_Click(Me, EventArgs.Empty)
-                    MsgBox("Not a valid Interface File", vbOKOnly)
+                    MsgBox(resources.GetString("Main_MsgBox_NotAValidInterfaceFile"), vbOKOnly)
                     btnShow_Click(Me, EventArgs.Empty)
                     InterfaceInputFile.Close()
                     InterfaceInputFile.Dispose()

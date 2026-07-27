@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="btnStartLoggingRaw.Text" xml:space="preserve">
+    <value>Gravar Dados Brutos</value>
+  </data>
+  <data name="btnResetMaxima.Text" xml:space="preserve">
+    <value>Resetar</value>
+  </data>
+  <data name="btnAnalysis.Text" xml:space="preserve">
+    <value>Análise</value>
+  </data>
+  <data name="btnClose.Text" xml:space="preserve">
+    <value>Fechar</value>
+  </data>
+  <data name="btnMultiYTime.Text" xml:space="preserve">
+    <value>Y x Tempo</value>
+  </data>
+  <data name="btnLoad.Text" xml:space="preserve">
+    <value>Carregar</value>
+  </data>
+  <data name="btnSave.Text" xml:space="preserve">
+    <value>Salvar</value>
+  </data>
+  <data name="btnNewGauge.Text" xml:space="preserve">
+    <value>Medidor</value>
+  </data>
+  <data name="btnSaveAs.Text" xml:space="preserve">
+    <value>Salvar Como</value>
+  </data>
+  <data name="Label17.Text" xml:space="preserve">
+    <value>Início da Rodagem em</value>
+  </data>
+  <data name="btnNewLabel.Text" xml:space="preserve">
+    <value>Rótulo</value>
+  </data>
+  <data name="btnHide.Text" xml:space="preserve">
+    <value>Ocultar</value>
+  </data>
+  <data name="btnShow.Text" xml:space="preserve">
+    <value>Mostrar</value>
+  </data>
+  <data name="lblZeroDetect.Text" xml:space="preserve">
+    <value>Detecção de Zero</value>
+  </data>
+  <data name="btnStartAcquisition.Text" xml:space="preserve">
+    <value>Iniciar</value>
+  </data>
+  <data name="lblCOMActive.Text" xml:space="preserve">
+    <value>COM Ativa</value>
+  </data>
+  <data name="lblInterface.Text" xml:space="preserve">
+    <value>Usando atualmente:</value>
+  </data>
+  <data name="Button1.Text" xml:space="preserve">
+    <value>Correção</value>
+  </data>
+  <data name="Main_ValueMustBeBetween" xml:space="preserve">
+    <value> : O valor deve estar entre </value>
+  </data>
+  <data name="Main_And" xml:space="preserve">
+    <value> e </value>
+  </data>
+  <data name="Main_MsgBox_BtnStartPowerRunError" xml:space="preserve">
+    <value>Erro no btnStartPowerRun_Click: </value>
+  </data>
+  <data name="Main_MsgBox_BtnStartLoggingRawError" xml:space="preserve">
+    <value>Erro no btnStartLoggingRaw: </value>
+  </data>
+  <data name="Main_MsgBox_LoadParametersFromFileError" xml:space="preserve">
+    <value>Erro no LoadParametersFromFile: </value>
+  </data>
+  <data name="Main_MsgBox_SaveParametersError" xml:space="preserve">
+    <value>Erro no SaveParameters: </value>
+  </data>
+  <data name="Main_MsgBox_PrepareGraphicsParametersError" xml:space="preserve">
+    <value>Erro no PrepareGraphicsParameters: </value>
+  </data>
+  <data name="Main_MsgBox_ResetValuesError" xml:space="preserve">
+    <value>Erro no ResetValues: </value>
+  </data>
+  <data name="Main_MsgBox_WaveInOpenError" xml:space="preserve">
+    <value>Erro no InitializeWaveInput / WaveInOpen</value>
+  </data>
+  <data name="Main_MsgBox_WaveInPrepareHeaderError" xml:space="preserve">
+    <value>Erro no InitializeWaveInput / waveInPrepareHeader</value>
+  </data>
+  <data name="Main_MsgBox_WaveInAddBufferError" xml:space="preserve">
+    <value>Erro no InitializeWaveInput / waveInAddBuffer</value>
+  </data>
+  <data name="Main_MsgBox_WaveInStartError" xml:space="preserve">
+    <value>Erro no InitializeWaveInput / waveInStart</value>
+  </data>
+  <data name="Main_MsgBox_ProcessWaveAddBufferError" xml:space="preserve">
+    <value>Erro no myWaveHandler_ProcessWave / waveInAddBuffer </value>
+  </data>
+  <data name="Main_MsgBox_ProcessWaveError" xml:space="preserve">
+    <value>Erro no myWaveHandler_ProcessWave: </value>
+  </data>
+  <data name="Main_MsgBox_ShutDownWavesResetError" xml:space="preserve">
+    <value>Erro no ShutDownWaves / waveInReset</value>
+  </data>
+  <data name="Main_MsgBox_ShutDownWavesStopError" xml:space="preserve">
+    <value>Erro no ShutDownWaves / waveInStop</value>
+  </data>
+  <data name="Main_MsgBox_ShutDownWavesUnprepareHeaderError" xml:space="preserve">
+    <value>Erro no ShutDownWaves / waveInUnprepareHeader </value>
+  </data>
+  <data name="Main_MsgBox_ShutDownWavesCloseError" xml:space="preserve">
+    <value>Erro no ShutDownWaves / waveInClose</value>
+  </data>
+  <data name="Main_MsgBox_ShutDownWavesError" xml:space="preserve">
+    <value>Erro no ShutDownWaves: </value>
+  </data>
+  <data name="Main_MsgBox_ErrorFoundIs" xml:space="preserve">
+    <value>Erro encontrado: </value>
+  </data>
+  <data name="Main_MsgBox_ErrorReadingCOMPort" xml:space="preserve">
+    <value>Erro ao ler a porta COM.</value>
+  </data>
+  <data name="Main_MsgBox_SerialPortDataReceivedError" xml:space="preserve">
+    <value>Erro ao receber dados da porta serial: </value>
+  </data>
+  <data name="Main_MsgBox_NotAValidInterfaceFile" xml:space="preserve">
+    <value>Arquivo de interface inválido</value>
+  </data>
+</root>
