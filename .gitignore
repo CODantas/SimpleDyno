@@ -13,6 +13,9 @@
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
+# Windows shell thumbnail cache
+Thumbs.db
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
