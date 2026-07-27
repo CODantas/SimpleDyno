@@ -444,7 +444,7 @@
                 Main.COMPortCalibration()
             Else
                 If TempDouble = Main.Temp2Temperature2 Then
-                    MsgBox(CType(sender, TextBox).Name & "Values 1 and 2 must be different for calibration", MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & " Values 1 and 2 must be different for calibration", MsgBoxStyle.Exclamation)
                 Else
                     MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
                 End If

@@ -479,44 +479,6 @@ Public Class AnalysisForm
                     chartControl.DrawOverlay(OverlayBMP, FileCount, AxisPen, AxisFont, AxisBrush, HeadingsFont, Y4Font, Y4Brush, Y4Pen, ResultsFont, y4Axis, Y4Column, y4Max, Titleline, UnitsLine,
                                 ResultsLine, y4MaxAtX, y4MaxAtSelectedX, OverlayDashes, EqualSpacingCount, EqualSpacingPointers, cmbOverlayDataY4.SelectedIndex, cmbOverlayUnitsY4.SelectedIndex,
                                 TickLength, cmbOverlayDataX.SelectedIndex, cmbOverlayUnitsX.SelectedIndex)
-
-
-                    'TickInterval = PicOverlayHeight * (YOverlayEndFraction - YOverlayStartFraction) * 1 / 5
-                    'For Counter = 0 To 4
-                    '    TempString = Main.NewCustomFormat((((y4Axis) * Main.DataUnits(cmbOverlayDataY4.SelectedIndex, cmbOverlayUnitsY4.SelectedIndex)) / 5 * (5 - Counter)))
-                    '    .DrawLine(AxisPen, CInt(PicOverlayWidth * XOverlayEndFraction), CInt(PicOverlayHeight * YOverlayStartFraction + (TickInterval * Counter)), CInt(PicOverlayWidth * XOverlayEndFraction + TickLength), CInt(PicOverlayHeight * YOverlayStartFraction + (TickInterval * Counter)))
-                    '    .DrawString(TempString, AxisFont, AxisBrush, CInt(PicOverlayWidth * XOverlayEndFraction + TickLength), CInt(PicOverlayHeight * YOverlayStartFraction + (TickInterval * Counter) - .MeasureString(TempString, AxisFont).Height / 2))
-                    'Next
-                    'TempString = Main.DataTags(cmbOverlayDataY4.SelectedIndex) & vbCrLf & "(" & Split(Main.DataUnitTags(cmbOverlayDataY4.SelectedIndex), " ")(cmbOverlayUnitsY4.SelectedIndex) & ")"
-                    '.DrawString(TempString, Y4Font, Y4Brush, CInt(PicOverlayWidth * XOverlayEndFraction), CInt(PicOverlayHeight * YOverlayStartFraction - 5 - .MeasureString(TempString, Y4Font).Height)) ' * 1.5))
-                    ''If OverlayPlotMax Then
-                    ''TempString = "Max " & Main.DataTags(cmbOverlayDataY4.SelectedIndex)
-                    ''.DrawString(TempString, HeadingsFont, AxisBrush, Y4Column - .MeasureString(TempString, HeadingsFont).Width / 2, Titleline)
-                    ''Else
-                    'TempString = Main.DataTags(cmbOverlayDataY4.SelectedIndex)
-                    '.DrawString(TempString, HeadingsFont, AxisBrush, Y4Column - .MeasureString(TempString, HeadingsFont).Width / 2, Titleline)
-                    ''End If
-                    'If OverlayPlotMax Then
-                    '    TempString = "Max (" & Split(Main.DataUnitTags(cmbOverlayDataY4.SelectedIndex), " ")(cmbOverlayUnitsY4.SelectedIndex) & ")"
-                    'Else
-                    '    TempString = "(" & Split(Main.DataUnitTags(cmbOverlayDataY4.SelectedIndex), " ")(cmbOverlayUnitsY4.SelectedIndex) & ")"
-                    'End If
-
-                    '.DrawString(TempString, HeadingsFont, AxisBrush, Y4Column - .MeasureString(TempString, HeadingsFont).Width / 2, UnitsLine)
-                    'For FileCount = 1 To OverlayFileCount
-                    '    If OverlayPlotMax Then
-                    '        TempString = Main.NewCustomFormat(y4Max(FileCount) * Main.DataUnits(cmbOverlayDataY4.SelectedIndex, cmbOverlayUnitsY4.SelectedIndex)) & " @ " & Main.NewCustomFormat(y4MaxAtX(FileCount) * Main.DataUnits(cmbOverlayDataX.SelectedIndex, cmbOverlayUnitsX.SelectedIndex)) & " " & Split(Main.DataUnitTags(cmbOverlayDataX.SelectedIndex), " ")(cmbOverlayUnitsX.SelectedIndex)
-                    '        .DrawString(TempString, ResultsFont, AxisBrush, Y4Column - .MeasureString(TempString, ResultsFont).Width / 2, ResultsLine(FileCount))
-                    '    Else
-                    '        TempString = Main.NewCustomFormat(y4MaxAtSelectedX(FileCount) * Main.DataUnits(cmbOverlayDataY4.SelectedIndex, cmbOverlayUnitsY4.SelectedIndex)) ' & " @ " & Main.NewCustomFormat(OverlayXSelected * Main.DataUnits(cmbOverlayDataX.SelectedIndex, cmbOverlayUnitsX.SelectedIndex)) & " " & Split(Main.DataUnitTags(cmbOverlayDataX.SelectedIndex), " ")(cmbOverlayUnitsX.SelectedIndex)
-                    '        .DrawString(TempString, ResultsFont, AxisBrush, Y4Column - .MeasureString(TempString, ResultsFont).Width / 2, ResultsLine(FileCount))
-                    '    End If
-
-                    '    Y4Pen.DashStyle = OverlayDashes(FileCount)
-                    '    For Counter = 2 To EqualSpacingCount - 1
-                    '        .DrawLine(Y4Pen, CInt(XOverlayStartFraction * PicOverlayWidth + ((AnalyzedData(FileCount, cmbOverlayDataX.SelectedIndex, CInt(EqualSpacingPointers(FileCount, Counter)))) / xAxis) * (XOverlayEndFraction - XOverlayStartFraction) * PicOverlayWidth), CInt(YOverlayEndFraction * PicOverlayHeight - (AnalyzedData(FileCount, cmbOverlayDataY4.SelectedIndex, CInt(EqualSpacingPointers(FileCount, Counter))) / y4Axis) * (YOverlayEndFraction - YOverlayStartFraction) * PicOverlayHeight), CInt(XOverlayStartFraction * PicOverlayWidth + ((AnalyzedData(FileCount, cmbOverlayDataX.SelectedIndex, CInt(EqualSpacingPointers(FileCount, Counter + 1)))) / xAxis) * (XOverlayEndFraction - XOverlayStartFraction) * PicOverlayWidth), CInt(YOverlayEndFraction * PicOverlayHeight - (AnalyzedData(FileCount, cmbOverlayDataY4.SelectedIndex, CInt(EqualSpacingPointers(FileCount, Counter + 1))) / y4Axis) * (YOverlayEndFraction - YOverlayStartFraction) * PicOverlayHeight))
-                    '    Next
-                    'Next
                 End If
 
                 'Hack Job for corrected speed

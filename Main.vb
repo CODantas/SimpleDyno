@@ -1546,8 +1546,6 @@ Public Class Main
                                 End If
                             Next
                             btnStartAcquisition.Select()
-                        Case Is = "Enter Alternates Here" ' this section for interpreting older versions of the settings file if needed
-
                     End Select
 
                 ElseIf File.Exists(SettingsDirectory & "\SimpleDynoSettings_6_3.sds") Then 'this is a one off for moving from 6.3 forward
@@ -1722,60 +1720,6 @@ Public Class Main
                     ParameterOutputFile.WriteLine("[" & c.Name.ToString & "]" & scrlNew.Value)
                 End If
             Next
-
-            'For Each c As Control In Me.Controls
-            '    If TypeOf c Is TextBox Then
-            '        ParameterOutputFile.WriteLine("[" & c.Name.ToString & "]" & c.Text)
-            '    End If
-            '    If TypeOf c Is ComboBox Then
-            '        cmbNew = DirectCast(c, ComboBox)
-            '        ParameterOutputFile.WriteLine("[" & c.Name.ToString & "]" & cmbNew.SelectedItem.ToString)
-            '    End If
-            'Next
-
-            'For Each c As Control In frmDyno.Controls
-            '    If TypeOf c Is TextBox Then
-            '        ParameterOutputFile.WriteLine("[" & c.Name.ToString & "]" & c.Text)
-            '    End If
-            '    If TypeOf c Is ComboBox Then
-            '        cmbNew = DirectCast(c, ComboBox)
-            '        ParameterOutputFile.WriteLine("[" & c.Name.ToString & "]" & cmbNew.SelectedItem.ToString)
-            '    End If
-            'Next
-
-            'For Each c As Control In frmCOM.Controls
-            '    If TypeOf c Is TextBox Then
-            '        ParameterOutputFile.WriteLine("[" & c.Name.ToString & "]" & c.Text)
-            '    End If
-            '    If TypeOf c Is ComboBox Then
-            '        cmbNew = DirectCast(c, ComboBox)
-            '        ParameterOutputFile.WriteLine("[" & c.Name.ToString & "]" & cmbNew.SelectedItem.ToString)
-            '    End If
-            'Next
-
-            'For Each c As Control In frmAnalysis.Controls
-            '    If TypeOf c Is TextBox Then
-            '        ParameterOutputFile.WriteLine("[" & c.Name.ToString & "]" & c.Text)
-            '    End If
-            '    If TypeOf c Is ComboBox Then
-            '        cmbNew = DirectCast(c, ComboBox)
-            '        ParameterOutputFile.WriteLine("[" & c.Name.ToString & "]" & cmbNew.SelectedItem.ToString)
-            '    End If
-            'Next
-
-            'For Each c As Control In frmFit.Controls
-            '    If TypeOf c Is TextBox Then
-            '        ParameterOutputFile.WriteLine("[" & c.Name.ToString & "]" & c.Text)
-            '    End If
-            '    If TypeOf c Is ComboBox Then
-            '        cmbNew = DirectCast(c, ComboBox)
-            '        ParameterOutputFile.WriteLine("[" & c.Name.ToString & "]" & cmbNew.SelectedItem.ToString)
-            '    End If
-            '    If TypeOf c Is VScrollBar Then
-            '        scrlNew = DirectCast(c, VScrollBar)
-            '        ParameterOutputFile.WriteLine("[" & c.Name.ToString & "]" & scrlNew.Value)
-            '    End If
-            'Next
 
             ParameterOutputFile.Close()
 

@@ -301,28 +301,6 @@ Public Class Fit
 
             End If
 
-            'If Main.DataPoints > 1 And blnfit Then
-            '    'For Count As Integer = 1 To UBound(fy) - 1 'UBound(FitData, 2) - 1
-            '    Select Case WhichFitData
-            '        Case Is = RPM
-            '            For Count As Integer = 1 To UBound(y) - 1
-            '                .DrawLine(FitDataPen, CInt(XLeft + ((x(Count) - XTimeMin) / (XTimeMax - XTimeMin)) * (XRight - XLeft)), CInt(YBottom - (fy(Count) * Main.DataUnits(WhichDimension, 0) - RawDataMin) / (RawDataMax - RawDataMin) * (YBottom - Ytop)), CInt(XLeft + ((x(Count + 1) - XTimeMin)) / (XTimeMax - XTimeMin) * (XRight - XLeft)), CInt(YBottom - (fy(Count + 1) * Main.DataUnits(WhichDimension, 0) - RawDataMin) / (RawDataMax - RawDataMin) * (YBottom - Ytop)))
-            '                .DrawLine(TempTorqueDataPen, CInt(XLeft + ((x(Count) - XTimeMin) / (XTimeMax - XTimeMin)) * (XRight - XLeft)), CInt(YBottom - (FitData(Main.TORQUE_ROLLER, Count) - RawTDataMin) / (RawTDataMax - RawTDataMin) * (YBottom - Ytop)), CInt(XLeft + ((x(Count + 1) - XTimeMin)) / (XTimeMax - XTimeMin) * (XRight - XLeft)), CInt(YBottom - (FitData(Main.TORQUE_ROLLER, Count + 1) - RawTDataMin) / (RawTDataMax - RawTDataMin) * (YBottom - Ytop)))
-            '                .DrawLine(TempPowerDataPen, CInt(XLeft + ((x(Count) - XTimeMin) / (XTimeMax - XTimeMin)) * (XRight - XLeft)), CInt(YBottom - (FitData(Main.POWER, Count) - RawPDataMin) / (RawPDataMax - RawPDataMin) * (YBottom - Ytop)), CInt(XLeft + ((x(Count + 1) - XTimeMin)) / (XTimeMax - XTimeMin) * (XRight - XLeft)), CInt(YBottom - (FitData(Main.POWER, Count + 1) - RawPDataMin) / (RawPDataMax - RawPDataMin) * (YBottom - Ytop)))
-            '            Next
-            '        Case Is = RUNDOWN
-            '            For Count As Integer = 1 To UBound(CoastDownY) - 1
-            '                .DrawLine(FitDataPen, CInt(XLeft + ((CoastDownX(Count) - XTimeMin) / (XTimeMax - XTimeMin)) * (XRight - XLeft)), CInt(YBottom - (CoastDownFY(Count) * Main.DataUnits(WhichDimension, 0) - RawDataMin) / (RawDataMax - RawDataMin) * (YBottom - Ytop)), CInt(XLeft + ((CoastDownX(Count + 1) - XTimeMin)) / (XTimeMax - XTimeMin) * (XRight - XLeft)), CInt(YBottom - (CoastDownFY(Count + 1) * Main.DataUnits(WhichDimension, 0) - RawDataMin) / (RawDataMax - RawDataMin) * (YBottom - Ytop)))
-            '                .DrawLine(TempTorqueDataPen, CInt(XLeft + ((CoastDownX(Count) - XTimeMin) / (XTimeMax - XTimeMin)) * (XRight - XLeft)), CInt(YBottom - (CoastDownT(Count) - RawTDataMin) / (RawTDataMax - RawTDataMin) * (YBottom - Ytop)), CInt(XLeft + ((CoastDownX(Count + 1) - XTimeMin)) / (XTimeMax - XTimeMin) * (XRight - XLeft)), CInt(YBottom - (CoastDownT(Count + 1) - RawTDataMin) / (RawTDataMax - RawTDataMin) * (YBottom - Ytop)))
-            '                .DrawLine(TempPowerDataPen, CInt(XLeft + ((CoastDownX(Count) - XTimeMin) / (XTimeMax - XTimeMin)) * (XRight - XLeft)), CInt(YBottom - (CoastDownP(Count) - RawPDataMin) / (RawPDataMax - RawPDataMin) * (YBottom - Ytop)), CInt(XLeft + ((CoastDownX(Count + 1) - XTimeMin)) / (XTimeMax - XTimeMin) * (XRight - XLeft)), CInt(YBottom - (CoastDownP(Count + 1) - RawPDataMin) / (RawPDataMax - RawPDataMin) * (YBottom - Ytop)))
-            '            Next
-            '        Case Is = VOLTAGE, CURRENT
-            '            For Count As Integer = 1 To UBound(y) - 1
-            '                .DrawLine(FitDataPen, CInt(XLeft + ((Main.CollectedData(Main.SESSIONTIME, Count)) / XTimeMax) * (XRight - XLeft)), CInt(YBottom - (FitData(WhichDimension, Count) * Main.DataUnits(WhichDimension, 0) - RawDataMin) / (RawDataMax - RawDataMin) * (YBottom - Ytop)), CInt(XLeft + ((Main.CollectedData(Main.SESSIONTIME, Count + 1)) / XTimeMax) * (XRight - XLeft)), CInt(YBottom - (FitData(WhichDimension, Count + 1) * Main.DataUnits(WhichDimension, 0) - RawDataMin) / (RawDataMax - RawDataMin) * (YBottom - Ytop)))
-            '            Next
-            '    End Select
-            'End If
-
         End With
 
         Dim PreviousBackgroundImage As Image = pnlDataWindow.BackgroundImage
@@ -614,25 +592,6 @@ Public Class Fit
                     'Debug.Print(CoastDownX(Count) & " " & CoastDownFY(Count) & " " & CoastDownT(Count) & " " & CoastDownP(Count))
                 Next
                 CreateCoastDownData()
-                'MsgBox(MaxRunDownRPM.ToString, vbOKOnly)
-                'This section should be in its own routine as it needs to be called if the RPM1 data is refit.
-                'Also, if the spike threshold is changed, both RPM1 and Coast Down need to be refit.
-                'For Count = 1 To UBound(FitData, 2)
-                '    If FitData(Main.RPM1_ROLLER, Count) >= MaxRunDownRPM Then
-                '        FitData(Main.TORQUE_COASTDOWN, Count) = -1 * (CoastDownFY(2) - CoastDownFY(1)) / (CoastDownX(2) - CoastDownX(1)) * Main.DynoMomentOfInertia 'this is the roller torque, should calc the wheel and motor at this point also
-                '    Else
-                '        MinDifference = 999999
-                '        For Count2 = 1 To UBound(CoastDownFY)
-                '            Difference = Math.Abs(CoastDownFY(Count2) - FitData(Main.RPM1_ROLLER, Count))
-                '            If Difference < MinDifference Then
-                '                MinDifference = Difference
-                '                MinDifferenceIndex = Count2
-                '            End If
-                '        Next
-                '        FitData(Main.TORQUE_COASTDOWN, Count) = -1 * (CoastDownFY(MinDifferenceIndex) - CoastDownFY(MinDifferenceIndex + 1)) / (CoastDownX(MinDifferenceIndex) - CoastDownX(MinDifferenceIndex + 1)) * Main.DynoMomentOfInertia 'this is the roller torque, should calc the wheel and motor at this point also
-                '    End If
-                '    FitData(Main.POWER_COASTDOWN, Count) = FitData(Main.TORQUE_COASTDOWN, Count) * ((FitData(Main.RPM1_ROLLER, Count) + FitData(Main.RPM1_ROLLER, Count - 1)) / 2)
-                'Next
                 blnfit = True
                 pnlDataWindowSetup()
             Else
@@ -660,30 +619,10 @@ Public Class Fit
                 Next
             End With
             FitData(Main.RPM1_ROLLER, 0) = FitData(Main.RPM1_ROLLER, 1)
-            'Dim Difference As Double, MinDifference As Double, MinDifferenceIndex As Integer
-            'Need to find the closest value
-            'First need to find the highestt run down fit poin
-            'Dim MaxRunDownRPM As Double
             For Count = 1 To UBound(CoastDownFY)
                 If CoastDownFY(Count) > MaxRunDownRPM Then MaxRunDownRPM = CoastDownFY(Count)
             Next
             CreateCoastDownData()
-            'For Count = 1 To UBound(FitData, 2)
-            '    If FitData(Main.RPM1_ROLLER, Count) >= MaxRunDownRPM Then
-            '        FitData(Main.TORQUE_COASTDOWN, Count) = -1 * (CoastDownFY(2) - CoastDownFY(1)) / (CoastDownX(2) - CoastDownX(1)) * Main.DynoMomentOfInertia 'this is the roller torque, should calc the wheel and motor at this point also
-            '    Else
-            '        MinDifference = 999999
-            '        For Count2 = 1 To UBound(CoastDownFY)
-            '            Difference = Math.Abs(CoastDownFY(Count2) - FitData(Main.RPM1_ROLLER, Count))
-            '            If Difference < MinDifference Then
-            '                MinDifference = Difference
-            '                MinDifferenceIndex = Count2
-            '            End If
-            '        Next
-            '        FitData(Main.TORQUE_COASTDOWN, Count) = -1 * (CoastDownFY(MinDifferenceIndex) - CoastDownFY(MinDifferenceIndex + 1)) / (CoastDownX(MinDifferenceIndex) - CoastDownX(MinDifferenceIndex + 1)) * Main.DynoMomentOfInertia 'this is the roller torque, should calc the wheel and motor at this point also
-            '    End If
-            '    FitData(Main.POWER_COASTDOWN, Count) = FitData(Main.TORQUE_COASTDOWN, Count) * ((FitData(Main.RPM1_ROLLER, Count) + FitData(Main.RPM1_ROLLER, Count - 1)) / 2)
-            'Next
             blnCoastDownDownFit = True
         End If
 
