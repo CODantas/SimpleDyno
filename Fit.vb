@@ -677,7 +677,11 @@ Public Class Fit
         Dim Count As Integer, Count2 As Integer, MinDifference As Double, difference As Double, MinDifferenceIndex As Integer
         For Count = 1 To UBound(FitData, 2)
             If FitData(Main.RPM1_ROLLER, Count) >= MaxRunDownRPM Then
-                FitData(Main.TORQUE_COASTDOWN, Count) = -1 * (CoastDownFY(2) - CoastDownFY(1)) / (CoastDownX(2) - CoastDownX(1)) * Main.DynoMomentOfInertia 'this is the roller torque, should calc the wheel and motor at this point also
+                If (CoastDownX(2) - CoastDownX(1)) <> 0 Then
+                    FitData(Main.TORQUE_COASTDOWN, Count) = -1 * (CoastDownFY(2) - CoastDownFY(1)) / (CoastDownX(2) - CoastDownX(1)) * Main.DynoMomentOfInertia 'this is the roller torque, should calc the wheel and motor at this point also
+                Else
+                    FitData(Main.TORQUE_COASTDOWN, Count) = 0
+                End If
             Else
                 MinDifference = 999999
                 For Count2 = 1 To UBound(CoastDownFY) - 1
@@ -688,9 +692,13 @@ Public Class Fit
                     End If
                 Next
                 Try
-                    FitData(Main.TORQUE_COASTDOWN, Count) = -1 * (CoastDownFY(MinDifferenceIndex) - CoastDownFY(MinDifferenceIndex + 1)) / (CoastDownX(MinDifferenceIndex) - CoastDownX(MinDifferenceIndex + 1)) * Main.DynoMomentOfInertia 'this is the roller torque, should calc the wheel and motor at this point also
+                    If (CoastDownX(MinDifferenceIndex) - CoastDownX(MinDifferenceIndex + 1)) <> 0 Then
+                        FitData(Main.TORQUE_COASTDOWN, Count) = -1 * (CoastDownFY(MinDifferenceIndex) - CoastDownFY(MinDifferenceIndex + 1)) / (CoastDownX(MinDifferenceIndex) - CoastDownX(MinDifferenceIndex + 1)) * Main.DynoMomentOfInertia 'this is the roller torque, should calc the wheel and motor at this point also
+                    Else
+                        FitData(Main.TORQUE_COASTDOWN, Count) = 0
+                    End If
                 Catch ex As Exception
-                    Stop
+                    FitData(Main.TORQUE_COASTDOWN, Count) = 0
                 End Try
 
             End If
