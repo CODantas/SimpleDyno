@@ -227,6 +227,9 @@
     <EmbeddedResource Include="AnalysisForm.resx">
       <DependentUpon>AnalysisForm.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AnalysisForm.pt-BR.resx">
+      <DependentUpon>AnalysisForm.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Dyno.resx">
       <DependentUpon>Dyno.vb</DependentUpon>
     </EmbeddedResource>

@@ -17,12 +17,15 @@ Partial Class AnalysisForm
     'Required by the Windows Form Designer
     Private components As System.ComponentModel.IContainer
 
+    'Resource manager for translated (resx satellite) strings. Promoted to a class
+    'field so AnalysisForm.vb can also look up localized text outside InitializeComponent.
+    Private ReadOnly resources As New System.ComponentModel.ComponentResourceManager(GetType(AnalysisForm))
+
     'NOTE: The following procedure is required by the Windows Form Designer
-    'It can be modified using the Windows Form Designer.  
+    'It can be modified using the Windows Form Designer.
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(AnalysisForm))
         Me.btnAddOverlayFile = New System.Windows.Forms.Button()
         Me.btnClearOverlay = New System.Windows.Forms.Button()
         Me.btnSaveOverlay = New System.Windows.Forms.Button()
@@ -111,7 +114,7 @@ Partial Class AnalysisForm
         Me.btnAddOverlayFile.Name = "btnAddOverlayFile"
         Me.btnAddOverlayFile.Size = New System.Drawing.Size(154, 29)
         Me.btnAddOverlayFile.TabIndex = 65
-        Me.btnAddOverlayFile.Text = "Load"
+        Me.btnAddOverlayFile.Text = resources.GetString("btnAddOverlayFile.Text")
         '
         'btnClearOverlay
         '
@@ -120,7 +123,7 @@ Partial Class AnalysisForm
         Me.btnClearOverlay.Name = "btnClearOverlay"
         Me.btnClearOverlay.Size = New System.Drawing.Size(154, 29)
         Me.btnClearOverlay.TabIndex = 66
-        Me.btnClearOverlay.Text = "Clear"
+        Me.btnClearOverlay.Text = resources.GetString("btnClearOverlay.Text")
         '
         'btnSaveOverlay
         '
@@ -130,7 +133,7 @@ Partial Class AnalysisForm
         Me.btnSaveOverlay.Name = "btnSaveOverlay"
         Me.btnSaveOverlay.Size = New System.Drawing.Size(154, 29)
         Me.btnSaveOverlay.TabIndex = 67
-        Me.btnSaveOverlay.Text = "Save"
+        Me.btnSaveOverlay.Text = resources.GetString("btnSaveOverlay.Text")
         '
         'cmbOverlayUnitsY2
         '
@@ -167,7 +170,7 @@ Partial Class AnalysisForm
         Me.Label48.Name = "Label48"
         Me.Label48.Size = New System.Drawing.Size(46, 13)
         Me.Label48.TabIndex = 89
-        Me.Label48.Text = "Y2 Axis:"
+        Me.Label48.Text = resources.GetString("Label48.Text")
         '
         'Label47
         '
@@ -177,7 +180,7 @@ Partial Class AnalysisForm
         Me.Label47.Name = "Label47"
         Me.Label47.Size = New System.Drawing.Size(46, 13)
         Me.Label47.TabIndex = 88
-        Me.Label47.Text = "Y1 Axis:"
+        Me.Label47.Text = resources.GetString("Label47.Text")
         '
         'Label46
         '
@@ -187,7 +190,7 @@ Partial Class AnalysisForm
         Me.Label46.Name = "Label46"
         Me.Label46.Size = New System.Drawing.Size(40, 13)
         Me.Label46.TabIndex = 87
-        Me.Label46.Text = "X Axis:"
+        Me.Label46.Text = resources.GetString("Label46.Text")
         '
         'cmbOverlayDataY2
         '
@@ -227,7 +230,7 @@ Partial Class AnalysisForm
         Me.Label51.Name = "Label51"
         Me.Label51.Size = New System.Drawing.Size(96, 13)
         Me.Label51.TabIndex = 100
-        Me.Label51.Text = "Corr. Speed Units:"
+        Me.Label51.Text = resources.GetString("Label51.Text")
         '
         'cmbOverlayCorrectedSpeedUnits
         '
@@ -264,7 +267,7 @@ Partial Class AnalysisForm
         Me.Label50.Name = "Label50"
         Me.Label50.Size = New System.Drawing.Size(46, 13)
         Me.Label50.TabIndex = 96
-        Me.Label50.Text = "Y4 Axis:"
+        Me.Label50.Text = resources.GetString("Label50.Text")
         '
         'Label49
         '
@@ -274,7 +277,7 @@ Partial Class AnalysisForm
         Me.Label49.Name = "Label49"
         Me.Label49.Size = New System.Drawing.Size(46, 13)
         Me.Label49.TabIndex = 95
-        Me.Label49.Text = "Y3 Axis:"
+        Me.Label49.Text = resources.GetString("Label49.Text")
         '
         'cmbOverlayDataY4
         '
@@ -313,7 +316,7 @@ Partial Class AnalysisForm
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(86, 13)
         Me.Label9.TabIndex = 101
-        Me.Label9.Text = "Current X value:"
+        Me.Label9.Text = resources.GetString("Label9.Text")
         '
         'OpenFileDialog1
         '
@@ -327,7 +330,7 @@ Partial Class AnalysisForm
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(34, 13)
         Me.Label1.TabIndex = 104
-        Me.Label1.Text = "Units:"
+        Me.Label1.Text = resources.GetString("Label1.Text")
         '
         'Label2
         '
@@ -336,7 +339,7 @@ Partial Class AnalysisForm
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(34, 13)
         Me.Label2.TabIndex = 105
-        Me.Label2.Text = "Units:"
+        Me.Label2.Text = resources.GetString("Label2.Text")
         '
         'Label3
         '
@@ -345,7 +348,7 @@ Partial Class AnalysisForm
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(34, 13)
         Me.Label3.TabIndex = 106
-        Me.Label3.Text = "Units:"
+        Me.Label3.Text = resources.GetString("Label3.Text")
         '
         'Label4
         '
@@ -354,7 +357,7 @@ Partial Class AnalysisForm
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(34, 13)
         Me.Label4.TabIndex = 107
-        Me.Label4.Text = "Units:"
+        Me.Label4.Text = resources.GetString("Label4.Text")
         '
         'Label5
         '
@@ -363,7 +366,7 @@ Partial Class AnalysisForm
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(34, 13)
         Me.Label5.TabIndex = 108
-        Me.Label5.Text = "Units:"
+        Me.Label5.Text = resources.GetString("Label5.Text")
         '
         'Panel1
         '
@@ -411,7 +414,7 @@ Partial Class AnalysisForm
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(108, 13)
         Me.Label6.TabIndex = 110
-        Me.Label6.Text = "Select files to display:"
+        Me.Label6.Text = resources.GetString("Label6.Text")
         '
         'clbFiles
         '
@@ -1008,7 +1011,7 @@ Partial Class AnalysisForm
         Me.MinimizeBox = False
         Me.Name = "AnalysisForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Data Analysis"
+        Me.Text = resources.GetString("$this.Text")
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         Me.TableLayoutPanel1.ResumeLayout(False)
