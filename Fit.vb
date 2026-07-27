@@ -395,7 +395,7 @@ Public Class Fit
             End If
             Main.RestartForms()
         Catch e As Exception
-            MsgBox("ProcessData Error: " & e.ToString, MsgBoxStyle.Exclamation)
+            MsgBox("ProcessData Error: " & e.Message, MsgBoxStyle.Exclamation)
             End
         End Try
     End Sub

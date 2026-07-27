@@ -1237,7 +1237,7 @@ Public Class Main
             End If
         Catch e1 As Exception
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox("btnStartPowerRun_Click Error: " & e1.ToString, MsgBoxStyle.Exclamation)
+            MsgBox("btnStartPowerRun_Click Error: " & e1.Message, MsgBoxStyle.Exclamation)
             btnShow_Click(Me, EventArgs.Empty)
             End
         End Try
@@ -1392,7 +1392,7 @@ Public Class Main
             End If
         Catch e1 As Exception
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox("btnStartLoggingRaw Error: " & e1.ToString, MsgBoxStyle.Exclamation)
+            MsgBox("btnStartLoggingRaw Error: " & e1.Message, MsgBoxStyle.Exclamation)
             btnShow_Click(Me, EventArgs.Empty)
             End
         End Try
@@ -1623,7 +1623,7 @@ Public Class Main
             End If
         Catch e As Exception
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox("LoadParametersFromFile Error: " & e.ToString, MsgBoxStyle.Exclamation)
+            MsgBox("LoadParametersFromFile Error: " & e.Message, MsgBoxStyle.Exclamation)
             End
         End Try
     End Sub
@@ -1782,7 +1782,7 @@ Public Class Main
 
         Catch e As Exception
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox("From SaveParameters Error: " & e.ToString, MsgBoxStyle.Exclamation)
+            MsgBox("From SaveParameters Error: " & e.Message, MsgBoxStyle.Exclamation)
             End
         End Try
     End Sub
@@ -2109,7 +2109,7 @@ Public Class Main
 
         Catch e As Exception
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox("PrepareGraphicsParameters Error: " & e.ToString, MsgBoxStyle.Exclamation)
+            MsgBox("PrepareGraphicsParameters Error: " & e.Message, MsgBoxStyle.Exclamation)
             End
 
         End Try
@@ -2129,7 +2129,7 @@ Public Class Main
 
         Catch e As Exception
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox("ResetValues Error: " & e.ToString, MsgBoxStyle.Exclamation)
+            MsgBox("ResetValues Error: " & e.Message, MsgBoxStyle.Exclamation)
             End
         End Try
     End Sub
@@ -2588,7 +2588,7 @@ Public Class Main
 #End If
         Catch e As Exception
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox("myWaveHandler_ProcessWave Error: " & e.ToString, MsgBoxStyle.Exclamation)
+            MsgBox("myWaveHandler_ProcessWave Error: " & e.Message, MsgBoxStyle.Exclamation)
             End
         End Try
     End Sub
@@ -2659,7 +2659,7 @@ Public Class Main
                 WavesStarted = False
             Catch e As Exception
                 btnHide_Click(Me, EventArgs.Empty)
-                MsgBox("ShutDownWaves Error: " & e.ToString, MsgBoxStyle.Exclamation)
+                MsgBox("ShutDownWaves Error: " & e.Message, MsgBoxStyle.Exclamation)
                 End
             End Try
         End If
@@ -2840,7 +2840,7 @@ Public Class Main
             'MsgBox("No Problems Found", MsgBoxStyle.OkOnly)
         Catch ex As Exception
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox("Error found is " & Problem & " " & ex.ToString, MsgBoxStyle.Exclamation)
+            MsgBox("Error found is " & Problem & " " & ex.Message, MsgBoxStyle.Exclamation)
             btnShow_Click(Me, EventArgs.Empty)
         End Try
     End Sub
@@ -3132,7 +3132,7 @@ Public Class Main
                 End If
             Catch ex As Exception
                 btnHide_Click(Me, EventArgs.Empty)
-                MsgBox("Serial Port Data Received Error: " & ex.ToString, MsgBoxStyle.Exclamation)
+                MsgBox("Serial Port Data Received Error: " & ex.Message, MsgBoxStyle.Exclamation)
                 'btnShow_Click(Me, EventArgs.Empty)
                 End
             End Try
