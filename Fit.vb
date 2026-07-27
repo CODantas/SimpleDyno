@@ -431,7 +431,8 @@ Public Class Fit
         'x(0) = Main.CollectedData(Main.SESSIONTIME, FitStartPoint - 1)
         'y(0) = Main.CollectedData(Main.RPM1_ROLLER, FitStartPoint - 1)
 
-        PowerRunSpikeLevel = CDbl(txtPowerRunSpikeLevel.Text)
+        Dim ParsedSpikeLevel As Double
+        If Double.TryParse(txtPowerRunSpikeLevel.Text, ParsedSpikeLevel) Then PowerRunSpikeLevel = ParsedSpikeLevel
         lblProgress.Text = "RPM1 Spike removal..."
         prgFit.Maximum = Main.DataPoints
         For count = FitStartPoint To Main.DataPoints
@@ -537,7 +538,8 @@ Public Class Fit
 
             'CoastDownY(0) = Main.CollectedData(Main.RPM1_ROLLER, Main.DataPoints)
             'CoastDownX(0) = Main.CollectedData(Main.SESSIONTIME, Main.DataPoints)
-            PowerRunSpikeLevel = CDbl(txtPowerRunSpikeLevel.Text)
+            Dim ParsedSpikeLevel As Double
+            If Double.TryParse(txtPowerRunSpikeLevel.Text, ParsedSpikeLevel) Then PowerRunSpikeLevel = ParsedSpikeLevel
             Count2 = 0
             RawRPM1Max = 0
             lblProgress.Text = "Coast Down Spike removal..."
