@@ -330,7 +330,7 @@ Public Class AnalysisForm
                 .DrawString(TempString, HeadingsFont, AxisBrush, XColumn - .MeasureString(TempString, HeadingsFont).Width / 2, Titleline)
                 'generate the units string
                 If OverlayPlotMax Then
-                    TempString = "Max (" & Split(Main.DataUnitTags(cmbOverlayDataX.SelectedIndex), " ")(cmbOverlayUnitsX.SelectedIndex) & ")"
+                    TempString = resources.GetString("AnalysisForm_MaxPrefix") & Split(Main.DataUnitTags(cmbOverlayDataX.SelectedIndex), " ")(cmbOverlayUnitsX.SelectedIndex) & ")"
                 Else
                     TempString = "(" & Split(Main.DataUnitTags(cmbOverlayDataX.SelectedIndex), " ")(cmbOverlayUnitsX.SelectedIndex) & ")"
                 End If
@@ -370,7 +370,7 @@ Public Class AnalysisForm
                     .DrawString(TempString, HeadingsFont, AxisBrush, Y1Column - .MeasureString(TempString, HeadingsFont).Width / 2, Titleline)
                     'End If
                     If OverlayPlotMax Then
-                        TempString = "Max (" & Split(Main.DataUnitTags(cmbOverlayDataY1.SelectedIndex), " ")(cmbOverlayUnitsY1.SelectedIndex) & ")"
+                        TempString = resources.GetString("AnalysisForm_MaxPrefix") & Split(Main.DataUnitTags(cmbOverlayDataY1.SelectedIndex), " ")(cmbOverlayUnitsY1.SelectedIndex) & ")"
                     Else
                         TempString = "(" & Split(Main.DataUnitTags(cmbOverlayDataY1.SelectedIndex), " ")(cmbOverlayUnitsY1.SelectedIndex) & ")"
                     End If
@@ -414,7 +414,7 @@ Public Class AnalysisForm
                     .DrawString(TempString, HeadingsFont, AxisBrush, Y2Column - .MeasureString(TempString, HeadingsFont).Width / 2, Titleline)
                     'End If
                     If OverlayPlotMax Then
-                        TempString = "Max (" & Split(Main.DataUnitTags(cmbOverlayDataY2.SelectedIndex), " ")(cmbOverlayUnitsY2.SelectedIndex) & ")"
+                        TempString = resources.GetString("AnalysisForm_MaxPrefix") & Split(Main.DataUnitTags(cmbOverlayDataY2.SelectedIndex), " ")(cmbOverlayUnitsY2.SelectedIndex) & ")"
                     Else
                         TempString = "(" & Split(Main.DataUnitTags(cmbOverlayDataY2.SelectedIndex), " ")(cmbOverlayUnitsY2.SelectedIndex) & ")"
                     End If
@@ -452,7 +452,7 @@ Public Class AnalysisForm
                     .DrawString(TempString, HeadingsFont, AxisBrush, Y3Column - .MeasureString(TempString, HeadingsFont).Width / 2, Titleline)
                     'End If
                     If OverlayPlotMax Then
-                        TempString = "Max (" & Split(Main.DataUnitTags(cmbOverlayDataY3.SelectedIndex), " ")(cmbOverlayUnitsY3.SelectedIndex) & ")"
+                        TempString = resources.GetString("AnalysisForm_MaxPrefix") & Split(Main.DataUnitTags(cmbOverlayDataY3.SelectedIndex), " ")(cmbOverlayUnitsY3.SelectedIndex) & ")"
                     Else
                         TempString = "(" & Split(Main.DataUnitTags(cmbOverlayDataY3.SelectedIndex), " ")(cmbOverlayUnitsY3.SelectedIndex) & ")"
                     End If
@@ -482,7 +482,7 @@ Public Class AnalysisForm
                 End If
 
                 'Hack Job for corrected speed
-                TempString = "Max Corr. Speed" ' & DataTags(DRAG)
+                TempString = resources.GetString("AnalysisForm_MaxCorrSpeed")
                 .DrawString(TempString, HeadingsFont, AxisBrush, YDragColumn - .MeasureString(TempString, HeadingsFont).Width / 2, Titleline)
                 TempString = "(" & Split(Main.DataUnitTags(Main.SPEED), " ")(cmbOverlayCorrectedSpeedUnits.SelectedIndex) & ")"
                 .DrawString(TempString, HeadingsFont, AxisBrush, YDragColumn - .MeasureString(TempString, HeadingsFont).Width / 2, UnitsLine)
@@ -610,7 +610,7 @@ Public Class AnalysisForm
         Dim xAxisUnit As String = Main.DataUnitTags(xIndex).Split(CType(" ", Char()))(xUnitsIndex)
         Dim xAxisTitle As String = Main.DataTags(xIndex)
         lblXTitle.Text = xAxisTitle
-        lblXUnit.Text = "Max (" & xAxisUnit & ")"
+        lblXUnit.Text = resources.GetString("AnalysisForm_MaxPrefix") & xAxisUnit & ")"
 
         Dim y1Index As Integer
         Dim y1UnitsIndex As Integer
@@ -687,7 +687,7 @@ Public Class AnalysisForm
             y1AxisUnit = Main.DataUnitTags(y1Index).Split(CType(" ", Char()))(y1UnitsIndex)
             y1AxisTitle = Main.DataTags(y1Index)
             lblY1Title.Text = y1AxisTitle
-            lblY1Unit.Text = "Max (" & y1AxisUnit & ")"
+            lblY1Unit.Text = resources.GetString("AnalysisForm_MaxPrefix") & y1AxisUnit & ")"
         End If
 
         y2UnitsIndex = Math.Max(cmbOverlayUnitsY2.SelectedIndex, 0)
@@ -695,7 +695,7 @@ Public Class AnalysisForm
             y2AxisUnit = Main.DataUnitTags(y2Index).Split(CType(" ", Char()))(y2UnitsIndex)
             y2AxisTitle = Main.DataTags(y2Index)
             lblY2Title.Text = y2AxisTitle
-            lblY2Unit.Text = "Max (" & y2AxisUnit & ")"
+            lblY2Unit.Text = resources.GetString("AnalysisForm_MaxPrefix") & y2AxisUnit & ")"
         End If
 
         y3UnitsIndex = Math.Max(cmbOverlayUnitsY3.SelectedIndex, 0)
@@ -703,7 +703,7 @@ Public Class AnalysisForm
             y3AxisUnit = Main.DataUnitTags(y3Index).Split(CType(" ", Char()))(y3UnitsIndex)
             y3AxisTitle = Main.DataTags(y3Index)
             lblY3Title.Text = y3AxisTitle
-            lblY3Unit.Text = "Max (" & y3AxisUnit & ")"
+            lblY3Unit.Text = resources.GetString("AnalysisForm_MaxPrefix") & y3AxisUnit & ")"
         End If
 
         y4UnitsIndex = Math.Max(cmbOverlayUnitsY4.SelectedIndex, 0)
@@ -711,7 +711,7 @@ Public Class AnalysisForm
             y4AxisUnit = Main.DataUnitTags(y4Index).Split(CType(" ", Char()))(y4UnitsIndex)
             y4AxisTitle = Main.DataTags(y4Index)
             lblY4Title.Text = y4AxisTitle
-            lblY4Unit.Text = "Max (" & y4AxisUnit & ")"
+            lblY4Unit.Text = resources.GetString("AnalysisForm_MaxPrefix") & y4AxisUnit & ")"
         End If
 
         plotModel.Axes.Add(New LinearAxis() With {

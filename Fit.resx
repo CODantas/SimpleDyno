@@ -216,6 +216,30 @@
   <data name="Fit_MsgBox_AllCurveFitsNotCompleted" xml:space="preserve">
     <value>All of the expected curve fits were not completed. Please make sure all data are fit appropriately</value>
   </data>
+  <data name="Fit_Axis_RPM" xml:space="preserve">
+    <value>RPM</value>
+  </data>
+  <data name="Fit_Axis_Amps" xml:space="preserve">
+    <value>Amps</value>
+  </data>
+  <data name="Fit_Axis_Volts" xml:space="preserve">
+    <value>Volts</value>
+  </data>
+  <data name="Fit_Axis_Seconds" xml:space="preserve">
+    <value>Seconds</value>
+  </data>
+  <data name="Fit_Legend_RawData" xml:space="preserve">
+    <value>RAW Data</value>
+  </data>
+  <data name="Fit_Legend_FitData" xml:space="preserve">
+    <value>FIT Data</value>
+  </data>
+  <data name="Fit_Legend_TorqueCurveMaxPrefix" xml:space="preserve">
+    <value>Torque Curve (Max = </value>
+  </data>
+  <data name="Fit_Legend_PowerCurveMaxPrefix" xml:space="preserve">
+    <value>Power Curve (Max = </value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

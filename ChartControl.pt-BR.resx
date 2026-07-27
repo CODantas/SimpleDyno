@@ -58,61 +58,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="$this.Text" xml:space="preserve">
-    <value>Análise de Dados</value>
-  </data>
-  <data name="btnAddOverlayFile.Text" xml:space="preserve">
-    <value>Carregar</value>
-  </data>
-  <data name="btnClearOverlay.Text" xml:space="preserve">
-    <value>Limpar</value>
-  </data>
-  <data name="btnSaveOverlay.Text" xml:space="preserve">
-    <value>Salvar</value>
-  </data>
-  <data name="Label48.Text" xml:space="preserve">
-    <value>Eixo Y2:</value>
-  </data>
-  <data name="Label47.Text" xml:space="preserve">
-    <value>Eixo Y1:</value>
-  </data>
-  <data name="Label46.Text" xml:space="preserve">
-    <value>Eixo X:</value>
-  </data>
-  <data name="Label51.Text" xml:space="preserve">
-    <value>Unid. Veloc. Corrigida:</value>
-  </data>
-  <data name="Label50.Text" xml:space="preserve">
-    <value>Eixo Y4:</value>
-  </data>
-  <data name="Label49.Text" xml:space="preserve">
-    <value>Eixo Y3:</value>
-  </data>
-  <data name="Label9.Text" xml:space="preserve">
-    <value>Valor X atual:</value>
-  </data>
-  <data name="Label1.Text" xml:space="preserve">
-    <value>Unidade:</value>
-  </data>
-  <data name="Label2.Text" xml:space="preserve">
-    <value>Unidade:</value>
-  </data>
-  <data name="Label3.Text" xml:space="preserve">
-    <value>Unidade:</value>
-  </data>
-  <data name="Label4.Text" xml:space="preserve">
-    <value>Unidade:</value>
-  </data>
-  <data name="Label5.Text" xml:space="preserve">
-    <value>Unidade:</value>
-  </data>
-  <data name="Label6.Text" xml:space="preserve">
-    <value>Selecionar arquivos para exibir:</value>
-  </data>
-  <data name="AnalysisForm_MaxPrefix" xml:space="preserve">
+  <data name="ChartControl_MaxPrefix" xml:space="preserve">
     <value>Máx (</value>
-  </data>
-  <data name="AnalysisForm_MaxCorrSpeed" xml:space="preserve">
-    <value>Vel. Corr. Máx</value>
   </data>
 </root>

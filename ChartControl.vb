@@ -1,6 +1,8 @@
 ﻿Imports System.Drawing.Drawing2D
 
 Public Class ChartControl
+    'Resource manager for translated (resx satellite) strings.
+    Private ReadOnly resources As New System.ComponentModel.ComponentResourceManager(GetType(ChartControl))
     Public PicOverlayHeight As Integer
     Public PicOverlayWidth As Integer
     Public XOverlayStartFraction As Double
@@ -38,7 +40,7 @@ Public Class ChartControl
             .DrawString(TempString, HeadingsFont, AxisBrush, Y4Column - .MeasureString(TempString, HeadingsFont).Width / 2, TitleLine)
             'End If
             If OverlayPlotMax Then
-                TempString = "Max (" & Split(Main.DataUnitTags(cmbOverlayDataY4SelectedIndex), " ")(cmbOverlayUnitsY4SelectedIndex) & ")"
+                TempString = resources.GetString("ChartControl_MaxPrefix") & Split(Main.DataUnitTags(cmbOverlayDataY4SelectedIndex), " ")(cmbOverlayUnitsY4SelectedIndex) & ")"
             Else
                 TempString = "(" & Split(Main.DataUnitTags(cmbOverlayDataY4SelectedIndex), " ")(cmbOverlayUnitsY4SelectedIndex) & ")"
             End If

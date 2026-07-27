@@ -157,4 +157,28 @@
   <data name="Fit_MsgBox_AllCurveFitsNotCompleted" xml:space="preserve">
     <value>Nem todos os ajustes de curva esperados foram concluídos. Confirme que todos os dados foram ajustados corretamente</value>
   </data>
+  <data name="Fit_Axis_RPM" xml:space="preserve">
+    <value>RPM</value>
+  </data>
+  <data name="Fit_Axis_Amps" xml:space="preserve">
+    <value>Amperes</value>
+  </data>
+  <data name="Fit_Axis_Volts" xml:space="preserve">
+    <value>Volts</value>
+  </data>
+  <data name="Fit_Axis_Seconds" xml:space="preserve">
+    <value>Segundos</value>
+  </data>
+  <data name="Fit_Legend_RawData" xml:space="preserve">
+    <value>Dados Brutos</value>
+  </data>
+  <data name="Fit_Legend_FitData" xml:space="preserve">
+    <value>Dados Ajustados</value>
+  </data>
+  <data name="Fit_Legend_TorqueCurveMaxPrefix" xml:space="preserve">
+    <value>Curva de Torque (Máx = </value>
+  </data>
+  <data name="Fit_Legend_PowerCurveMaxPrefix" xml:space="preserve">
+    <value>Curva de Potência (Máx = </value>
+  </data>
 </root>

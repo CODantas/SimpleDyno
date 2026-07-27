@@ -224,6 +224,12 @@
     <Compile Include="SimpleDynoSubLabel.vb">
       <SubType>Form</SubType>
     </Compile>
+    <EmbeddedResource Include="ChartControl.resx">
+      <DependentUpon>ChartControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartControl.pt-BR.resx">
+      <DependentUpon>ChartControl.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AnalysisForm.resx">
       <DependentUpon>AnalysisForm.vb</DependentUpon>
     </EmbeddedResource>
@@ -268,6 +274,27 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SimpleDynoSubForm.resx">
       <DependentUpon>SimpleDynoSubForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SimpleDynoSubForm.pt-BR.resx">
+      <DependentUpon>SimpleDynoSubForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SimpleDynoSubGauge.resx">
+      <DependentUpon>SimpleDynoSubGauge.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SimpleDynoSubGauge.pt-BR.resx">
+      <DependentUpon>SimpleDynoSubGauge.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SimpleDynoSubLabel.resx">
+      <DependentUpon>SimpleDynoSubLabel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SimpleDynoSubLabel.pt-BR.resx">
+      <DependentUpon>SimpleDynoSubLabel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SimpleDynoSubMultiYTimeGraph.resx">
+      <DependentUpon>SimpleDynoSubMultiYTimeGraph.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SimpleDynoSubMultiYTimeGraph.pt-BR.resx">
+      <DependentUpon>SimpleDynoSubMultiYTimeGraph.vb</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config">
       <SubType>Designer</SubType>

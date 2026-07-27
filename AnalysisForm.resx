@@ -168,6 +168,12 @@
   <data name="Label6.Text" xml:space="preserve">
     <value>Select files to display:</value>
   </data>
+  <data name="AnalysisForm_MaxPrefix" xml:space="preserve">
+    <value>Max (</value>
+  </data>
+  <data name="AnalysisForm_MaxCorrSpeed" xml:space="preserve">
+    <value>Max Corr. Speed</value>
+  </data>
   <metadata name="OpenFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>

@@ -58,61 +58,43 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="$this.Text" xml:space="preserve">
-    <value>Análise de Dados</value>
+  <data name="SDMYTG_Time" xml:space="preserve">
+    <value>Time</value>
   </data>
-  <data name="btnAddOverlayFile.Text" xml:space="preserve">
-    <value>Carregar</value>
+  <data name="SDMYTG_Seconds" xml:space="preserve">
+    <value>Seconds</value>
   </data>
-  <data name="btnClearOverlay.Text" xml:space="preserve">
-    <value>Limpar</value>
+  <data name="SDMYTG_TimeSecondsAxisLabel" xml:space="preserve">
+    <value>Time (seconds)</value>
   </data>
-  <data name="btnSaveOverlay.Text" xml:space="preserve">
-    <value>Salvar</value>
+  <data name="SDMYTG_Configuration" xml:space="preserve">
+    <value>Configuration</value>
   </data>
-  <data name="Label48.Text" xml:space="preserve">
-    <value>Eixo Y2:</value>
+  <data name="SDMYTG_Lines" xml:space="preserve">
+    <value>Lines</value>
   </data>
-  <data name="Label47.Text" xml:space="preserve">
-    <value>Eixo Y1:</value>
+  <data name="SDMYTG_Points" xml:space="preserve">
+    <value>Points</value>
   </data>
-  <data name="Label46.Text" xml:space="preserve">
-    <value>Eixo X:</value>
+  <data name="SDMYTG_YRange" xml:space="preserve">
+    <value>Y Range</value>
   </data>
-  <data name="Label51.Text" xml:space="preserve">
-    <value>Unid. Veloc. Corrigida:</value>
+  <data name="SDMYTG_Minimum" xml:space="preserve">
+    <value>Minimum</value>
   </data>
-  <data name="Label50.Text" xml:space="preserve">
-    <value>Eixo Y4:</value>
+  <data name="SDMYTG_Maximum" xml:space="preserve">
+    <value>Maximum</value>
   </data>
-  <data name="Label49.Text" xml:space="preserve">
-    <value>Eixo Y3:</value>
+  <data name="SDMYTG_TimeRange" xml:space="preserve">
+    <value>Time Range</value>
   </data>
-  <data name="Label9.Text" xml:space="preserve">
-    <value>Valor X atual:</value>
+  <data name="SDMYTG_RemovePlot" xml:space="preserve">
+    <value>Remove Plot</value>
   </data>
-  <data name="Label1.Text" xml:space="preserve">
-    <value>Unidade:</value>
+  <data name="SDMYTG_DefaultParameter" xml:space="preserve">
+    <value>Parameter</value>
   </data>
-  <data name="Label2.Text" xml:space="preserve">
-    <value>Unidade:</value>
-  </data>
-  <data name="Label3.Text" xml:space="preserve">
-    <value>Unidade:</value>
-  </data>
-  <data name="Label4.Text" xml:space="preserve">
-    <value>Unidade:</value>
-  </data>
-  <data name="Label5.Text" xml:space="preserve">
-    <value>Unidade:</value>
-  </data>
-  <data name="Label6.Text" xml:space="preserve">
-    <value>Selecionar arquivos para exibir:</value>
-  </data>
-  <data name="AnalysisForm_MaxPrefix" xml:space="preserve">
-    <value>Máx (</value>
-  </data>
-  <data name="AnalysisForm_MaxCorrSpeed" xml:space="preserve">
-    <value>Vel. Corr. Máx</value>
+  <data name="SDMYTG_DefaultUnits" xml:space="preserve">
+    <value>Units</value>
   </data>
 </root>

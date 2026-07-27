@@ -177,7 +177,7 @@ Public Class Fit
                 XTimeMin = x(1)
                 'Debug.Print("xmax " & XTimeMax.ToString & "  xmin " & XTimeMin.ToString)
                 WhichDimension = Main.RPM1_ROLLER
-                YAxisLabel = "RPM"
+                YAxisLabel = resources.GetString("Fit_Axis_RPM")
                 For Count As Integer = 1 To UBound(y)
                     If y(Count) > RawDataMax Then RawDataMax = y(Count)
                     If y(Count) < RawDataMin Then RawDataMin = y(Count)
@@ -191,7 +191,7 @@ Public Class Fit
                 XTimeMax = CoastDownX(UBound(CoastDownX))
                 XTimeMin = CoastDownX(1)
                 WhichDimension = Main.RPM1_ROLLER
-                YAxisLabel = "RPM"
+                YAxisLabel = resources.GetString("Fit_Axis_RPM")
                 For Count As Integer = 1 To UBound(CoastDownY)
                     If CoastDownY(Count) > RawDataMax Then RawDataMax = CoastDownY(Count)
                     If CoastDownY(Count) < RawDataMin Then RawDataMin = CoastDownY(Count)
@@ -206,7 +206,7 @@ Public Class Fit
                 'XTimeMax = Ix(UBound(Ix))
                 'XTimeMin = Ix(1)
                 WhichDimension = Main.AMPS
-                YAxisLabel = "Amps"
+                YAxisLabel = resources.GetString("Fit_Axis_Amps")
                 For Count As Integer = 1 To UBound(FitData, 2)
                     If Main.CollectedData(WhichDimension, Count) > RawDataMax Then RawDataMax = Main.CollectedData(WhichDimension, Count)
                     If Main.CollectedData(WhichDimension, Count) < RawDataMin Then RawDataMin = Main.CollectedData(WhichDimension, Count)
@@ -217,7 +217,7 @@ Public Class Fit
                 'XTimeMax = Vx(UBound(Vx))
                 'XTimeMin = Vx(1)
                 WhichDimension = Main.VOLTS
-                YAxisLabel = "Volts"
+                YAxisLabel = resources.GetString("Fit_Axis_Volts")
                 For Count As Integer = 1 To UBound(FitData, 2)
                     If Main.CollectedData(WhichDimension, Count) > RawDataMax Then RawDataMax = Main.CollectedData(WhichDimension, Count)
                     If Main.CollectedData(WhichDimension, Count) < RawDataMin Then RawDataMin = Main.CollectedData(WhichDimension, Count)
@@ -248,14 +248,15 @@ Public Class Fit
                 .DrawString(TickString, GraphicsFont, AxisBrush, CInt(XLeft + (XTickInterval * (Count + 1))) - .MeasureString(TickString, GraphicsFont).Width / 2, CInt(YBottom) + TickLength)
             Next
             'X-Axis Title
-            .DrawString("Seconds", GraphicsFont, AxisBrush, CInt(PicDataWidth / 2) - .MeasureString("Seconds", GraphicsFont).Width / 2, CInt(YBottom) + TickLength * 2)
+            Dim SecondsLabel As String = resources.GetString("Fit_Axis_Seconds")
+            .DrawString(SecondsLabel, GraphicsFont, AxisBrush, CInt(PicDataWidth / 2) - .MeasureString(SecondsLabel, GraphicsFont).Width / 2, CInt(YBottom) + TickLength * 2)
             'y-axis Title
             .DrawString(YAxisLabel, GraphicsFont, AxisBrush, CInt(XLeft) - .MeasureString(YAxisLabel, GraphicsFont).Width / 2, CInt(Ytop) - CInt(.MeasureString(YAxisLabel, GraphicsFont).Height * 1.5))
 
-            .DrawString("RAW Data", GraphicsFont, Brushes.Green, 10, 5)
-            .DrawString("FIT Data", GraphicsFont, Brushes.Red, 90, 5)
-            .DrawString("Torque Curve (Max = " & Main.NewCustomFormat(RawTDataMax) & ")", GraphicsFont, TempTorqueDataBrush, 170, 5)
-            .DrawString("Power Curve (Max = " & Main.NewCustomFormat(RawPDataMax) & ")", GraphicsFont, TempPowerDataBrush, 350, 5)
+            .DrawString(resources.GetString("Fit_Legend_RawData"), GraphicsFont, Brushes.Green, 10, 5)
+            .DrawString(resources.GetString("Fit_Legend_FitData"), GraphicsFont, Brushes.Red, 90, 5)
+            .DrawString(resources.GetString("Fit_Legend_TorqueCurveMaxPrefix") & Main.NewCustomFormat(RawTDataMax) & ")", GraphicsFont, TempTorqueDataBrush, 170, 5)
+            .DrawString(resources.GetString("Fit_Legend_PowerCurveMaxPrefix") & Main.NewCustomFormat(RawPDataMax) & ")", GraphicsFont, TempPowerDataBrush, 350, 5)
 
 
             'Draw Raw data
