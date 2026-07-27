@@ -846,8 +846,16 @@ Public Class Fit
                 ' FitData(Main.TORQUE_ROLLER, Count) = (FitData(Main.RPM1_ROLLER, Count) - FitData(Main.RPM1_ROLLER, Count - 1)) / (FitData(Main.SESSIONTIME, Count) - FitData(Main.SESSIONTIME, Count - 1)) * Main.DynoMomentOfInertia 'this is the roller torque, should calc the wheel and motor at this point also
                 'NOTE - new power calculation uses (new-old) / 2  - REMOVED 06DEC13
                 'FitData(Main.POWER, Count) = FitData(Main.TORQUE_ROLLER, Count) * ((FitData(Main.RPM1_ROLLER, Count) + FitData(Main.RPM1_ROLLER, Count - 1)) / 2)
-                FitData(Main.TORQUE_WHEEL, Count) = FitData(Main.POWER, Count) / FitData(Main.RPM1_WHEEL, Count)
-                FitData(Main.TORQUE_MOTOR, Count) = FitData(Main.POWER, Count) / FitData(Main.RPM1_MOTOR, Count)
+                If FitData(Main.RPM1_WHEEL, Count) <> 0 Then
+                    FitData(Main.TORQUE_WHEEL, Count) = FitData(Main.POWER, Count) / FitData(Main.RPM1_WHEEL, Count)
+                Else
+                    FitData(Main.TORQUE_WHEEL, Count) = 0
+                End If
+                If FitData(Main.RPM1_MOTOR, Count) <> 0 Then
+                    FitData(Main.TORQUE_MOTOR, Count) = FitData(Main.POWER, Count) / FitData(Main.RPM1_MOTOR, Count)
+                Else
+                    FitData(Main.TORQUE_MOTOR, Count) = 0
+                End If
                 'Calculated Corrected values for power and torque if use rundown is selected
                 If Main.frmCorrection.chkUseRunDown.Checked Then
                     'Select how the coast down values are to be applied
@@ -950,8 +958,16 @@ Public Class Fit
                 'NOTE - new power calculation uses (new-old) / 2
                 Main.CollectedData(Main.POWER, Count) = Main.CollectedData(Main.TORQUE_ROLLER, Count) * ((Main.CollectedData(Main.RPM1_ROLLER, Count) + Main.CollectedData(Main.RPM1_ROLLER, Count - 1)) / 2)
                 'now re-calc wheel and motor torque based on Power
-                Main.CollectedData(Main.TORQUE_WHEEL, Count) = Main.CollectedData(Main.POWER, Count) / Main.CollectedData(Main.RPM1_WHEEL, Count)
-                Main.CollectedData(Main.TORQUE_MOTOR, Count) = Main.CollectedData(Main.POWER, Count) / Main.CollectedData(Main.RPM1_MOTOR, Count)
+                If Main.CollectedData(Main.RPM1_WHEEL, Count) <> 0 Then
+                    Main.CollectedData(Main.TORQUE_WHEEL, Count) = Main.CollectedData(Main.POWER, Count) / Main.CollectedData(Main.RPM1_WHEEL, Count)
+                Else
+                    Main.CollectedData(Main.TORQUE_WHEEL, Count) = 0
+                End If
+                If Main.CollectedData(Main.RPM1_MOTOR, Count) <> 0 Then
+                    Main.CollectedData(Main.TORQUE_MOTOR, Count) = Main.CollectedData(Main.POWER, Count) / Main.CollectedData(Main.RPM1_MOTOR, Count)
+                Else
+                    Main.CollectedData(Main.TORQUE_MOTOR, Count) = 0
+                End If
                 'recalc Drag and set a max speed based on it
                 Main.CollectedData(Main.DRAG, Count) = Main.CollectedData(Main.SPEED, Count) ^ 3 * Main.ForceAir
                 'Update other parameters requiring calculations
