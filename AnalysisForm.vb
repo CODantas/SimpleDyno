@@ -475,6 +475,20 @@ Public Class AnalysisForm
                 End If
 
                 If cmbOverlayDataY4.SelectedIndex <> Main.LAST Then
+                    'chartControl keeps its own copy of these value-type fields (set once in Analysis_Setup),
+                    'so they must be re-synced here on every redraw or DrawOverlay uses stale geometry
+                    'from before any file was ever loaded (XOverlayStartFraction/XOverlayEndFraction/
+                    'YOverlayStartFraction/YOverlayEndFraction/OverlayFileCount/OverlayPlotMax/xAxis all
+                    'still 0/default) - this previously made the Y4 axis draw nothing/at the wrong position.
+                    With chartControl
+                        .XOverlayStartFraction = XOverlayStartFraction
+                        .XOverlayEndFraction = XOverlayEndFraction
+                        .YOverlayStartFraction = YOverlayStartFraction
+                        .YOverlayEndFraction = YOverlayEndFraction
+                        .OverlayFileCount = OverlayFileCount
+                        .OverlayPlotMax = OverlayPlotMax
+                        .xAxis = xAxis
+                    End With
 
                     chartControl.DrawOverlay(OverlayBMP, FileCount, AxisPen, AxisFont, AxisBrush, HeadingsFont, Y4Font, Y4Brush, Y4Pen, ResultsFont, y4Axis, Y4Column, y4Max, Titleline, UnitsLine,
                                 ResultsLine, y4MaxAtX, y4MaxAtSelectedX, OverlayDashes, EqualSpacingCount, EqualSpacingPointers, cmbOverlayDataY4.SelectedIndex, cmbOverlayUnitsY4.SelectedIndex,
