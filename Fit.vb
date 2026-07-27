@@ -325,9 +325,26 @@ Public Class Fit
 
         End With
 
+        Dim PreviousBackgroundImage As Image = pnlDataWindow.BackgroundImage
         pnlDataWindow.BackgroundImage = DataBitMap
         pnlDataWindow.Invalidate()
+        If PreviousBackgroundImage IsNot Nothing Then PreviousBackgroundImage.Dispose()
 
+        'Dispose the GDI+ objects created above - this Sub runs on every
+        'graph redraw, so leaving these undisposed accumulates GDI handles.
+        DataWindowBMP.Dispose()
+        AxesPen.Dispose()
+        AxisBrush.Dispose()
+        RawDataPen.Dispose()
+        CopyDataPen.Dispose()
+        RawDataBrush.Dispose()
+        FitDataPen.Dispose()
+        FitDataBrush.Dispose()
+        TempTorqueDataPen.Dispose()
+        TempPowerDataPen.Dispose()
+        TempTorqueDataBrush.Dispose()
+        TempPowerDataBrush.Dispose()
+        GraphicsFont.Dispose()
     End Sub
 #End Region
 #Region "Mathematical Curve Fitting Section"

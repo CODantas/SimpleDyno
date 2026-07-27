@@ -539,6 +539,33 @@ Public Class AnalysisForm
             pnlDataOverlay.BackgroundImage = OverlayBitMap
             pnlDataOverlay.Invalidate()
 
+            'Dispose the GDI+ objects created above - this Sub runs on every
+            'overlay redraw, so leaving these undisposed accumulates GDI handles.
+            TempFont.Dispose()
+            ResultsFont.Dispose()
+            HeadingsFont.Dispose()
+            DashStyleFont.Dispose()
+            AxisFont.Dispose()
+            AxisPen.Dispose()
+            AxisBrush.Dispose()
+            XFont.Dispose()
+            XPen.Dispose()
+            XBrush.Dispose()
+            Y1Font.Dispose()
+            Y1Pen.Dispose()
+            Y1Brush.Dispose()
+            Y2Font.Dispose()
+            Y2Pen.Dispose()
+            Y2Brush.Dispose()
+            Y3Font.Dispose()
+            Y3Pen.Dispose()
+            Y3Brush.Dispose()
+            Y4Font.Dispose()
+            Y4Pen.Dispose()
+            Y4Brush.Dispose()
+            DragFont.Dispose()
+            DragPen.Dispose()
+            DragBrush.Dispose()
         End If
     End Sub
 
