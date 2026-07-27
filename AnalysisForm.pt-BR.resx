@@ -80,7 +80,7 @@
     <value>Eixo X:</value>
   </data>
   <data name="Label51.Text" xml:space="preserve">
-    <value>Unid. Veloc. Corrigida:</value>
+    <value>Unid. Vel. Corr.:</value>
   </data>
   <data name="Label50.Text" xml:space="preserve">
     <value>Eixo Y4:</value>
@@ -92,19 +92,19 @@
     <value>Valor X atual:</value>
   </data>
   <data name="Label1.Text" xml:space="preserve">
-    <value>Unidade:</value>
+    <value>Unid.:</value>
   </data>
   <data name="Label2.Text" xml:space="preserve">
-    <value>Unidade:</value>
+    <value>Unid.:</value>
   </data>
   <data name="Label3.Text" xml:space="preserve">
-    <value>Unidade:</value>
+    <value>Unid.:</value>
   </data>
   <data name="Label4.Text" xml:space="preserve">
-    <value>Unidade:</value>
+    <value>Unid.:</value>
   </data>
   <data name="Label5.Text" xml:space="preserve">
-    <value>Unidade:</value>
+    <value>Unid.:</value>
   </data>
   <data name="Label6.Text" xml:space="preserve">
     <value>Selecionar arquivos para exibir:</value>
