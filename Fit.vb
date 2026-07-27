@@ -266,11 +266,10 @@ Public Class Fit
                             .DrawLine(RawDataPen, CInt(XLeft + ((x(Count) - XTimeMin) / (XTimeMax - XTimeMin)) * (XRight - XLeft)), CInt(YBottom - (y(Count) * Main.DataUnits(WhichDimension, 0) - RawDataMin) / (RawDataMax - RawDataMin) * (YBottom - Ytop)), CInt(XLeft + ((x(Count + 1) - XTimeMin)) / (XTimeMax - XTimeMin) * (XRight - XLeft)), CInt(YBottom - (y(Count + 1) * Main.DataUnits(WhichDimension, 0) - RawDataMin) / (RawDataMax - RawDataMin) * (YBottom - Ytop)))
                             If blnRPMFit Then
                                 .DrawLine(FitDataPen, CInt(XLeft + ((x(Count) - XTimeMin) / (XTimeMax - XTimeMin)) * (XRight - XLeft)), CInt(YBottom - (fy(Count) * Main.DataUnits(WhichDimension, 0) - RawDataMin) / (RawDataMax - RawDataMin) * (YBottom - Ytop)), CInt(XLeft + ((x(Count + 1) - XTimeMin)) / (XTimeMax - XTimeMin) * (XRight - XLeft)), CInt(YBottom - (fy(Count + 1) * Main.DataUnits(WhichDimension, 0) - RawDataMin) / (RawDataMax - RawDataMin) * (YBottom - Ytop)))
-                                'CHECK - get rid of this try catch block when done
                                 Try
                                     .DrawLine(TempTorqueDataPen, CInt(XLeft + ((x(Count) - XTimeMin) / (XTimeMax - XTimeMin)) * (XRight - XLeft)), CInt(YBottom - (FitData(Main.TORQUE_ROLLER, Count) - RawTDataMin) / (RawTDataMax - RawTDataMin) * (YBottom - Ytop)), CInt(XLeft + ((x(Count + 1) - XTimeMin)) / (XTimeMax - XTimeMin) * (XRight - XLeft)), CInt(YBottom - (FitData(Main.TORQUE_ROLLER, Count + 1) - RawTDataMin) / (RawTDataMax - RawTDataMin) * (YBottom - Ytop)))
                                 Catch ex As Exception
-                                    Stop
+                                    'Skip drawing this segment if coordinates are invalid (e.g. Infinity/NaN from bad data)
                                 End Try
                                 .DrawLine(TempPowerDataPen, CInt(XLeft + ((x(Count) - XTimeMin) / (XTimeMax - XTimeMin)) * (XRight - XLeft)), CInt(YBottom - (FitData(Main.POWER, Count) - RawPDataMin) / (RawPDataMax - RawPDataMin) * (YBottom - Ytop)), CInt(XLeft + ((x(Count + 1) - XTimeMin)) / (XTimeMax - XTimeMin) * (XRight - XLeft)), CInt(YBottom - (FitData(Main.POWER, Count + 1) - RawPDataMin) / (RawPDataMax - RawPDataMin) * (YBottom - Ytop)))
                             End If
