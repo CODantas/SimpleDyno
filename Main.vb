@@ -1250,7 +1250,7 @@ Public Class Main
         Try
             If WhichDataMode = LOGRAW Then 'We are stopping the log raw session and should write the data
                 'WRITE THE DATA
-                Dim DataOutputFile As New System.IO.StreamWriter(LogRawDataFileName)
+                Using DataOutputFile As New System.IO.StreamWriter(LogRawDataFileName)
                 With DataOutputFile
                     'NOTE: The data files are space delimited
                     'Write out the header information
@@ -1356,8 +1356,7 @@ Public Class Main
                     Next
 
                 End With
-                'Save the file
-                DataOutputFile.Close()
+                End Using
                 btnStartLoggingRaw.Enabled = True
 
                 '/////////////////////END COPIED CODE
@@ -3175,7 +3174,9 @@ Public Class Main
     Private Sub LoadInterface()
         If txtInterface.Text <> "No Interface Loaded" Then
             Dim TempString As String
-            Dim InterfaceInputFile As New System.IO.StreamReader(txtInterface.Text)
+            Dim InterfaceInputFile As System.IO.StreamReader
+            Try
+            InterfaceInputFile = New System.IO.StreamReader(txtInterface.Text)
             TempString = InterfaceInputFile.ReadLine
             Select Case TempString
                 Case Is = InterfaceVersion, "SimpleDyno_Interface_6_4"
@@ -3261,10 +3262,9 @@ Public Class Main
                     InterfaceInputFile.Close()
                     InterfaceInputFile.Dispose()
             End Select
-           
-            
-
-
+            Finally
+                If InterfaceInputFile IsNot Nothing Then InterfaceInputFile.Dispose()
+            End Try
         End If
     End Sub
     Private Function InterfaceConvert_63_toCurrent(ByVal Sent As String) As String

@@ -18,6 +18,7 @@ Public Class DataInputFileReader
         ReDim OverlayFiles(MAXDATAFILES)
 
         If fileName <> "" Then
+            Try
             dataFileReader = New System.IO.StreamReader(fileName)
             With dataFileReader
                 temp = .ReadLine
@@ -275,6 +276,10 @@ Public Class DataInputFileReader
                 End Select
             End With
             dataFileReader.Close()
+            Finally
+                If dataFileReader IsNot Nothing Then dataFileReader.Dispose()
+                If DataCopyfile IsNot Nothing Then DataCopyfile.Dispose()
+            End Try
         End If
     End Sub
 
