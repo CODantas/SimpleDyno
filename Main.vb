@@ -1930,7 +1930,7 @@ Public Class Main
         DataTags(TEMPERATURE2) = "Temperature2"
         DataUnitTags(TEMPERATURE2) = "�C"
         DataUnits(TEMPERATURE2, 0) = 1
-        Data(TEMPERATURE1, MINIMUM) = 10000
+        Data(TEMPERATURE2, MINIMUM) = 10000
         DataActions(TEMPERATURE2) = Function(x) x.Temperature2
 
         DataTags(PIN04VALUE) = "Pin 4 Value"
