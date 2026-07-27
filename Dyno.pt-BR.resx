@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Configuração do Dinamômetro</value>
+  </data>
+  <data name="Label12.Text" xml:space="preserve">
+    <value>Massa do Veículo (g)</value>
+  </data>
+  <data name="Label2.Text" xml:space="preserve">
+    <value>Parâmetros Não Críticos</value>
+  </data>
+  <data name="Label20.Text" xml:space="preserve">
+    <value>Diâmetro da Roda (mm)</value>
+  </data>
+  <data name="Label5.Text" xml:space="preserve">
+    <value>Relação de Transmissão</value>
+  </data>
+  <data name="Label6.Text" xml:space="preserve">
+    <value>Área Frontal (mm2)</value>
+  </data>
+  <data name="Label8.Text" xml:space="preserve">
+    <value>Coef. de Arrasto</value>
+  </data>
+  <data name="Label4.Text" xml:space="preserve">
+    <value>Parâmetros Críticos</value>
+  </data>
+  <data name="Label24.Text" xml:space="preserve">
+    <value>Sinais por RPM2</value>
+  </data>
+  <data name="Label23.Text" xml:space="preserve">
+    <value>Sinais por RPM</value>
+  </data>
+  <data name="Label22.Text" xml:space="preserve">
+    <value>Massa do Rolo (g)</value>
+  </data>
+  <data name="Label31.Text" xml:space="preserve">
+    <value>Espessura da Parede do Extra (mm)</value>
+  </data>
+  <data name="Label19.Text" xml:space="preserve">
+    <value>Diâmetro do Rolo (mm)</value>
+  </data>
+  <data name="Label32.Text" xml:space="preserve">
+    <value>Diâmetro do Extra (mm)</value>
+  </data>
+  <data name="Label33.Text" xml:space="preserve">
+    <value>Massa do Extra (g)</value>
+  </data>
+  <data name="Label21.Text" xml:space="preserve">
+    <value>Espessura da Parede do Rolo (mm)</value>
+  </data>
+  <data name="Label15.Text" xml:space="preserve">
+    <value>Massa do Eixo (g)</value>
+  </data>
+  <data name="Label27.Text" xml:space="preserve">
+    <value>Diâmetro do Eixo (mm)</value>
+  </data>
+  <data name="Label28.Text" xml:space="preserve">
+    <value>Massa da Tampa (g)</value>
+  </data>
+  <data name="lblTargetRollerMass.Text" xml:space="preserve">
+    <value>Massa Alvo do Rolo</value>
+  </data>
+  <data name="lblActualMomentOfInertia.Text" xml:space="preserve">
+    <value>MOI Real</value>
+  </data>
+  <data name="lblTargetMomentOfInertia.Text" xml:space="preserve">
+    <value>MOI Alvo</value>
+  </data>
+  <data name="lblDynoSettings.Text" xml:space="preserve">
+    <value>Informações de Configuração do Dinamômetro</value>
+  </data>
+  <data name="Label1.Text" xml:space="preserve">
+    <value>Momento de Inércia (MOI)</value>
+  </data>
+  <data name="Dyno_ValueMustBeBetween" xml:space="preserve">
+    <value> : O valor deve estar entre </value>
+  </data>
+  <data name="Dyno_And" xml:space="preserve">
+    <value> e </value>
+  </data>
+  <data name="Dyno_ActualMoiPrefix" xml:space="preserve">
+    <value>MOI Real do Dinamômetro = </value>
+  </data>
+  <data name="Dyno_TargetMoiPrefix" xml:space="preserve">
+    <value>% do MOI Alvo do Dinamômetro = </value>
+  </data>
+  <data name="Dyno_TargetRollerMassPrefix" xml:space="preserve">
+    <value>Massa Alvo do Rolo = </value>
+  </data>
+  <data name="Dyno_TargetRollerMassSuffix" xml:space="preserve">
+    <value> gramas</value>
+  </data>
+  <data name="Dyno_Help_CarMass" xml:space="preserve">
+    <value>Digite a massa do carro em gramas. Esse valor NÃO tem impacto na precisão dos resultados do dinamômetro. O valor informado é usado em conjunto com o diâmetro do rolo para calcular um momento de inércia alvo para os rolos. Um dinamômetro que atinge esse valor alvo (MOI Alvo = 100%) representa mais fielmente as condições reais do carro. O momento de inércia real do seu dinamômetro (MOI Real) é atualizado a cada nova entrada de dimensões e pesos do rolo, tampa e eixo. Você pode usar essa informação para ajudar a projetar seu dinamômetro. Se perceber que seu dinamômetro está "leve demais", pode usar discos adicionais nas pontas dos rolos ou eixos (conhecidos como "Extras") para aumentar o MOI Real.</value>
+  </data>
+  <data name="Dyno_Help_FrontalArea" xml:space="preserve">
+    <value>Digite a área frontal do seu carro em mm². Esse valor NÃO tem impacto na precisão dos resultados do dinamômetro. O valor é calculado multiplicando a altura do carro pela largura do carro (ambas as medidas em mm). A área frontal é usada em conjunto com o coeficiente de arrasto para calcular as perdas de potência devido à resistência do ar. Essas perdas são calculadas e registradas durante as sessões de "Power Run" e podem ser plotadas. O ponto onde a curva de potência e a curva de arrasto se cruzam fornece uma estimativa da velocidade máxima corrigida.</value>
+  </data>
+  <data name="Dyno_Help_DragCoefficient" xml:space="preserve">
+    <value>Digite sua estimativa do coeficiente de arrasto do seu carro. Esse valor NÃO tem impacto na precisão dos resultados do dinamômetro. Valores típicos variam de 0,5 a 1,0. O coeficiente de arrasto é usado em conjunto com a área frontal para calcular as perdas de potência devido à resistência do ar. Essas perdas são calculadas e registradas durante as sessões de "Power Run" e podem ser plotadas. O ponto onde a curva de potência e a curva de arrasto se cruzam fornece uma estimativa da velocidade máxima corrigida.</value>
+  </data>
+  <data name="Dyno_Help_GearRatio" xml:space="preserve">
+    <value>Digite a relação de transmissão (gear ratio) do seu drivetrain. Esse valor NÃO tem impacto na precisão dos resultados do dinamômetro. Esse número é usado para calcular o RPM do motor a partir do RPM dos rolos e rodas. Em uma transmissão simples, essa relação é o número de dentes da coroa (A) dividido pelo número de dentes do pinhão (B). Esse valor costuma ser maior que 1.</value>
+  </data>
+  <data name="Dyno_Help_WheelDiameter" xml:space="preserve">
+    <value>Digite o diâmetro da roda do seu carro em mm. Esse valor NÃO tem impacto na precisão dos resultados do dinamômetro. O valor é usado para calcular o RPM da roda com base no RPM do rolo e, em conjunto com a relação de transmissão, também é usado para calcular o RPM do motor.</value>
+  </data>
+  <data name="Dyno_Help_RollerDiameter" xml:space="preserve">
+    <value>Digite o diâmetro dos seus rolos em mm. Esse valor é CRÍTICO para resultados precisos do dinamômetro. Esse valor é usado para calcular o momento de inércia dos rolos e, portanto, impacta os resultados de torque e potência. Além disso, de forma menos crítica, esse valor é usado para calcular a velocidade do veículo e o RPM das rodas e do motor. Note que apenas o diâmetro do rolo (e não o diâmetro da roda do carro) é usado para calcular a velocidade do veículo</value>
+  </data>
+  <data name="Dyno_Help_RollerWallThickness" xml:space="preserve">
+    <value>Digite a espessura da parede do rolo em mm. Esse valor é CRÍTICO para resultados precisos do dinamômetro. Esse valor é usado para calcular o momento de inércia dos rolos e, portanto, impacta os resultados de torque e potência. Além disso, com base no design assumido dos seus rolos, a espessura da parede do rolo é usada para calcular o diâmetro da tampa (End Cap) (ou seja, assume-se que as tampas se encaixam na ponta dos rolos). Nota: Se você estiver usando um rolo maciço, esse valor deve ser metade do valor informado para o Diâmetro do Rolo. Esse valor não pode ser maior que 1/2 do valor informado para o Diâmetro do Rolo</value>
+  </data>
+  <data name="Dyno_Help_RollerMass" xml:space="preserve">
+    <value>Digite a massa do rolo em gramas. Esse valor é CRÍTICO para resultados precisos do dinamômetro. Esse valor é usado para calcular o momento de inércia dos rolos e, portanto, impacta os resultados de torque e potência. Informe apenas a massa dos rolos acionados. Por exemplo, se você tem um dinamômetro de dois rolos (um rolo por eixo) mas está testando um carro com tração traseira, informe apenas a massa do rolo traseiro. Se estiver testando um carro AWD/4WD, informe a massa combinada dos dois rolos.</value>
+  </data>
+  <data name="Dyno_Help_AxleDiameter" xml:space="preserve">
+    <value>Digite o diâmetro do eixo em mm. Esse valor é IMPORTANTE para resultados precisos do dinamômetro. Esse valor é usado para calcular o momento de inércia dos eixos e, portanto, impacta em certa medida os resultados de torque e potência. Além disso, com base no design assumido dos seus rolos, o diâmetro do eixo é usado para calcular a espessura da parede da tampa (End Cap).</value>
+  </data>
+  <data name="Dyno_Help_AxleMass" xml:space="preserve">
+    <value>Digite a massa do eixo em gramas. Esse valor é IMPORTANTE para resultados precisos do dinamômetro. Esse valor é usado para calcular o momento de inércia dos eixos e, portanto, impacta os resultados de torque e potência. Nota: Só informe uma massa para o(s) eixo(s) se eles girarem junto com o rolo. Se você estiver usando um eixo fixo que não gira com o rolo, informe zero para a massa dele</value>
+  </data>
+  <data name="Dyno_Help_EndCapMass" xml:space="preserve">
+    <value>Digite a massa total das tampas (end caps) em gramas. Esse valor é CRÍTICO para resultados precisos do dinamômetro. Esse valor é usado para calcular o momento de inércia das tampas e, portanto, impacta os resultados de torque e potência.</value>
+  </data>
+  <data name="Dyno_Help_ExtraDiameter" xml:space="preserve">
+    <value>Digite o diâmetro dos extras em mm. Se você estiver usando componentes extras, esse valor é CRÍTICO para resultados precisos do dinamômetro. Esse valor é usado para calcular o momento de inércia dos componentes extras do dinamômetro. Esses componentes normalmente são discos que podem ser adicionados às pontas dos rolos para aumentar o momento de inércia total. Os extras podem ser montados no eixo ou fixados diretamente nas pontas dos componentes de rolo/tampa.</value>
+  </data>
+  <data name="Dyno_Help_ExtraWallThickness" xml:space="preserve">
+    <value>Digite a espessura da parede dos extras em mm. Se você estiver usando componentes extras, esse valor é CRÍTICO para resultados precisos do dinamômetro. Esse valor é usado para calcular o momento de inércia dos componentes extras do dinamômetro. Esses componentes normalmente são discos que podem ser adicionados às pontas dos rolos para aumentar o momento de inércia total. Os extras podem ser montados no eixo ou fixados diretamente nas pontas dos componentes de rolo/tampa.</value>
+  </data>
+  <data name="Dyno_Help_ExtraMass" xml:space="preserve">
+    <value>Digite a massa de todos os componentes extras em gramas. Se você estiver usando componentes extras, esse valor é CRÍTICO para resultados precisos do dinamômetro. Esse valor é usado para calcular o momento de inércia dos componentes extras do dinamômetro. Esses componentes normalmente são discos que podem ser adicionados às pontas dos rolos para aumentar o momento de inércia total. Os extras podem ser montados no eixo ou fixados diretamente nas pontas dos componentes de rolo/tampa.</value>
+  </data>
+  <data name="Dyno_Help_SignalsPerRPM1" xml:space="preserve">
+    <value>Digite o número de sinais produzidos a cada rotação do rolo. Por exemplo, se você estiver usando um sistema de bobina e ímã para detectar o RPM do rolo, cada ímã fixado no rolo representará um sinal por rotação. Certifique-se de que, se estiver usando múltiplos ímãs, eles estejam espaçados uniformemente ao redor da circunferência do rolo. Pequenas diferenças de posicionamento causarão ruído nos valores de RPM.</value>
+  </data>
+  <data name="Dyno_Help_SignalsPerRPM2" xml:space="preserve">
+    <value>Digite o número de sinais produzidos a cada rotação do componente monitorado pelo segundo canal. Esse canal pode ser usado para monitorar o RPM de um motor de combustão interna ou outro componente do drivetrain. Se você estiver usando um sinal de faísca de um motor de combustão interna de quatro tempos, pode informar 0,5 para esse valor.</value>
+  </data>
+</root>

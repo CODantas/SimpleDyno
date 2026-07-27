@@ -230,6 +230,9 @@
     <EmbeddedResource Include="Dyno.resx">
       <DependentUpon>Dyno.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Dyno.pt-BR.resx">
+      <DependentUpon>Dyno.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="COM.resx">
       <DependentUpon>COM.vb</DependentUpon>
     </EmbeddedResource>
