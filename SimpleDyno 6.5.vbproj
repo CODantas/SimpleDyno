@@ -236,6 +236,9 @@
     <EmbeddedResource Include="COM.resx">
       <DependentUpon>COM.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="COM.pt-BR.resx">
+      <DependentUpon>COM.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Fit.resx">
       <DependentUpon>Fit.vb</DependentUpon>
     </EmbeddedResource>
