@@ -1,7 +1,6 @@
 ﻿Imports System.IO
 Public Class Fit
-    'CHECK - This needs to be reset to 0 for release versions
-#Const LoadOldPowerRunData = 1
+#Const LoadOldPowerRunData = 0
 
     Private AvailableFits As String() = {"Four Parameter", "2nd Order Poly", "3rd Order Poly", "4th Order Poly", "5th Order Poly", "MA Smooth"} ' "Test"} ', "Simple Smoothing"}
     Private FitStartPoint As Integer = 1
