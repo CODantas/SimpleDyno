@@ -1935,7 +1935,7 @@ Public Class Main
         DataTags(CHAN1_DUTYCYCLE) = "Ch1 Duty Cycle"
         DataUnitTags(CHAN1_DUTYCYCLE) = "%"
         DataUnits(CHAN1_DUTYCYCLE, 0) = 1
-        DataActions(CHAN2_DUTYCYCLE) = Function(x) x.Ch1_Duty_Cycle
+        DataActions(CHAN1_DUTYCYCLE) = Function(x) x.Ch1_Duty_Cycle
 
         DataTags(CHAN2_FREQUENCY) = "Ch2 Frequency"
         DataUnitTags(CHAN2_FREQUENCY) = "Hz"
