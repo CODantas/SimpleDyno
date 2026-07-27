@@ -96,13 +96,13 @@
                     txtA4Voltage1_Leave(txtA4Voltage1, tempeventargs)
                 Case Is = "btnCalibratePinA4V2"
                     .SetControlText_Threadsafe(txtA4Voltage2, .NewCustomFormat(CalibrationValues(4)))
-                    txtA4Voltage1_Leave(txtA4Voltage2, tempeventargs)
+                    txtA4Voltage2_Leave(txtA4Voltage2, tempeventargs)
                 Case Is = "btnCalibratePinA5V1"
                     .SetControlText_Threadsafe(txtA5Voltage1, .NewCustomFormat(CalibrationValues(5)))
-                    txtA4Voltage1_Leave(txtA5Voltage1, tempeventargs)
+                    txtA5Voltage1_Leave(txtA5Voltage1, tempeventargs)
                 Case Is = "btnCalibratePinA5V2"
                     .SetControlText_Threadsafe(txtA5Voltage2, .NewCustomFormat(CalibrationValues(5)))
-                    txtA4Voltage1_Leave(txtA5Voltage2, tempeventargs)
+                    txtA5Voltage2_Leave(txtA5Voltage2, tempeventargs)
             End Select
         End With
         NumberOfCalibrationValues = 0
