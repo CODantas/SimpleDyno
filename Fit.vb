@@ -2,7 +2,7 @@
 Public Class Fit
 #Const LoadOldPowerRunData = 0
 
-    Private AvailableFits As String() = {"Four Parameter", "2nd Order Poly", "3rd Order Poly", "4th Order Poly", "5th Order Poly", "MA Smooth"} ' "Test"} ', "Simple Smoothing"}
+    Private AvailableFits As String()
     Private FitStartPoint As Integer = 1
     Private CurrentSmooth As Double
     Private VoltageSmooth As Double
@@ -49,6 +49,7 @@ Public Class Fit
     Private inputfile As StreamReader
     Private inputdialog As New OpenFileDialog
     Friend Sub Fit_Setup()
+        AvailableFits = {resources.GetString("Fit_FourParameter"), resources.GetString("Fit_2ndOrderPoly"), resources.GetString("Fit_3rdOrderPoly"), resources.GetString("Fit_4thOrderPoly"), resources.GetString("Fit_5thOrderPoly"), resources.GetString("Fit_MASmooth")}
         cmbWhichFit.Items.AddRange(AvailableFits)
         cmbWhichFit.SelectedIndex = 1 'Second Order - fastest initial
         cmbWhichRDFit.Items.AddRange(AvailableFits)
@@ -113,7 +114,7 @@ Public Class Fit
                 rdoRPM1.Checked = True
                 ProcessData()
             Else
-                MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+                MsgBox(CType(sender, TextBox).Name & resources.GetString("Fit_ValueMustBeBetween") & LocalMin & resources.GetString("Fit_And") & LocalMax, MsgBoxStyle.Exclamation)
                 With CType(sender, TextBox)
                     .Text = PowerRunSpikeLevel.ToString
                     .Focus()
@@ -390,7 +391,7 @@ Public Class Fit
             End If
             Main.RestartForms()
         Catch e As Exception
-            MsgBox("ProcessData Error: " & e.Message, MsgBoxStyle.Exclamation)
+            MsgBox(resources.GetString("Fit_MsgBox_ProcessDataError") & e.Message, MsgBoxStyle.Exclamation)
             End
         End Try
     End Sub
@@ -411,7 +412,7 @@ Public Class Fit
 
         Dim ParsedSpikeLevel As Double
         If Double.TryParse(txtPowerRunSpikeLevel.Text, ParsedSpikeLevel) Then PowerRunSpikeLevel = ParsedSpikeLevel
-        lblProgress.Text = "RPM1 Spike removal..."
+        lblProgress.Text = resources.GetString("Fit_Progress_RPM1SpikeRemoval")
         prgFit.Maximum = Main.DataPoints
         For count = FitStartPoint To Main.DataPoints
             prgFit.Value = count
@@ -428,7 +429,7 @@ Public Class Fit
             End If
         Next
         prgFit.Value = prgFit.Maximum
-        lblProgress.Text = "Done"
+        lblProgress.Text = resources.GetString("Fit_Progress_Done")
         'Then reset FitData to that size and copy all of the Collected data to that array.
 
         ReDim Preserve FitData(Main.LAST, MaxPosition) '- FitStartPoint + 1)
@@ -453,7 +454,7 @@ Public Class Fit
         blnRPMFit = False
         WhichFitData = RPM
         pnlDataWindowSetup() 'Shows the user the data we are fitting.
-        lblProgress.Text = "Fitting RPM1..."
+        lblProgress.Text = resources.GetString("Fit_Progress_FittingRPM1")
         'DC 21JAN16 - Old code based on VBA source from Optimiz.xla
         'Note that the old code returns the function values for the fitted Y parameter
         'Call NonLin, sending the local copies of the data by ref
@@ -489,7 +490,7 @@ Public Class Fit
 
             If Main.frmCorrection.chkUseRunDown.Checked AndAlso blnCoastDownDownFit Then CreateCoastDownData()
             prgFit.Value = prgFit.Maximum
-            lblProgress.Text = "Done"
+            lblProgress.Text = resources.GetString("Fit_Progress_Done")
             Me.Cursor = Cursors.Default
             Main.ProcessingData = False
             Main.Cursor = Cursors.Default
@@ -505,7 +506,7 @@ Public Class Fit
 
         If Main.frmCorrection.blnUsingLoadedRunDownFile = False Then
 
-            lblUsingRunDownFile.Text = "No Coast Down File Loaded"
+            lblUsingRunDownFile.Text = resources.GetString("Fit_NoCoastDownFileLoaded")
 
             Main.ProcessingData = True
             Main.Cursor = Cursors.WaitCursor
@@ -520,7 +521,7 @@ Public Class Fit
             If Double.TryParse(txtPowerRunSpikeLevel.Text, ParsedSpikeLevel) Then PowerRunSpikeLevel = ParsedSpikeLevel
             Count2 = 0
             RawRPM1Max = 0
-            lblProgress.Text = "Coast Down Spike removal..."
+            lblProgress.Text = resources.GetString("Fit_Progress_CoastDownSpikeRemoval")
             prgFit.Maximum = Main.DataPoints
             For Count = Main.DataPoints To 1 Step -1
                 prgFit.Value = Count2 '
@@ -537,7 +538,7 @@ Public Class Fit
                 End If
             Next
             prgFit.Value = prgFit.Maximum
-            lblProgress.Text = "Done"
+            lblProgress.Text = resources.GetString("Fit_Progress_Done")
             'Then reset FitData to that size and copy all of the Collected data to that array.
             'ReDim FitData(Main.LAST, MaxPosition) '- FitStartPoint + 1) 'CHECK - DON'T MODIFY THIS AGAIN
             ReDim Preserve CoastDownY(MaxPosition + 1) ' - FitStartPoint + 1)
@@ -554,7 +555,7 @@ Public Class Fit
 
             'Flag to the code and to the user that we are fitting the data
 
-            lblProgress.Text = "Fitting Coast Down..."
+            lblProgress.Text = resources.GetString("Fit_Progress_FittingCoastDown")
 
             'x and y need to have their order reversed as they were pouplated from the end of the run to the top of the run down
             Array.Reverse(CoastDownX) ', ', 1, UBound(CoastDownX))
@@ -575,7 +576,7 @@ Public Class Fit
                 'Note these are based on RPM and not time which means we have to find the closest RPM in the power up section
                 'This is going to be a pain.
                 prgFit.Value = prgFit.Maximum
-                lblProgress.Text = "Done"
+                lblProgress.Text = resources.GetString("Fit_Progress_Done")
                 Me.Cursor = Cursors.Default
                 Main.ProcessingData = False
                 Main.Cursor = Cursors.Default
@@ -596,7 +597,7 @@ Public Class Fit
                 pnlDataWindowSetup()
             Else
                 'what are we doing if the fit didn;t complete
-                MsgBox("Skipped Fitdata", vbOKOnly)
+                MsgBox(resources.GetString("Fit_MsgBox_SkippedFitdata"), vbOKOnly)
             End If
 
         Else
@@ -666,7 +667,7 @@ Public Class Fit
         Main.ProcessingData = True
         Main.Cursor = Cursors.WaitCursor
         Me.Cursor = Cursors.WaitCursor
-        lblProgress.Text = "Smoothing voltage..."
+        lblProgress.Text = resources.GetString("Fit_Progress_SmoothingVoltage")
         VoltageSmooth = (scrlVoltageSmooth.Maximum + 1 - scrlVoltageSmooth.Value) / 2
         Dim Count As Integer
         ReDim Vx(UBound(FitData, 2)), Vy(UBound(FitData, 2)), Vfy(UBound(FitData, 2))
@@ -687,7 +688,7 @@ Public Class Fit
         Me.Cursor = Cursors.Default
         Main.ProcessingData = False
         Main.Cursor = Cursors.Default
-        lblProgress.Text = "Done"
+        lblProgress.Text = resources.GetString("Fit_Progress_Done")
         blnfit = True
         pnlDataWindowSetup()
     End Sub
@@ -695,7 +696,7 @@ Public Class Fit
         Main.ProcessingData = True
         Main.Cursor = Cursors.WaitCursor
         Me.Cursor = Cursors.WaitCursor
-        lblProgress.Text = "Smoothing current..."
+        lblProgress.Text = resources.GetString("Fit_Progress_SmoothingCurrent")
         CurrentSmooth = (scrlCurrentSmooth.Maximum + 1 - scrlCurrentSmooth.Value) / 2
         Dim Count As Integer
         ReDim Ix(UBound(FitData, 2)), Iy(UBound(FitData, 2)), Ify(UBound(FitData, 2))
@@ -715,7 +716,7 @@ Public Class Fit
         Me.Cursor = Cursors.Default
         Main.ProcessingData = False
         Main.Cursor = Cursors.Default
-        lblProgress.Text = "Done"
+        lblProgress.Text = resources.GetString("Fit_Progress_Done")
         blnfit = True
         pnlDataWindowSetup()
     End Sub
@@ -1036,14 +1037,14 @@ Public Class Fit
                 blnFitFinished = True
             Case Is = 6 'Test algorithm(s)
                 If rdoRPM1.Checked Then
-                    lblProgress.Text = "Smoothing RPM1..."
+                    lblProgress.Text = resources.GetString("Fit_Progress_SmoothingRPM1")
                     RPM1Smooth = (scrlRPM1Smooth.Maximum + 1 - scrlRPM1Smooth.Value) / 2
                     MovingAverageSmooth(SentY, SentFY, RPM1Smooth)
                     blnfit = True
                     blnFitFinished = True
                 End If
                 If rdoRunDown.Checked Then
-                    lblProgress.Text = "Smoothing Coast Down..."
+                    lblProgress.Text = resources.GetString("Fit_Progress_SmoothingCoastDown")
                     CoastDownSmooth = (scrlCoastDownSmooth.Maximum + 1 - scrlCoastDownSmooth.Value) / 2
                     MovingAverageSmooth(SentY, SentFY, CoastDownSmooth)
                     blnfit = True
@@ -1542,7 +1543,7 @@ Public Class Fit
             Main.frmAnalysis.ShowDialog()
         Else
             'Main.StopFitting = True
-            MsgBox("All of the expected curve fits were not completed. Please make sure all data are fit appropriately", vbOKOnly)
+            MsgBox(resources.GetString("Fit_MsgBox_AllCurveFitsNotCompleted"), vbOKOnly)
             Me.Show() 'Main.btnShow_Click(Me, System.EventArgs.Empty)
         End If
     End Sub

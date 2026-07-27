@@ -17,12 +17,15 @@ Partial Class Fit
     'Required by the Windows Form Designer
     Private components As System.ComponentModel.IContainer
 
+    'Resource manager for translated (resx satellite) strings. Promoted to a class
+    'field so Fit.vb can also look up localized text outside InitializeComponent.
+    Private ReadOnly resources As New System.ComponentModel.ComponentResourceManager(GetType(Fit))
+
     'NOTE: The following procedure is required by the Windows Form Designer
-    'It can be modified using the Windows Form Designer.  
+    'It can be modified using the Windows Form Designer.
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Fit))
         Me.cmbWhichFit = New System.Windows.Forms.ComboBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.txtFitStart = New System.Windows.Forms.TextBox()
@@ -71,7 +74,7 @@ Partial Class Fit
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(86, 13)
         Me.Label1.TabIndex = 2
-        Me.Label1.Text = "Start Fit @ Point"
+        Me.Label1.Text = resources.GetString("Label1.Text")
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'txtFitStart
@@ -107,7 +110,7 @@ Partial Class Fit
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(82, 13)
         Me.Label7.TabIndex = 74
-        Me.Label7.Text = "Spike Threshold"
+        Me.Label7.Text = resources.GetString("Label7.Text")
         Me.Label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'lblPowerRunSpikeLevel
@@ -193,7 +196,7 @@ Partial Class Fit
         Me.rdoVoltage.Name = "rdoVoltage"
         Me.rdoVoltage.Size = New System.Drawing.Size(61, 17)
         Me.rdoVoltage.TabIndex = 8
-        Me.rdoVoltage.Text = "Voltage"
+        Me.rdoVoltage.Text = resources.GetString("rdoVoltage.Text")
         Me.rdoVoltage.UseVisualStyleBackColor = True
         '
         'rdoCurrent
@@ -204,7 +207,7 @@ Partial Class Fit
         Me.rdoCurrent.Name = "rdoCurrent"
         Me.rdoCurrent.Size = New System.Drawing.Size(62, 17)
         Me.rdoCurrent.TabIndex = 5
-        Me.rdoCurrent.Text = "Current"
+        Me.rdoCurrent.Text = resources.GetString("rdoCurrent.Text")
         Me.rdoCurrent.UseVisualStyleBackColor = True
         '
         'rdoRPM1
@@ -225,7 +228,7 @@ Partial Class Fit
         Me.btnAddAnalysis.Name = "btnAddAnalysis"
         Me.btnAddAnalysis.Size = New System.Drawing.Size(192, 21)
         Me.btnAddAnalysis.TabIndex = 78
-        Me.btnAddAnalysis.Text = "Go to Analysis"
+        Me.btnAddAnalysis.Text = resources.GetString("btnAddAnalysis.Text")
         Me.btnAddAnalysis.UseVisualStyleBackColor = True
         '
         'chkAddOrNew
@@ -235,7 +238,7 @@ Partial Class Fit
         Me.chkAddOrNew.Name = "chkAddOrNew"
         Me.chkAddOrNew.Size = New System.Drawing.Size(119, 17)
         Me.chkAddOrNew.TabIndex = 79
-        Me.chkAddOrNew.Text = "Add to existing data"
+        Me.chkAddOrNew.Text = resources.GetString("chkAddOrNew.Text")
         Me.chkAddOrNew.UseVisualStyleBackColor = True
         '
         'prgFit
@@ -254,7 +257,7 @@ Partial Class Fit
         Me.lblProgress.Name = "lblProgress"
         Me.lblProgress.Size = New System.Drawing.Size(166, 15)
         Me.lblProgress.TabIndex = 81
-        Me.lblProgress.Text = "Progress"
+        Me.lblProgress.Text = resources.GetString("lblProgress.Text")
         Me.lblProgress.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'cmbWhichRDFit
@@ -286,7 +289,7 @@ Partial Class Fit
         Me.lblUsingRunDownFile.Name = "lblUsingRunDownFile"
         Me.lblUsingRunDownFile.Size = New System.Drawing.Size(166, 15)
         Me.lblUsingRunDownFile.TabIndex = 84
-        Me.lblUsingRunDownFile.Text = "Coast Down File"
+        Me.lblUsingRunDownFile.Text = resources.GetString("lblUsingRunDownFile.Text")
         Me.lblUsingRunDownFile.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'txtRPM1Smooth
@@ -322,7 +325,7 @@ Partial Class Fit
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(71, 13)
         Me.Label2.TabIndex = 87
-        Me.Label2.Text = "Smooth Level"
+        Me.Label2.Text = resources.GetString("Label2.Text")
         Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'btnStopFitting
@@ -331,7 +334,7 @@ Partial Class Fit
         Me.btnStopFitting.Name = "btnStopFitting"
         Me.btnStopFitting.Size = New System.Drawing.Size(192, 21)
         Me.btnStopFitting.TabIndex = 88
-        Me.btnStopFitting.Text = "Stop Fitting"
+        Me.btnStopFitting.Text = resources.GetString("btnStopFitting.Text")
         Me.btnStopFitting.UseVisualStyleBackColor = True
         '
         'Label3
@@ -342,7 +345,7 @@ Partial Class Fit
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(71, 13)
         Me.Label3.TabIndex = 91
-        Me.Label3.Text = "Smooth Level"
+        Me.Label3.Text = resources.GetString("Label3.Text")
         Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'txtCoastDownSmooth
@@ -419,7 +422,7 @@ Partial Class Fit
         Me.MinimizeBox = False
         Me.Name = "Fit"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
-        Me.Text = "Power Run Curve Fitting"
+        Me.Text = resources.GetString("$this.Text")
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

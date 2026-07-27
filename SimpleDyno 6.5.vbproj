@@ -242,6 +242,9 @@
     <EmbeddedResource Include="Fit.resx">
       <DependentUpon>Fit.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Fit.pt-BR.resx">
+      <DependentUpon>Fit.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Correction.resx">
       <DependentUpon>Correction.vb</DependentUpon>
     </EmbeddedResource>
