@@ -2,7 +2,6 @@
 'Damian Cunningham 2010 - 2014
 Imports System.IO
 Imports System.IO.Ports
-Imports System.Management
 Imports System.Drawing.Drawing2D
 Imports System.Collections.Generic
 Imports System.Runtime.InteropServices
@@ -1923,13 +1922,13 @@ Public Class Main
         DataActions(CORRECTED_EFFICIENCY) = Function(x) x.Corr_Efficiency
 
         DataTags(TEMPERATURE1) = "Temperature1"
-        DataUnitTags(TEMPERATURE1) = "°C"
+        DataUnitTags(TEMPERATURE1) = "ï¿½C"
         DataUnits(TEMPERATURE1, 0) = 1
         Data(TEMPERATURE1, MINIMUM) = 10000
         DataActions(TEMPERATURE1) = Function(x) x.Temperature1
 
         DataTags(TEMPERATURE2) = "Temperature2"
-        DataUnitTags(TEMPERATURE2) = "°C"
+        DataUnitTags(TEMPERATURE2) = "ï¿½C"
         DataUnits(TEMPERATURE2, 0) = 1
         Data(TEMPERATURE1, MINIMUM) = 10000
         DataActions(TEMPERATURE2) = Function(x) x.Temperature2
@@ -2818,17 +2817,14 @@ Public Class Main
         Try
             Problem = "Setting COM Available to false"
             COMPortsAvailable = False
-            Problem = "Creating PortSearcher Object"
-            Dim portSearcher As New ManagementObjectSearcher("\root\CIMV2", "SELECT Name from Win32_PnPEntity WHERE ConfigManagerErrorCode = 0") 'PnPEntity")
+            Problem = "Enumerating available COM ports"
+            Dim AvailablePorts() As String = SerialPort.GetPortNames()
             Problem = "Starting Loop For Ports"
-            For Each port As System.Management.ManagementObject In portSearcher.Get()
-                Problem = "About to check port name"
-                If port("Name") IsNot Nothing AndAlso port("Name").ToString.ToUpper.Contains("(COM") Then
-                    Problem = "Found COM - adding to CMB"
-                    cmbCOMPorts.Items.Add(port("Name").ToString)
-                    Problem = "Setting COM Available to True"
-                    COMPortsAvailable = True
-                End If
+            For Each portName As String In AvailablePorts
+                Problem = "Adding port to CMB"
+                cmbCOMPorts.Items.Add(portName)
+                Problem = "Setting COM Available to True"
+                COMPortsAvailable = True
             Next
             Problem = "Check Available COM Ports Status"
             If COMPortsAvailable Then
@@ -2846,16 +2842,12 @@ Public Class Main
             btnHide_Click(Me, EventArgs.Empty)
             MsgBox("Error found is " & Problem & " " & ex.ToString, MsgBoxStyle.Exclamation)
             btnShow_Click(Me, EventArgs.Empty)
-            'Maybe Use GetPortNames 
-            'Dim AvailablePorts() As String = SerialPort.GetPortNames
-            'If AvailablePorts.Length > 0 Then ...
         End Try
     End Sub
     Private Sub SerialOpen(ByVal SentPort As String, ByVal SentRate As Integer)
         Do Until mySerialPort.IsOpen = False
             Application.DoEvents()
         Loop
-        SentPort = "COM" & SentPort.Substring(SentPort.IndexOf("(COM") + 4).TrimEnd(")"c)
         mySerialPort = New SerialPort(SentPort)
         mySerialPort.BaudRate = SentRate
         mySerialPort.Parity = Parity.None
