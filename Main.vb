@@ -162,7 +162,7 @@ Public Class Main
     Private myCallBackFunction As New WaveCallBackProcedure(AddressOf MyWaveCallBackProcedure) 'use with callback
 
     'Custom Rounding and Formatting Functions
-    Friend Function CustomRound(ByVal Sent As Double) As Double
+    Friend Shared Function CustomRound(ByVal Sent As Double) As Double
         'This is not particularly fast, but it is not used often?
         Dim TenCount As Double = 1
         If Sent > 0 Then
@@ -181,7 +181,7 @@ Public Class Main
     End Function
 
     'Formatting function for numbers and significant digits presented
-    Friend Function NewCustomFormat(ByVal sent As Double) As String
+    Friend Shared Function NewCustomFormat(ByVal sent As Double) As String
         Dim TempFormat As String
         Select Case sent
             Case Is >= 100
@@ -418,6 +418,15 @@ Public Class Main
     'Private DataInputFile As StreamReader 'In Main, this is used to load other peoples raw data when GearRatio is 999
     Private LogRawDataFileName As String
     Public Shared LogPowerRunDataFileName As String
+    'Cached at session start (cmbAcquisition/cmbCOMPorts/cmbBaudRate) so WriteRawDataToFile never has to
+    'read live ComboBox properties from a non-UI thread (audio callback / SerialPort.DataReceived handler).
+    Friend SessionAcquisitionText As String
+    Friend SessionCOMPortText As String
+    Friend SessionBaudRateText As String
+    'Periodically snapshots CollectedData to disk during an active Power Run / Log Raw session so a
+    'crash doesn't lose data that was never explicitly saved. Runs on the UI thread (Windows.Forms.Timer).
+    Private WithEvents AutosaveTimer As New System.Windows.Forms.Timer With {.Interval = 10000}
+    Private Const AutosaveFileName As String = "SimpleDyno_Autosave.sdr"
     'Private ParameterInputFile As StreamReader
     'Private ParameterOutputFile As StreamWriter
 
@@ -1218,7 +1227,7 @@ Public Class Main
             UseAdvancedProcessing = False
         End If
     End Sub
-    Friend Function CheckNumericalLimits(ByVal SentMin As Double, ByVal SentMax As Double, ByVal SentValue As Double) As Boolean
+    Friend Shared Function CheckNumericalLimits(ByVal SentMin As Double, ByVal SentMax As Double, ByVal SentValue As Double) As Boolean
         If SentValue >= SentMin AndAlso SentValue <= SentMax Then
             Return True
         Else
@@ -1238,6 +1247,7 @@ Public Class Main
                 End With
                 StopFitting = True
                 WhichDataMode = LIVE
+                AutosaveTimer.Stop()
             Else
                 btnHide_Click(Me, EventArgs.Empty)
                 With SaveFileDialog1
@@ -1247,6 +1257,7 @@ Public Class Main
                 End With
                 If SaveFileDialog1.FileName <> "" Then
                     LogPowerRunDataFileName = SaveFileDialog1.FileName
+                    CacheSessionFields()
                     ResetValues()
                     DataPoints = 0
                     ' DataPoints2 = 0
@@ -1257,6 +1268,7 @@ Public Class Main
                     End With
                     WhichDataMode = POWERRUN
                     StopFitting = False
+                    AutosaveTimer.Start()
                     frmFit.ProcessData()
                 Else
                     btnShow_Click(Me, EventArgs.Empty)
@@ -1266,6 +1278,7 @@ Public Class Main
             btnHide_Click(Me, EventArgs.Empty)
             MsgBox(resources.GetString("Main_MsgBox_BtnStartPowerRunError") & e1.Message, MsgBoxStyle.Exclamation)
             btnShow_Click(Me, EventArgs.Empty)
+            SaveCrashRecoverySnapshotAndClosePort()
             End
         End Try
     End Sub
@@ -1277,113 +1290,7 @@ Public Class Main
         Try
             If WhichDataMode = LOGRAW Then 'We are stopping the log raw session and should write the data
                 'WRITE THE DATA
-                Using DataOutputFile As New System.IO.StreamWriter(LogRawDataFileName)
-                With DataOutputFile
-                    'NOTE: The data files are space delimited
-                    'Write out the header information
-                    .WriteLine(LogRawVersion) 'Confirms log raw version
-                    .WriteLine(LogRawDataFileName & vbCrLf & DateAndTime.Today.ToString & vbCrLf)
-                    .WriteLine("Acquisition: " & cmbAcquisition.SelectedItem.ToString)
-                    .WriteLine("Number_of_Channels: " & NUMBER_OF_CHANNELS.ToString)
-                    .WriteLine("Sampling_Rate " & SAMPLE_RATE.ToString)
-                    If cmbCOMPorts.SelectedItem IsNot Nothing Then
-                        .WriteLine("COM_Port: " & cmbCOMPorts.SelectedItem.ToString)
-                    Else
-                        .WriteLine("No_COM_Port_Selected")
-                    End If
-                    If cmbBaudRate.SelectedItem IsNot Nothing Then
-                        .WriteLine("Baud_Rate: " & cmbBaudRate.SelectedItem.ToString)
-                    Else
-                        .WriteLine("No_Baud_Rate_Selected")
-                    End If
-                    .WriteLine("Car_Mass: " & Main.frmDyno.CarMass.ToString & " grams")
-                    .WriteLine("Frontal_Area: " & Main.frmDyno.FrontalArea.ToString & " mm2")
-                    .WriteLine("Drag_Coefficient: " & Main.frmDyno.DragCoefficient.ToString)
-                    .WriteLine("Gear_Ratio: " & Main.GearRatio.ToString)
-                    .WriteLine("Wheel_Diameter: " & Main.frmDyno.WheelDiameter.ToString & " mm")
-                    .WriteLine("Roller_Diameter: " & Main.frmDyno.RollerDiameter.ToString & " mm")
-                    .WriteLine("Roller_Wall_Thickness: " & Main.frmDyno.RollerWallThickness.ToString & " mm")
-                    .WriteLine("Roller_Mass: " & Main.frmDyno.RollerMass.ToString & " grams")
-                    .WriteLine("Axle_Diameter: " & Main.frmDyno.AxleDiameter.ToString & " mm")
-                    .WriteLine("Axle_Mass: " & Main.frmDyno.AxleMass.ToString & " grams")
-                    .WriteLine("End_Cap_Mass: " & Main.frmDyno.EndCapMass.ToString & " grams")
-                    .WriteLine("Extra_Diameter: " & Main.frmDyno.ExtraDiameter.ToString & " mm")
-                    .WriteLine("Extra_Wall_Thickness: " & Main.frmDyno.ExtraWallThickness.ToString & " mm")
-                    .WriteLine("Extra_Mass: " & Main.frmDyno.ExtraMass.ToString & " grams")
-                    .WriteLine("Target_MOI: " & Main.IdealMomentOfInertia.ToString & " kg/m2")
-                    .WriteLine("Actual_MOI: " & Main.DynoMomentOfInertia.ToString & " kg/m2")
-                    .WriteLine("Target_Roller_Mass: " & Main.IdealRollerMass.ToString & " grams")
-                    .WriteLine("Signals_Per_RPM1: " & Main.frmDyno.SignalsPerRPM.ToString)
-                    .WriteLine("Signals_Per_RPM2: " & Main.frmDyno.SignalsPerRPM2.ToString)
-                    .WriteLine("Channel_1_Threshold " & HighSignalThreshold.ToString)
-                    .WriteLine("Channel_2_Threshold " & HighSignalThreshold2.ToString)
-                    'The following not needed for Log Raw
-                    '.WriteLine("Run_RPM_Threshold " & PowerRunThreshold.ToString)
-                    '.WriteLine("Run_Spike_Removal_Threshold " & Fit.PowerRunSpikeLevel.ToString)
-                    .WriteLine(vbCrLf)
-
-                    'Create the column headings string based on the Data structure 
-                    'Only Primary SI units of the values are written
-                    Dim tempstring As String = ""
-                    Dim tempsplit As String()
-                    Dim paramcount As Integer
-                    Dim count As Integer
-
-                    'Add the raw data.  In V6 we are also calculating the raw torques, powers etc. This makes the file larger but will make Excel work easier
-                    .WriteLine(vbCrLf & "PRIMARY_CHANNEL_RAW_DATA")
-                    .WriteLine("NUMBER_OF_POINTS_COLLECTED" & " " & Main.DataPoints.ToString)
-                    'Again, create the header row
-                    tempstring = ""
-                    For paramcount = 0 To Main.LAST - 1
-                        tempsplit = Split(Main.DataUnitTags(paramcount), " ")
-                        tempstring = tempstring & Main.DataTags(paramcount).Replace(" ", "_") & "(" & tempsplit(0) & ") "
-                    Next
-                    'Write the column headings
-                    .WriteLine(tempstring)
-                    'Need to set the zeroth value to support using the count and count-1 approach to torque and power calculations
-                    Main.CollectedData(Main.RPM1_ROLLER, 0) = Main.CollectedData(Main.RPM1_ROLLER, 1)
-                    For count = 1 To Main.DataPoints - 1
-                        're-calc speed, wheel and motor RPMs based on collected data
-                        Main.CollectedData(Main.SPEED, count) = Main.CollectedData(Main.RPM1_ROLLER, count) * Main.RollerRadsPerSecToMetersPerSec
-                        Main.CollectedData(Main.RPM1_WHEEL, count) = Main.CollectedData(Main.RPM1_ROLLER, count) * Main.RollerRPMtoWheelRPM
-                        Main.CollectedData(Main.RPM1_MOTOR, count) = Main.CollectedData(Main.RPM1_ROLLER, count) * Main.RollerRPMtoMotorRPM
-                        're-calc roller torque and power useing the collected data
-                        Main.CollectedData(Main.TORQUE_ROLLER, count) = (Main.CollectedData(Main.RPM1_ROLLER, count) - Main.CollectedData(Main.RPM1_ROLLER, count - 1)) / (Main.CollectedData(Main.SESSIONTIME, count) - Main.CollectedData(Main.SESSIONTIME, count - 1)) * Main.DynoMomentOfInertia 'this is the roller torque, should calc the wheel and motor at this point also
-                        'NOTE - new power calculation uses (new-old) / 2
-                        Main.CollectedData(Main.POWER, count) = Main.CollectedData(Main.TORQUE_ROLLER, count) * ((Main.CollectedData(Main.RPM1_ROLLER, count) + Main.CollectedData(Main.RPM1_ROLLER, count - 1)) / 2)
-                        'now re-calc wheel and motor torque based on Power
-                        Main.CollectedData(Main.TORQUE_WHEEL, count) = Main.CollectedData(Main.POWER, count) / Main.CollectedData(Main.RPM1_WHEEL, count)
-                        Main.CollectedData(Main.TORQUE_MOTOR, count) = Main.CollectedData(Main.POWER, count) / Main.CollectedData(Main.RPM1_MOTOR, count)
-                        'recalc Drag and set a max speed based on it
-                        Main.CollectedData(Main.DRAG, count) = Main.CollectedData(Main.SPEED, count) ^ 3 * Main.ForceAir
-                        'Update other parameters requiring calculations
-                        'Main.RPM2 will be already there but the ratio and rollout need to be calculated
-                        If Main.CollectedData(Main.RPM2, count) <> 0 Then
-                            Main.CollectedData(Main.RPM2_RATIO, count) = Main.CollectedData(Main.RPM2, count) / Main.CollectedData(Main.RPM1_WHEEL, count)
-                            Main.CollectedData(Main.RPM2_ROLLOUT, count) = Main.WheelCircumference / Main.CollectedData(Main.RPM2_RATIO, count)
-                        Else
-                            Main.CollectedData(Main.RPM2_RATIO, count) = 0
-                            Main.CollectedData(Main.RPM2_ROLLOUT, count) = 0
-                        End If
-                        'Volts and Amps will already be there but watts in and efficiency need to be added
-                        Main.CollectedData(Main.WATTS_IN, count) = Main.CollectedData(Main.VOLTS, count) * Main.CollectedData(Main.AMPS, count)
-                        If Main.CollectedData(Main.WATTS_IN, count) <> 0 Then
-                            Main.CollectedData(Main.EFFICIENCY, count) = Main.CollectedData(Main.POWER, count) / Main.CollectedData(Main.WATTS_IN, count) * 100
-                        Else
-                            Main.CollectedData(Main.EFFICIENCY, count) = 0
-                        End If
-                        'Build the results string...
-                        tempstring = ""
-                        For paramcount = 0 To Main.LAST - 1
-                            tempsplit = Split(Main.DataUnitTags(paramcount), " ") ' How many units are there
-                            tempstring = tempstring & Main.CollectedData(paramcount, count) * Main.DataUnits(paramcount, 0) & " " 'DataTags(paramcount).Replace(" ", "_") & "(" & tempsplit(unitcount) & ") "
-                        Next
-                        '...and write it
-                        .WriteLine(tempstring)
-                    Next
-
-                End With
-                End Using
+                WriteRawDataToFile(LogRawDataFileName)
                 btnStartLoggingRaw.Enabled = True
 
                 '/////////////////////END COPIED CODE
@@ -1394,6 +1301,7 @@ Public Class Main
                 End With
                 'StopFitting = True
                 WhichDataMode = LIVE
+                AutosaveTimer.Stop()
             Else
                 btnHide_Click(Me, EventArgs.Empty)
                 With SaveFileDialog1
@@ -1403,6 +1311,7 @@ Public Class Main
                 End With
                 If SaveFileDialog1.FileName <> "" Then
                     LogRawDataFileName = SaveFileDialog1.FileName
+                    CacheSessionFields()
                     ResetValues()
                     DataPoints = 0
                     Data(SESSIONTIME, ACTUAL) = 0
@@ -1412,6 +1321,7 @@ Public Class Main
                         .BackColor = Color.Red
                     End With
                     WhichDataMode = LOGRAW
+                    AutosaveTimer.Start()
                 Else
                     btnShow_Click(Me, EventArgs.Empty)
                 End If
@@ -1420,9 +1330,200 @@ Public Class Main
             btnHide_Click(Me, EventArgs.Empty)
             MsgBox(resources.GetString("Main_MsgBox_BtnStartLoggingRawError") & e1.Message, MsgBoxStyle.Exclamation)
             btnShow_Click(Me, EventArgs.Empty)
+            SaveCrashRecoverySnapshotAndClosePort()
             End
         End Try
 
+    End Sub
+
+    ''' <summary>
+    ''' Caches cmbAcquisition/cmbCOMPorts/cmbBaudRate as strings at the start of a Power Run / Log Raw
+    ''' session, so WriteRawDataToFile never needs to read live ComboBox properties from a non-UI thread
+    ''' (the audio callback and SerialPort.DataReceived handler both call WriteRawDataToFile on their own
+    ''' thread as part of the crash-recovery safety net).
+    ''' </summary>
+    Friend Sub CacheSessionFields()
+        SessionAcquisitionText = cmbAcquisition.SelectedItem.ToString
+        If cmbCOMPorts.SelectedItem IsNot Nothing Then
+            SessionCOMPortText = cmbCOMPorts.SelectedItem.ToString
+        Else
+            SessionCOMPortText = ""
+        End If
+        If cmbBaudRate.SelectedItem IsNot Nothing Then
+            SessionBaudRateText = cmbBaudRate.SelectedItem.ToString
+        Else
+            SessionBaudRateText = ""
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Writes the currently collected raw data (Main.CollectedData/Main.DataPoints) to TargetFileName in
+    ''' the .sdr Log Raw format, recalculating speed/torque/power along the way. Safe to call while a
+    ''' collection session is still in progress: the recalculation loop deliberately stops at
+    ''' DataPoints - 1 because DataReceivedHandler/myWaveHandler_ProcessWave increment DataPoints before
+    ''' populating CollectedData(*, DataPoints), so that last row may still be mid-write. Overwrites
+    ''' TargetFileName from scratch each call (CollectedData/DataPoints always hold the full accumulated
+    ''' state), which is what both the normal Log Raw save and the periodic autosave/crash-snapshot need.
+    ''' Reads only cached session fields (Session*Text) and Main state - never a live Control property -
+    ''' so it is safe to call from the audio callback / SerialPort.DataReceived threads.
+    ''' </summary>
+    Friend Sub WriteRawDataToFile(TargetFileName As String)
+        Using DataOutputFile As New System.IO.StreamWriter(TargetFileName)
+            With DataOutputFile
+                'NOTE: The data files are space delimited
+                'Write out the header information
+                .WriteLine(LogRawVersion) 'Confirms log raw version
+                .WriteLine(TargetFileName & vbCrLf & DateAndTime.Today.ToString & vbCrLf)
+                .WriteLine("Acquisition: " & SessionAcquisitionText)
+                .WriteLine("Number_of_Channels: " & NUMBER_OF_CHANNELS.ToString)
+                .WriteLine("Sampling_Rate " & SAMPLE_RATE.ToString)
+                If SessionCOMPortText <> "" Then
+                    .WriteLine("COM_Port: " & SessionCOMPortText)
+                Else
+                    .WriteLine("No_COM_Port_Selected")
+                End If
+                If SessionBaudRateText <> "" Then
+                    .WriteLine("Baud_Rate: " & SessionBaudRateText)
+                Else
+                    .WriteLine("No_Baud_Rate_Selected")
+                End If
+                .WriteLine("Car_Mass: " & Main.frmDyno.CarMass.ToString & " grams")
+                .WriteLine("Frontal_Area: " & Main.frmDyno.FrontalArea.ToString & " mm2")
+                .WriteLine("Drag_Coefficient: " & Main.frmDyno.DragCoefficient.ToString)
+                .WriteLine("Gear_Ratio: " & Main.GearRatio.ToString)
+                .WriteLine("Wheel_Diameter: " & Main.frmDyno.WheelDiameter.ToString & " mm")
+                .WriteLine("Roller_Diameter: " & Main.frmDyno.RollerDiameter.ToString & " mm")
+                .WriteLine("Roller_Wall_Thickness: " & Main.frmDyno.RollerWallThickness.ToString & " mm")
+                .WriteLine("Roller_Mass: " & Main.frmDyno.RollerMass.ToString & " grams")
+                .WriteLine("Axle_Diameter: " & Main.frmDyno.AxleDiameter.ToString & " mm")
+                .WriteLine("Axle_Mass: " & Main.frmDyno.AxleMass.ToString & " grams")
+                .WriteLine("End_Cap_Mass: " & Main.frmDyno.EndCapMass.ToString & " grams")
+                .WriteLine("Extra_Diameter: " & Main.frmDyno.ExtraDiameter.ToString & " mm")
+                .WriteLine("Extra_Wall_Thickness: " & Main.frmDyno.ExtraWallThickness.ToString & " mm")
+                .WriteLine("Extra_Mass: " & Main.frmDyno.ExtraMass.ToString & " grams")
+                .WriteLine("Target_MOI: " & Main.IdealMomentOfInertia.ToString & " kg/m2")
+                .WriteLine("Actual_MOI: " & Main.DynoMomentOfInertia.ToString & " kg/m2")
+                .WriteLine("Target_Roller_Mass: " & Main.IdealRollerMass.ToString & " grams")
+                .WriteLine("Signals_Per_RPM1: " & Main.frmDyno.SignalsPerRPM.ToString)
+                .WriteLine("Signals_Per_RPM2: " & Main.frmDyno.SignalsPerRPM2.ToString)
+                .WriteLine("Channel_1_Threshold " & HighSignalThreshold.ToString)
+                .WriteLine("Channel_2_Threshold " & HighSignalThreshold2.ToString)
+                'The following not needed for Log Raw
+                '.WriteLine("Run_RPM_Threshold " & PowerRunThreshold.ToString)
+                '.WriteLine("Run_Spike_Removal_Threshold " & Fit.PowerRunSpikeLevel.ToString)
+                .WriteLine(vbCrLf)
+
+                'Create the column headings string based on the Data structure
+                'Only Primary SI units of the values are written
+                Dim tempstring As String = ""
+                Dim tempsplit As String()
+                Dim paramcount As Integer
+                Dim count As Integer
+
+                'Add the raw data.  In V6 we are also calculating the raw torques, powers etc. This makes the file larger but will make Excel work easier
+                .WriteLine(vbCrLf & "PRIMARY_CHANNEL_RAW_DATA")
+                .WriteLine("NUMBER_OF_POINTS_COLLECTED" & " " & Main.DataPoints.ToString)
+                'Again, create the header row
+                tempstring = ""
+                For paramcount = 0 To Main.LAST - 1
+                    tempsplit = Split(Main.DataUnitTags(paramcount), " ")
+                    tempstring = tempstring & Main.DataTags(paramcount).Replace(" ", "_") & "(" & tempsplit(0) & ") "
+                Next
+                'Write the column headings
+                .WriteLine(tempstring)
+                'Need to set the zeroth value to support using the count and count-1 approach to torque and power calculations
+                Main.CollectedData(Main.RPM1_ROLLER, 0) = Main.CollectedData(Main.RPM1_ROLLER, 1)
+                For count = 1 To Main.DataPoints - 1
+                    're-calc speed, wheel and motor RPMs based on collected data
+                    Main.CollectedData(Main.SPEED, count) = Main.CollectedData(Main.RPM1_ROLLER, count) * Main.RollerRadsPerSecToMetersPerSec
+                    Main.CollectedData(Main.RPM1_WHEEL, count) = Main.CollectedData(Main.RPM1_ROLLER, count) * Main.RollerRPMtoWheelRPM
+                    Main.CollectedData(Main.RPM1_MOTOR, count) = Main.CollectedData(Main.RPM1_ROLLER, count) * Main.RollerRPMtoMotorRPM
+                    're-calc roller torque and power useing the collected data
+                    Main.CollectedData(Main.TORQUE_ROLLER, count) = (Main.CollectedData(Main.RPM1_ROLLER, count) - Main.CollectedData(Main.RPM1_ROLLER, count - 1)) / (Main.CollectedData(Main.SESSIONTIME, count) - Main.CollectedData(Main.SESSIONTIME, count - 1)) * Main.DynoMomentOfInertia 'this is the roller torque, should calc the wheel and motor at this point also
+                    'NOTE - new power calculation uses (new-old) / 2
+                    Main.CollectedData(Main.POWER, count) = Main.CollectedData(Main.TORQUE_ROLLER, count) * ((Main.CollectedData(Main.RPM1_ROLLER, count) + Main.CollectedData(Main.RPM1_ROLLER, count - 1)) / 2)
+                    'now re-calc wheel and motor torque based on Power
+                    Main.CollectedData(Main.TORQUE_WHEEL, count) = Main.CollectedData(Main.POWER, count) / Main.CollectedData(Main.RPM1_WHEEL, count)
+                    Main.CollectedData(Main.TORQUE_MOTOR, count) = Main.CollectedData(Main.POWER, count) / Main.CollectedData(Main.RPM1_MOTOR, count)
+                    'recalc Drag and set a max speed based on it
+                    Main.CollectedData(Main.DRAG, count) = Main.CollectedData(Main.SPEED, count) ^ 3 * Main.ForceAir
+                    'Update other parameters requiring calculations
+                    'Main.RPM2 will be already there but the ratio and rollout need to be calculated
+                    If Main.CollectedData(Main.RPM2, count) <> 0 Then
+                        Main.CollectedData(Main.RPM2_RATIO, count) = Main.CollectedData(Main.RPM2, count) / Main.CollectedData(Main.RPM1_WHEEL, count)
+                        Main.CollectedData(Main.RPM2_ROLLOUT, count) = Main.WheelCircumference / Main.CollectedData(Main.RPM2_RATIO, count)
+                    Else
+                        Main.CollectedData(Main.RPM2_RATIO, count) = 0
+                        Main.CollectedData(Main.RPM2_ROLLOUT, count) = 0
+                    End If
+                    'Volts and Amps will already be there but watts in and efficiency need to be added
+                    Main.CollectedData(Main.WATTS_IN, count) = Main.CollectedData(Main.VOLTS, count) * Main.CollectedData(Main.AMPS, count)
+                    If Main.CollectedData(Main.WATTS_IN, count) <> 0 Then
+                        Main.CollectedData(Main.EFFICIENCY, count) = Main.CollectedData(Main.POWER, count) / Main.CollectedData(Main.WATTS_IN, count) * 100
+                    Else
+                        Main.CollectedData(Main.EFFICIENCY, count) = 0
+                    End If
+                    'Build the results string...
+                    tempstring = ""
+                    For paramcount = 0 To Main.LAST - 1
+                        tempsplit = Split(Main.DataUnitTags(paramcount), " ") ' How many units are there
+                        tempstring = tempstring & Main.CollectedData(paramcount, count) * Main.DataUnits(paramcount, 0) & " " 'DataTags(paramcount).Replace(" ", "_") & "(" & tempsplit(unitcount) & ") "
+                    Next
+                    '...and write it
+                    .WriteLine(tempstring)
+                Next
+
+            End With
+        End Using
+    End Sub
+
+    ''' <summary>
+    ''' Periodic snapshot of the in-progress collection to AutosaveFileName. Runs on the UI thread
+    ''' (Windows.Forms.Timer), and is a no-op once WhichDataMode leaves POWERRUN/LOGRAW - this lets the
+    ''' timer keep running (started/stopped only from the UI-thread session start/cancel handlers) without
+    ''' ever needing to be Start/Stop'ed from the non-UI threads that can also end a session (audio
+    ''' callback, SerialPort.DataReceived). A failed autosave must never interrupt the active session.
+    ''' </summary>
+    Private Sub AutosaveTimer_Tick(sender As Object, e As EventArgs) Handles AutosaveTimer.Tick
+        Try
+            If DataPoints > 0 AndAlso (WhichDataMode = POWERRUN OrElse WhichDataMode = LOGRAW) Then
+                WriteRawDataToFile(Path.Combine(SettingsDirectory, AutosaveFileName))
+            End If
+        Catch
+            'Autosave failures must never interrupt an active data-collection session.
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' Best-effort crash-recovery snapshot, called right before an unhandled-exception Catch block ends
+    ''' the process with End(). Never throws - a failure here must never block the original End() from
+    ''' running (fail-fast behavior is intentionally preserved, this only adds a safety net before it).
+    ''' Safe to call from any thread: only touches Main.CollectedData/DataPoints and the Session*Text
+    ''' fields cached at session start, never a live Control property.
+    ''' </summary>
+    Friend Sub SaveCrashRecoverySnapshot()
+        Try
+            If DataPoints > 0 Then
+                Dim TimeStamp As String = DateTime.Now.ToString("yyyyMMdd_HHmmss")
+                WriteRawDataToFile(Path.Combine(SettingsDirectory, "SimpleDyno_CrashRecovery_" & TimeStamp & ".sdr"))
+            End If
+        Catch
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' SaveCrashRecoverySnapshot() plus closing the serial port, for crash points that run on the UI
+    ''' thread or on a thread other than the SerialPort's own DataReceived event thread. SerialClose()
+    ''' pumps Application.DoEvents() internally, so it must NOT be called from DataReceivedHandler itself
+    ''' (closing a SerialPort from within its own DataReceived handler risks a deadlock - see
+    ''' DataReceivedHandler's own Catch, which calls SaveCrashRecoverySnapshot() only, never this Sub).
+    ''' </summary>
+    Friend Sub SaveCrashRecoverySnapshotAndClosePort()
+        SaveCrashRecoverySnapshot()
+        Try
+            SerialClose()
+        Catch
+        End Try
     End Sub
 #End Region
 #Region "Text Box Checking"
@@ -1756,7 +1857,7 @@ Public Class Main
             End
         End Try
     End Sub
-    Private Sub PrepareArrays()
+    Friend Sub PrepareArrays()
 
         'Set all parameters to be available in interface components
         For count As Integer = 1 To LAST - 1
@@ -2100,6 +2201,7 @@ Public Class Main
         Catch e As Exception
             btnHide_Click(Me, EventArgs.Empty)
             MsgBox(resources.GetString("Main_MsgBox_ResetValuesError") & e.Message, MsgBoxStyle.Exclamation)
+            SaveCrashRecoverySnapshotAndClosePort()
             End
         End Try
     End Sub
@@ -2229,6 +2331,7 @@ Public Class Main
                 If i <> 0 Then 'Check that there were no problems adding back the buffer.'This could be skipped in a release version using a compiler constant
                     btnHide_Click(Me, EventArgs.Empty)
                     MsgBox(resources.GetString("Main_MsgBox_ProcessWaveAddBufferError") & i, MsgBoxStyle.Exclamation)
+                    SaveCrashRecoverySnapshotAndClosePort()
                     End
                 End If
 
@@ -2559,6 +2662,7 @@ Public Class Main
         Catch e As Exception
             btnHide_Click(Me, EventArgs.Empty)
             MsgBox(resources.GetString("Main_MsgBox_ProcessWaveError") & e.Message, MsgBoxStyle.Exclamation)
+            SaveCrashRecoverySnapshotAndClosePort()
             End
         End Try
     End Sub
@@ -2580,12 +2684,14 @@ Public Class Main
                 If i <> 0 Then
                     btnHide_Click(Me, EventArgs.Empty)
                     MsgBox(resources.GetString("Main_MsgBox_ShutDownWavesResetError"), MsgBoxStyle.Exclamation)
+                    SaveCrashRecoverySnapshotAndClosePort()
                     End
                 End If
                 i = waveInStop(WaveInHandle)
                 If i <> 0 Then
                     btnHide_Click(Me, EventArgs.Empty)
                     MsgBox(resources.GetString("Main_MsgBox_ShutDownWavesStopError"), MsgBoxStyle.Exclamation)
+                    SaveCrashRecoverySnapshotAndClosePort()
                     End
                 End If
                 For j = 0 To NUMBER_OF_BUFFERS - 1
@@ -2593,6 +2699,7 @@ Public Class Main
                     If i <> 0 Then
                         btnHide_Click(Me, EventArgs.Empty)
                         MsgBox(resources.GetString("Main_MsgBox_ShutDownWavesUnprepareHeaderError") & i, MsgBoxStyle.Exclamation)
+                        SaveCrashRecoverySnapshotAndClosePort()
                         End
                     End If
                 Next
@@ -2620,6 +2727,7 @@ Public Class Main
                 If i <> 0 Then
                     btnHide_Click(Me, EventArgs.Empty)
                     MsgBox(resources.GetString("Main_MsgBox_ShutDownWavesCloseError"), MsgBoxStyle.Exclamation)
+                    SaveCrashRecoverySnapshotAndClosePort()
                     End
                 Else
 
@@ -3104,6 +3212,9 @@ Public Class Main
                 btnHide_Click(Me, EventArgs.Empty)
                 MsgBox(resources.GetString("Main_MsgBox_SerialPortDataReceivedError") & ex.Message, MsgBoxStyle.Exclamation)
                 'btnShow_Click(Me, EventArgs.Empty)
+                'Snapshot only - do NOT close mySerialPort here: this IS the SerialPort's own DataReceived
+                'event thread, and Close() waits for that thread to finish, risking a deadlock.
+                SaveCrashRecoverySnapshot()
                 End
             End Try
         End If

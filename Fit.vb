@@ -393,6 +393,7 @@ Public Class Fit
             Main.RestartForms()
         Catch e As Exception
             MsgBox(resources.GetString("Fit_MsgBox_ProcessDataError") & e.Message, MsgBoxStyle.Exclamation)
+            Main.SaveCrashRecoverySnapshotAndClosePort()
             End
         End Try
     End Sub
