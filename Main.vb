@@ -1004,6 +1004,7 @@ Public Class Main
                 btn.FlatAppearance.BorderSize = 1
                 btn.FlatAppearance.MouseOverBackColor = ColorPalette.Surface
                 btn.FlatAppearance.MouseDownBackColor = ColorPalette.GridLines
+                btn.UseVisualStyleBackColor = False
                 btn.Font = TypographyManager.UiFont(btn.Font.Size)
             ElseIf TypeOf ctrl Is Label Then
                 Dim lbl As Label = DirectCast(ctrl, Label)
