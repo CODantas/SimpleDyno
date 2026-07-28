@@ -105,6 +105,8 @@ Public Class DashboardStatusBar
                 Using sf As New StringFormat()
                     sf.LineAlignment = StringAlignment.Center
                     sf.Alignment = StringAlignment.Near
+                    sf.FormatFlags = StringFormatFlags.NoWrap
+                    sf.Trimming = StringTrimming.EllipsisCharacter
                     Dim textRect As New RectangleF(textLeft, 0, Me.Width - textLeft - 8, Me.Height)
                     g.DrawString(displayText, font, textBrush, textRect, sf)
                 End Using

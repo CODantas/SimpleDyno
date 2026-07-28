@@ -299,7 +299,12 @@ Public Class ModernGauge
             Using numFont As Font = TypographyManager.NumericFont(NumericFontSize, FontStyle.Bold)
                 Dim TextSize As SizeF = .MeasureString(NumericText, numFont)
                 Dim TextX As Single = Center.X - TextSize.Width / 2
+                'NumericFontSize above is a fixed proportion of dial height, not measured against
+                'NumericText like every other label in this widget - clamp defensively so a wider
+                'reading (more digits) never draws past the widget edges on a narrow gauge.
+                TextX = Math.Max(0.0F, Math.Min(TextX, CSng(Me.ClientSize.Width) - TextSize.Width))
                 Dim TextY As Single = ParameterPosition.Y - TextSize.Height - 2
+                TextY = Math.Max(0.0F, TextY)
                 Using shadowBrush As New SolidBrush(Color.FromArgb(120, Color.Black))
                     .DrawString(NumericText, numFont, shadowBrush, TextX + 1, TextY + 1)
                 End Using

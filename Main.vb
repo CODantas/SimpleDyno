@@ -988,9 +988,19 @@ Public Class Main
 
 #End Region
 #Region "Fase 4 UI modernization: dashboard chrome (re-skin + status bar)"
-    'Applies the dark theme (ColorPalette/TypographyManager) to every control InitializeComponent
-    'already created. Only touches BackColor/ForeColor/Font/FlatStyle - never Location, Size,
-    'Name, TabIndex or any Handles binding, so no existing click handler is affected.
+    'Applies the dark theme (ColorPalette) to every control InitializeComponent already created.
+    'Only touches BackColor/ForeColor/FlatStyle/AutoEllipsis - never Font, Location, Size, Name,
+    'TabIndex or any Handles binding. Font is deliberately left untouched: this layout is a dense
+    'grid of fixed-size/AutoSize controls with near-zero margins (design ClientSize 716x112), and
+    'swapping Tahoma for the wider-rendering Segoe UI at the same point size clipped/overlapped
+    'several labels and buttons - found via screenshot during manual verification, so it was
+    'reverted rather than compensated with per-control auto-shrink logic.
+    'AutoEllipsis=True on buttons: FlatStyle.Flat word-wraps button text onto a second line more
+    'eagerly than the native System style did (e.g. "Power Run" on a 68px-wide, 21px-tall button
+    'wrapped to "Power"/"Run", with "Run" entirely invisible below the button's single-line
+    'height) - also found via screenshot. AutoEllipsis forces single-line rendering with a
+    'trailing "..." instead, which is legible for any text/localization length rather than
+    'silently dropping text off the bottom.
     Private Sub ApplyDashboardTheme()
         Me.BackColor = ColorPalette.Background
 
@@ -1005,31 +1015,55 @@ Public Class Main
                 btn.FlatAppearance.MouseOverBackColor = ColorPalette.Surface
                 btn.FlatAppearance.MouseDownBackColor = ColorPalette.GridLines
                 btn.UseVisualStyleBackColor = False
-                btn.Font = TypographyManager.UiFont(btn.Font.Size)
+                btn.AutoEllipsis = True
+                btn.ForeColor = If(btn.Enabled, ColorPalette.TextPrimary, ColorPalette.TextSecondary)
+                AddHandler btn.EnabledChanged, AddressOf DashboardButton_EnabledChanged
+                ShrinkButtonFontToFit(btn)
             ElseIf TypeOf ctrl Is Label Then
                 Dim lbl As Label = DirectCast(ctrl, Label)
                 lbl.ForeColor = ColorPalette.TextSecondary
-                lbl.Font = TypographyManager.UiFont(lbl.Font.Size)
             ElseIf TypeOf ctrl Is TextBox Then
                 Dim txt As TextBox = DirectCast(ctrl, TextBox)
                 txt.BackColor = ColorPalette.Surface
                 txt.ForeColor = ColorPalette.TextPrimary
                 txt.BorderStyle = BorderStyle.FixedSingle
-                txt.Font = TypographyManager.UiFont(txt.Font.Size)
             ElseIf TypeOf ctrl Is ComboBox Then
                 Dim cmb As ComboBox = DirectCast(ctrl, ComboBox)
                 cmb.FlatStyle = FlatStyle.Flat
                 cmb.BackColor = ColorPalette.Surface
                 cmb.ForeColor = ColorPalette.TextPrimary
-                cmb.Font = TypographyManager.UiFont(cmb.Font.Size)
             ElseIf TypeOf ctrl Is CheckBox Then
                 Dim chk As CheckBox = DirectCast(ctrl, CheckBox)
                 chk.ForeColor = ColorPalette.TextSecondary
-                chk.Font = TypographyManager.UiFont(chk.Font.Size)
             ElseIf TypeOf ctrl Is DoubleBufferPanel Then
                 ctrl.BackColor = ColorPalette.Surface
             End If
         Next
+    End Sub
+
+    'FlatStyle.Flat lays out button text differently than the native System style did - several
+    'buttons whose (pt-BR) text was already tight for their fixed pixel width now overflow onto a
+    'second line that the button is too short to show (e.g. "Power Run" wrapped to "Power"/"Run",
+    'with "Run" entirely invisible) - found via screenshot, confirmed via Button.GetPreferredSize
+    '(the same layout math WinForms uses to paint, unlike a bare TextRenderer.MeasureText call
+    'which under-predicted the wrap). Shrinks only the affected button's own font in 0.5pt steps
+    'until GetPreferredSize reports it fits on one line; AutoEllipsis (set above) is the fallback
+    'if the floor size is reached without fitting.
+    Private Sub ShrinkButtonFontToFit(ByVal btn As Button)
+        Const MinFontSize As Single = 6.0F
+        Do While btn.GetPreferredSize(New Size(0, 0)).Width > btn.Width AndAlso btn.Font.Size > MinFontSize
+            Dim shrunk As New Font(btn.Font.Name, btn.Font.Size - 0.5F, btn.Font.Style)
+            btn.Font = shrunk
+        Loop
+    End Sub
+
+    'FlatStyle.Flat buttons don't dim their own text when Enabled=False the way the native
+    'System-style button used to - several buttons (btnSave/btnSaveAs/btnHide/btnShow) start
+    'disabled and looked identical to the enabled ones after the reskin. Re-applied whenever
+    'Enabled changes at runtime (Click handlers toggle it during Power Run/Log Raw), not just once.
+    Private Sub DashboardButton_EnabledChanged(ByVal sender As Object, ByVal e As EventArgs)
+        Dim btn As Button = DirectCast(sender, Button)
+        btn.ForeColor = If(btn.Enabled, ColorPalette.TextPrimary, ColorPalette.TextSecondary)
     End Sub
 
     'Appends a thin read-only DashboardStatusBar strip below the existing control grid, growing the
@@ -2899,7 +2933,7 @@ Public Class Main
         PauseForms()
         ShutDownWaves()
         SerialClose()
-        SignalWindowBMP.Clear(System.Windows.Forms.Control.DefaultBackColor)
+        SignalWindowBMP.Clear(ColorPalette.Surface)
         pnlSignalWindow.BackgroundImage = SignalBitmap
         pnlSignalWindow.Invalidate()
         SetControlBackColor_ThreadSafe(lblCOMActive, System.Windows.Forms.Control.DefaultBackColor)
