@@ -41,6 +41,12 @@
     <asmv3:windowsSettings xmlns="http://schemas.microsoft.com/SMI/2005/WindowsSettings">
       <dpiAware>true/pm</dpiAware>
     </asmv3:windowsSettings>
+    <!-- PerMonitorV2 (Windows 10 1703+): real per-monitor scaling instead of the old bitmap-stretch
+         fallback above, which was rendering blurry text/controls on high-DPI displays. Older Windows
+         versions ignore this element and fall back to the dpiAware setting above. -->
+    <asmv3:windowsSettings xmlns:ws2016="http://schemas.microsoft.com/SMI/2016/WindowsSettings">
+      <ws2016:dpiAwareness>PerMonitorV2</ws2016:dpiAwareness>
+    </asmv3:windowsSettings>
   </asmv3:application>
 
   <!-- Enable themes for Windows common controls and dialogs (Windows XP and later) -->
