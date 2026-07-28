@@ -12,6 +12,7 @@ Public Class DashboardStatusBar
 
     Private _acquisitionStatus As String = String.Empty
     Private _comStatus As String = String.Empty
+    Private _recordingState As Main.AcquisitionStatus = Main.AcquisitionStatus.Idle
 
     Public Sub New()
         Me.DoubleBuffered = True
@@ -44,6 +45,24 @@ Public Class DashboardStatusBar
         End Set
     End Property
 
+    ''' <summary>
+    ''' Fase 5: fed by Main.NotifyAcquisitionStatusChanged_ThreadSafe, called right next to the
+    ''' existing btnStartPowerRun/btnStartLoggingRaw.BackColor mutations inside
+    ''' myWaveHandler_ProcessWave/DataReceivedHandler - never replaces them, only mirrors the
+    ''' same information here as a colored dot.
+    ''' </summary>
+    Public Property RecordingState As Main.AcquisitionStatus
+        Get
+            Return _recordingState
+        End Get
+        Set(value As Main.AcquisitionStatus)
+            If _recordingState <> value Then
+                _recordingState = value
+                Invalidate()
+            End If
+        End Set
+    End Property
+
     Protected Overrides Sub OnPaint(e As PaintEventArgs)
         Dim g As Graphics = e.Graphics
         g.SmoothingMode = SmoothingMode.HighQuality
@@ -62,12 +81,31 @@ Public Class DashboardStatusBar
             displayText &= _comStatus
         End If
 
+        Dim textLeft As Integer = 8
+        Dim dotColor As Color = Color.Empty
+        Select Case _recordingState
+            Case Main.AcquisitionStatus.PowerRunRecording, Main.AcquisitionStatus.LogRawRecording
+                dotColor = ColorPalette.AccentRpm
+            Case Main.AcquisitionStatus.PowerRunBufferFull, Main.AcquisitionStatus.LogRawBufferFull,
+                 Main.AcquisitionStatus.PowerRunArmed, Main.AcquisitionStatus.LogRawArmed
+                dotColor = ColorPalette.AccentDanger
+        End Select
+
+        If dotColor <> Color.Empty Then
+            Const DotDiameter As Integer = 8
+            Dim dotRect As New RectangleF(8, (Me.Height - DotDiameter) / 2.0F, DotDiameter, DotDiameter)
+            Using dotBrush As New SolidBrush(dotColor)
+                g.FillEllipse(dotBrush, dotRect)
+            End Using
+            textLeft = 8 + DotDiameter + 6
+        End If
+
         Using textBrush As New SolidBrush(ColorPalette.TextSecondary)
             Using font As Font = TypographyManager.UiFont(8.0F)
                 Using sf As New StringFormat()
                     sf.LineAlignment = StringAlignment.Center
                     sf.Alignment = StringAlignment.Near
-                    Dim textRect As New RectangleF(8, 0, Me.Width - 16, Me.Height)
+                    Dim textRect As New RectangleF(textLeft, 0, Me.Width - textLeft - 8, Me.Height)
                     g.DrawString(displayText, font, textBrush, textRect, sf)
                 End Using
             End Using

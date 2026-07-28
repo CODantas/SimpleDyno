@@ -1306,6 +1306,28 @@ Public Class Main
 
         End If
     End Sub
+    'Fase 5 (modernizacao de UI): mesma informacao que already existe via btnStartPowerRun/
+    'btnStartLoggingRaw.BackColor (ver pontos exatos em myWaveHandler_ProcessWave e
+    'DataReceivedHandler), so que exposta tambem para a DashboardStatusBar. Segue o mesmo
+    'padrao InvokeRequired/Invoke dos outros adapters *_ThreadSafe acima.
+    Public Enum AcquisitionStatus
+        Idle
+        PowerRunArmed
+        PowerRunRecording
+        PowerRunBufferFull
+        LogRawArmed
+        LogRawRecording
+        LogRawBufferFull
+    End Enum
+    Delegate Sub NotifyAcquisitionStatusChanged_Delegate(ByVal status As AcquisitionStatus)
+    Friend Sub NotifyAcquisitionStatusChanged_ThreadSafe(ByVal status As AcquisitionStatus)
+        If Me.InvokeRequired Then
+            Dim MyDelegate As New NotifyAcquisitionStatusChanged_Delegate(AddressOf NotifyAcquisitionStatusChanged_ThreadSafe)
+            Me.Invoke(MyDelegate, New Object() {status})
+        Else
+            pnlDashboardStatusBar.RecordingState = status
+        End If
+    End Sub
     Private Sub chkAdvancedProcessing_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkAdvancedProcessing.CheckedChanged
         If chkAdvancedProcessing.Checked = True Then
             UseAdvancedProcessing = True
@@ -1331,6 +1353,7 @@ Public Class Main
                 With btnStartPowerRun
                     .BackColor = System.Windows.Forms.Control.DefaultBackColor
                 End With
+                NotifyAcquisitionStatusChanged_ThreadSafe(AcquisitionStatus.Idle)
                 StopFitting = True
                 WhichDataMode = LIVE
                 AutosaveTimer.Stop()
@@ -1352,6 +1375,7 @@ Public Class Main
                     With btnStartPowerRun
                         .BackColor = Color.Red
                     End With
+                    NotifyAcquisitionStatusChanged_ThreadSafe(AcquisitionStatus.PowerRunArmed)
                     WhichDataMode = POWERRUN
                     StopFitting = False
                     AutosaveTimer.Start()
@@ -1385,6 +1409,7 @@ Public Class Main
                 With btnStartLoggingRaw
                     .BackColor = System.Windows.Forms.Control.DefaultBackColor
                 End With
+                NotifyAcquisitionStatusChanged_ThreadSafe(AcquisitionStatus.Idle)
                 'StopFitting = True
                 WhichDataMode = LIVE
                 AutosaveTimer.Stop()
@@ -1406,6 +1431,7 @@ Public Class Main
                     With btnStartLoggingRaw
                         .BackColor = Color.Red
                     End With
+                    NotifyAcquisitionStatusChanged_ThreadSafe(AcquisitionStatus.LogRawArmed)
                     WhichDataMode = LOGRAW
                     AutosaveTimer.Start()
                 Else
@@ -2526,6 +2552,7 @@ Public Class Main
                                             TotalElapsedTime += ElapsedTime
                                         End If
                                         If DataPoints = MinimumPowerRunPoints Then btnStartPowerRun.BackColor = Color.Green
+                                        If DataPoints = MinimumPowerRunPoints Then NotifyAcquisitionStatusChanged_ThreadSafe(AcquisitionStatus.PowerRunRecording)
                                         CollectedData(SESSIONTIME, DataPoints) = TotalElapsedTime
                                         CollectedData(RPM1_ROLLER, DataPoints) = Data(RPM1_ROLLER, ACTUAL)
                                         CollectedData(RPM2, DataPoints) = Data(RPM2, ACTUAL)
@@ -2551,6 +2578,7 @@ Public Class Main
                                     DataPoints += 1
                                     If DataPoints = 1 Then
                                         btnStartLoggingRaw.BackColor = Color.Green
+                                        NotifyAcquisitionStatusChanged_ThreadSafe(AcquisitionStatus.LogRawRecording)
                                         TotalElapsedTime = 0
                                     Else
                                         TotalElapsedTime += ElapsedTime
@@ -2574,6 +2602,7 @@ Public Class Main
                                     If DataPoints = MAXDATAPOINTS Then
                                         DataPoints = MAXDATAPOINTS - 1
                                         btnStartLoggingRaw.BackColor = Color.Red
+                                        NotifyAcquisitionStatusChanged_ThreadSafe(AcquisitionStatus.LogRawBufferFull)
                                     End If
                             End Select
                         End If
@@ -2719,12 +2748,14 @@ Public Class Main
                         If DataPoints = MAXDATAPOINTS Then
                             DataPoints = MAXDATAPOINTS - 1
                             btnStartLoggingRaw.BackColor = Color.Red
+                            NotifyAcquisitionStatusChanged_ThreadSafe(AcquisitionStatus.LogRawBufferFull)
                         End If
                     End If
                 End If
 
                 If WhichDataMode = POWERRUN AndAlso DataPoints > MinimumPowerRunPoints AndAlso Data(RPM1_ROLLER, ACTUAL) <= ActualPowerRunThreshold Then
                     SetControlBackColor_ThreadSafe(btnStartPowerRun, System.Windows.Forms.Control.DefaultBackColor)
+                    NotifyAcquisitionStatusChanged_ThreadSafe(AcquisitionStatus.Idle)
                     'DataPoints -= 1
                     PauseForms()
                     WhichDataMode = LIVE
@@ -3184,6 +3215,7 @@ Public Class Main
                                                 TotalElapsedTime += (RPM1NewTriggerTime - RPM1OldTriggerTime)
                                             End If
                                             If DataPoints = MinimumPowerRunPoints Then btnStartPowerRun.BackColor = Color.Green
+                                            If DataPoints = MinimumPowerRunPoints Then NotifyAcquisitionStatusChanged_ThreadSafe(AcquisitionStatus.PowerRunRecording)
                                             CollectedData(SESSIONTIME, DataPoints) = TotalElapsedTime
                                             CollectedData(RPM1_ROLLER, DataPoints) = Data(RPM1_ROLLER, ACTUAL)
                                             CollectedData(RPM2, DataPoints) = Data(RPM2, ACTUAL)
@@ -3197,6 +3229,7 @@ Public Class Main
                                             If DataPoints = MAXDATAPOINTS Then
                                                 DataPoints = MAXDATAPOINTS - 1
                                                 btnStartPowerRun.BackColor = Color.Red
+                                                NotifyAcquisitionStatusChanged_ThreadSafe(AcquisitionStatus.PowerRunBufferFull)
                                             End If
                                         End If
 
@@ -3205,6 +3238,7 @@ Public Class Main
                                         If DataPoints = 1 Then
                                             TotalElapsedTime = 0
                                             btnStartLoggingRaw.BackColor = Color.Green
+                                            NotifyAcquisitionStatusChanged_ThreadSafe(AcquisitionStatus.LogRawRecording)
                                         Else
                                             TotalElapsedTime += ElapsedTime
                                         End If
@@ -3281,6 +3315,7 @@ Public Class Main
 
                     If WhichDataMode = POWERRUN AndAlso DataPoints > MinimumPowerRunPoints AndAlso Data(RPM1_ROLLER, ACTUAL) <= ActualPowerRunThreshold Then
                         SetControlBackColor_ThreadSafe(btnStartPowerRun, System.Windows.Forms.Control.DefaultBackColor)
+                        NotifyAcquisitionStatusChanged_ThreadSafe(AcquisitionStatus.Idle)
                         'DataPoints -= 1
                         PauseForms()
                         WhichDataMode = LIVE
