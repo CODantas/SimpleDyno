@@ -167,8 +167,12 @@
     <Compile Include="AssemblyInfo.vb">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ColorPalette.vb" />
     <Compile Include="CurveFunctions.vb" />
     <Compile Include="DataInputFileReader.vb" />
+    <Compile Include="IconManager.vb" />
+    <Compile Include="ThemeManager.vb" />
+    <Compile Include="TypographyManager.vb" />
     <Compile Include="Dyno.Designer.vb">
       <DependentUpon>Dyno.vb</DependentUpon>
     </Compile>
