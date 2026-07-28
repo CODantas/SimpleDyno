@@ -1,6 +1,9 @@
 Imports System
 Imports System.Reflection
+Imports System.Runtime.CompilerServices
 Imports System.Runtime.InteropServices
+
+<Assembly: InternalsVisibleTo("SimpleDyno.Tests")>
 
 ' General Information about an assembly is controlled through the following 
 ' set of attributes. Change these attribute values to modify the information

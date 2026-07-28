@@ -9,6 +9,8 @@
 *.sdi
 *.sdr
 *.sdp
+# ...except the committed test fixture SimpleDyno.Tests depends on
+!tools/test-data/sample_power_run.sdp
 
 # User-specific files
 *.rsuser
