@@ -204,6 +204,9 @@
     <Compile Include="SimpleDynoSubMultiYTimeGraph.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="RealtimeGraph.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
@@ -314,6 +317,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SimpleDynoSubMultiYTimeGraph.resx">
       <DependentUpon>SimpleDynoSubMultiYTimeGraph.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RealtimeGraph.resx">
+      <DependentUpon>RealtimeGraph.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RealtimeGraph.pt-BR.resx">
+      <DependentUpon>RealtimeGraph.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SimpleDynoSubMultiYTimeGraph.pt-BR.resx">
       <DependentUpon>SimpleDynoSubMultiYTimeGraph.vb</DependentUpon>

@@ -3282,7 +3282,7 @@ Public Class Main
                             f.Item(f.Count - 1).CreateFromSerializedData(TempString)
                         ElseIf TempString = "MultiYTimeGraph" Then
                             TempString = InterfaceInputFile.ReadLine
-                            f.Add(New SimpleDynoSubMultiYTimeGraph())
+                            f.Add(New RealtimeGraph())
                             AddHandler f(f.Count - 1).RemoveYourself, AddressOf RemoveForm
                             AddHandler f(f.Count - 1).SetToMyFormat, AddressOf SetAllFormats
                             f(f.Count - 1).myType = "MultiYTimeGraph"
@@ -3321,7 +3321,7 @@ Public Class Main
                             f.Item(f.Count - 1).CreateFromSerializedData(InterfaceConvert_63_toCurrent(TempString))
                         ElseIf TempString = "MultiYTimeGraph" Then
                             TempString = InterfaceInputFile.ReadLine
-                            f.Add(New SimpleDynoSubMultiYTimeGraph())
+                            f.Add(New RealtimeGraph())
                             AddHandler f(f.Count - 1).RemoveYourself, AddressOf RemoveForm
                             AddHandler f(f.Count - 1).SetToMyFormat, AddressOf SetAllFormats
                             f(f.Count - 1).myType = "MultiYTimeGraph"
@@ -3506,7 +3506,7 @@ Public Class Main
         btnSaveAs.Enabled = True
         btnClose.Enabled = True
         btnHide.Enabled = True
-        f.Add(New SimpleDynoSubMultiYTimeGraph())
+        f.Add(New RealtimeGraph())
         AddHandler f(f.Count - 1).RemoveYourself, AddressOf RemoveForm
         AddHandler f(f.Count - 1).SetToMyFormat, AddressOf SetAllFormats
         f(f.Count - 1).Initialize(f.Count - 1, Data, DataTags, DataUnits, DataUnitTags, DataAreUsed)
