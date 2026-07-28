@@ -171,6 +171,7 @@
     <Compile Include="CurveFunctions.vb" />
     <Compile Include="DataInputFileReader.vb" />
     <Compile Include="IconManager.vb" />
+    <Compile Include="DashboardStatusBar.vb" />
     <Compile Include="ThemeManager.vb" />
     <Compile Include="TypographyManager.vb" />
     <Compile Include="Dyno.Designer.vb">

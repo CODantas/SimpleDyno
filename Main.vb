@@ -427,6 +427,11 @@ Public Class Main
     'crash doesn't lose data that was never explicitly saved. Runs on the UI thread (Windows.Forms.Timer).
     Private WithEvents AutosaveTimer As New System.Windows.Forms.Timer With {.Interval = 10000}
     Private Const AutosaveFileName As String = "SimpleDyno_Autosave.sdr"
+    'Fase 4 (modernizacao de UI): status bar de rodape, somente leitura. Nao le nenhum estado
+    'de dentro de myWaveHandler_ProcessWave/DataReceivedHandler - so campos ja expostos na
+    'UI thread (WhichDataMode, lblCOMActive.BackColor).
+    Private pnlDashboardStatusBar As DashboardStatusBar
+    Private WithEvents DashboardStatusBarRefreshTimer As New System.Windows.Forms.Timer With {.Interval = 500}
     'Private ParameterInputFile As StreamReader
     'Private ParameterOutputFile As StreamWriter
 
@@ -448,6 +453,8 @@ Public Class Main
         InitializeComponent()
 
         'Add any initialization after the InitializeComponent() call
+        ApplyDashboardTheme()
+        InitializeDashboardChrome()
 
     End Sub
 
@@ -979,6 +986,85 @@ Public Class Main
 
     End Sub
 
+#End Region
+#Region "Fase 4 UI modernization: dashboard chrome (re-skin + status bar)"
+    'Applies the dark theme (ColorPalette/TypographyManager) to every control InitializeComponent
+    'already created. Only touches BackColor/ForeColor/Font/FlatStyle - never Location, Size,
+    'Name, TabIndex or any Handles binding, so no existing click handler is affected.
+    Private Sub ApplyDashboardTheme()
+        Me.BackColor = ColorPalette.Background
+
+        For Each ctrl As Control In Me.Controls
+            If TypeOf ctrl Is Button Then
+                Dim btn As Button = DirectCast(ctrl, Button)
+                btn.FlatStyle = FlatStyle.Flat
+                btn.BackColor = ColorPalette.CardBackground
+                btn.ForeColor = ColorPalette.TextPrimary
+                btn.FlatAppearance.BorderColor = ColorPalette.GridLines
+                btn.FlatAppearance.BorderSize = 1
+                btn.FlatAppearance.MouseOverBackColor = ColorPalette.Surface
+                btn.FlatAppearance.MouseDownBackColor = ColorPalette.GridLines
+                btn.Font = TypographyManager.UiFont(btn.Font.Size)
+            ElseIf TypeOf ctrl Is Label Then
+                Dim lbl As Label = DirectCast(ctrl, Label)
+                lbl.ForeColor = ColorPalette.TextSecondary
+                lbl.Font = TypographyManager.UiFont(lbl.Font.Size)
+            ElseIf TypeOf ctrl Is TextBox Then
+                Dim txt As TextBox = DirectCast(ctrl, TextBox)
+                txt.BackColor = ColorPalette.Surface
+                txt.ForeColor = ColorPalette.TextPrimary
+                txt.BorderStyle = BorderStyle.FixedSingle
+                txt.Font = TypographyManager.UiFont(txt.Font.Size)
+            ElseIf TypeOf ctrl Is ComboBox Then
+                Dim cmb As ComboBox = DirectCast(ctrl, ComboBox)
+                cmb.FlatStyle = FlatStyle.Flat
+                cmb.BackColor = ColorPalette.Surface
+                cmb.ForeColor = ColorPalette.TextPrimary
+                cmb.Font = TypographyManager.UiFont(cmb.Font.Size)
+            ElseIf TypeOf ctrl Is CheckBox Then
+                Dim chk As CheckBox = DirectCast(ctrl, CheckBox)
+                chk.ForeColor = ColorPalette.TextSecondary
+                chk.Font = TypographyManager.UiFont(chk.Font.Size)
+            ElseIf TypeOf ctrl Is DoubleBufferPanel Then
+                ctrl.BackColor = ColorPalette.Surface
+            End If
+        Next
+    End Sub
+
+    'Appends a thin read-only DashboardStatusBar strip below the existing control grid, growing the
+    'form's ClientSize to fit it. Nothing existing is moved or resized.
+    Private Sub InitializeDashboardChrome()
+        Const DashboardStatusBarHeight As Integer = 22
+        Dim originalHeight As Integer = Me.ClientSize.Height
+
+        pnlDashboardStatusBar = New DashboardStatusBar() With {
+            .Location = New Point(0, originalHeight),
+            .Size = New Size(Me.ClientSize.Width, DashboardStatusBarHeight),
+            .Anchor = AnchorStyles.Left Or AnchorStyles.Right Or AnchorStyles.Bottom
+        }
+        Me.Controls.Add(pnlDashboardStatusBar)
+        Me.ClientSize = New Size(Me.ClientSize.Width, originalHeight + DashboardStatusBarHeight)
+
+        DashboardStatusBarRefreshTimer.Start()
+    End Sub
+
+    Private Sub DashboardStatusBarRefreshTimer_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles DashboardStatusBarRefreshTimer.Tick
+        Dim modeText As String
+        Select Case WhichDataMode
+            Case LIVE
+                modeText = resources.GetString("StatusBar_Live")
+            Case LOGRAW
+                modeText = resources.GetString("StatusBar_LogRaw")
+            Case POWERRUN
+                modeText = resources.GetString("StatusBar_PowerRun")
+            Case Else
+                modeText = String.Empty
+        End Select
+        pnlDashboardStatusBar.AcquisitionStatus = modeText
+
+        Dim comActive As Boolean = (lblCOMActive.BackColor <> System.Windows.Forms.Control.DefaultBackColor)
+        pnlDashboardStatusBar.ComStatus = If(comActive, resources.GetString("StatusBar_ComActive"), resources.GetString("StatusBar_ComInactive"))
+    End Sub
 #End Region
 #Region "Form Load, WndProc, Button and Trackbar Events, Delgates and Close"
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load

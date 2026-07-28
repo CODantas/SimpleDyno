@@ -171,6 +171,21 @@
   <data name="Button1.Text" xml:space="preserve">
     <value>Correction</value>
   </data>
+  <data name="StatusBar_Live" xml:space="preserve">
+    <value>Live</value>
+  </data>
+  <data name="StatusBar_LogRaw" xml:space="preserve">
+    <value>Logging Raw</value>
+  </data>
+  <data name="StatusBar_PowerRun" xml:space="preserve">
+    <value>Power Run</value>
+  </data>
+  <data name="StatusBar_ComActive" xml:space="preserve">
+    <value>COM Active</value>
+  </data>
+  <data name="StatusBar_ComInactive" xml:space="preserve">
+    <value>COM Inactive</value>
+  </data>
   <data name="Main_ValueMustBeBetween" xml:space="preserve">
     <value> : Value must be between </value>
   </data>
