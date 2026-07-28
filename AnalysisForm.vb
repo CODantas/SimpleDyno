@@ -861,6 +861,127 @@ Public Class AnalysisForm
             OverlayBitMap.Save(SaveFileDialog1.FileName, Imaging.ImageFormat.Bmp)
         End If
     End Sub
+
+    'Exports a one-page PDF summarizing the checked overlay files (client-facing "before/after"
+    'report): client name/vehicle/notes typed into pnlClientReport, the live PlotView1 chart, and
+    'the peak-value table already computed and displayed by SetupDiagram (read directly from the
+    'same Label controls the user sees on screen, so this never duplicates or risks diverging from
+    'that calculation). Uses PrintDocument against the "Microsoft Print to PDF" printer that ships
+    'with Windows 10/11, so no new PDF library dependency is added to the project.
+    Private Sub btnExportClientReport_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnExportClientReport.Click
+        If clbFiles.CheckedItems.Count = 0 Then
+            MsgBox(resources.GetString("AnalysisForm_MsgBox_NoFilesForReport"), MsgBoxStyle.Information)
+            Return
+        End If
+
+        Dim pdfPrinterFound As Boolean = False
+        For Each installedPrinter As String In Printing.PrinterSettings.InstalledPrinters
+            If String.Equals(installedPrinter, "Microsoft Print to PDF", StringComparison.OrdinalIgnoreCase) Then
+                pdfPrinterFound = True
+                Exit For
+            End If
+        Next
+        If Not pdfPrinterFound Then
+            MsgBox(resources.GetString("AnalysisForm_MsgBox_NoPdfPrinter"), MsgBoxStyle.Exclamation)
+            Return
+        End If
+
+        Using sfd As New SaveFileDialog()
+            sfd.Filter = "PDF (*.pdf)|*.pdf"
+            sfd.DefaultExt = "pdf"
+            sfd.FileName = "SimpleDyno_Relatorio_" & Date.Now.ToString("yyyyMMdd_HHmm") & ".pdf"
+            If sfd.ShowDialog() <> DialogResult.OK Then Return
+
+            Try
+                Dim pd As New Printing.PrintDocument()
+                pd.PrinterSettings.PrinterName = "Microsoft Print to PDF"
+                pd.PrinterSettings.PrintToFile = True
+                pd.PrinterSettings.PrintFileName = sfd.FileName
+                AddHandler pd.PrintPage, AddressOf ClientReportPrintPage
+                pd.Print()
+                RemoveHandler pd.PrintPage, AddressOf ClientReportPrintPage
+                MsgBox(resources.GetString("AnalysisForm_MsgBox_ReportSaved") & sfd.FileName, MsgBoxStyle.Information)
+            Catch ex As Exception
+                MsgBox(resources.GetString("AnalysisForm_MsgBox_ReportError") & ex.Message, MsgBoxStyle.Exclamation)
+            End Try
+        End Using
+    End Sub
+
+    Private Sub ClientReportPrintPage(ByVal sender As Object, ByVal e As Printing.PrintPageEventArgs)
+        Dim g As Graphics = e.Graphics
+        Dim bounds As Rectangle = e.MarginBounds
+        Dim y As Integer = bounds.Top
+
+        Using titleFont As New Font("Arial", 16, FontStyle.Bold)
+            g.DrawString(resources.GetString("AnalysisForm_ReportTitle"), titleFont, Brushes.Black, bounds.Left, y)
+            y += CInt(titleFont.GetHeight(g)) + 8
+        End Using
+
+        Using infoFont As New Font("Arial", 10, FontStyle.Regular)
+            g.DrawString(resources.GetString("AnalysisForm_ReportDateLabel") & Date.Now.ToString("dd/MM/yyyy HH:mm"), infoFont, Brushes.Black, bounds.Left, y)
+            y += CInt(infoFont.GetHeight(g)) + 4
+            g.DrawString(resources.GetString("AnalysisForm_ClientNameLabel") & " " & txtClientName.Text, infoFont, Brushes.Black, bounds.Left, y)
+            y += CInt(infoFont.GetHeight(g)) + 4
+            g.DrawString(resources.GetString("AnalysisForm_VehicleLabel") & " " & txtVehicleInfo.Text, infoFont, Brushes.Black, bounds.Left, y)
+            y += CInt(infoFont.GetHeight(g)) + 4
+            If txtReportNotes.Text <> "" Then
+                Dim notesRect As New RectangleF(bounds.Left, y, bounds.Width, 40)
+                g.DrawString(resources.GetString("AnalysisForm_NotesLabel") & " " & txtReportNotes.Text, infoFont, Brushes.Black, notesRect)
+                y += CInt(g.MeasureString(resources.GetString("AnalysisForm_NotesLabel") & " " & txtReportNotes.Text, infoFont, bounds.Width).Height) + 4
+            End If
+            y += 10
+        End Using
+
+        Using chartBitmap As New Bitmap(Math.Max(1, PlotView1.Width), Math.Max(1, PlotView1.Height))
+            PlotView1.DrawToBitmap(chartBitmap, New Rectangle(0, 0, chartBitmap.Width, chartBitmap.Height))
+            Dim chartHeight As Integer = Math.Min(300, CInt(CLng(bounds.Width) * chartBitmap.Height / chartBitmap.Width))
+            g.DrawImage(chartBitmap, New Rectangle(bounds.Left, y, bounds.Width, chartHeight))
+            y += chartHeight + 15
+        End Using
+
+        Dim colX() As Integer = {
+            bounds.Left,
+            bounds.Left + CInt(bounds.Width * 0.30),
+            bounds.Left + CInt(bounds.Width * 0.44),
+            bounds.Left + CInt(bounds.Width * 0.58),
+            bounds.Left + CInt(bounds.Width * 0.72),
+            bounds.Left + CInt(bounds.Width * 0.86)
+        }
+
+        Using headerFont As New Font("Arial", 10, FontStyle.Bold)
+            g.DrawString(resources.GetString("AnalysisForm_ReportFileColumnHeader"), headerFont, Brushes.Black, colX(0), y)
+            g.DrawString(lblXTitle.Text, headerFont, Brushes.Black, colX(1), y)
+            If lblY1Title.Visible Then g.DrawString(lblY1Title.Text, headerFont, Brushes.Black, colX(2), y)
+            If lblY2Title.Visible Then g.DrawString(lblY2Title.Text, headerFont, Brushes.Black, colX(3), y)
+            If lblY3Title.Visible Then g.DrawString(lblY3Title.Text, headerFont, Brushes.Black, colX(4), y)
+            If lblY4Title.Visible Then g.DrawString(lblY4Title.Text, headerFont, Brushes.Black, colX(5), y)
+            y += CInt(headerFont.GetHeight(g)) + 4
+            g.DrawLine(Pens.Black, bounds.Left, y, bounds.Right, y)
+            y += 6
+        End Using
+
+        Dim fileLabels() As Label = {lblFile1, lblFile2, lblFile3, lblFile4, lblFile5}
+        Dim xLabels() As Label = {lblXMax1, lblXMax2, lblXMax3, lblXMax4, lblXMax5}
+        Dim y1Labels() As Label = {lblY1Max1, lblY1Max2, lblY1Max3, lblY1Max4, lblY1Max5}
+        Dim y2Labels() As Label = {lblY2Max1, lblY2Max2, lblY2Max3, lblY2Max4, lblY2Max5}
+        Dim y3Labels() As Label = {lblY3Max1, lblY3Max2, lblY3Max3, lblY3Max4, lblY3Max5}
+        Dim y4Labels() As Label = {lblY4Max1, lblY4Max2, lblY4Max3, lblY4Max4, lblY4Max5}
+
+        Using rowFont As New Font("Arial", 9, FontStyle.Regular)
+            For i As Integer = 0 To 4
+                If Not fileLabels(i).Visible Then Continue For
+                g.DrawString(fileLabels(i).Text, rowFont, Brushes.Black, colX(0), y)
+                g.DrawString(xLabels(i).Text, rowFont, Brushes.Black, colX(1), y)
+                If lblY1Title.Visible Then g.DrawString(y1Labels(i).Text, rowFont, Brushes.Black, colX(2), y)
+                If lblY2Title.Visible Then g.DrawString(y2Labels(i).Text, rowFont, Brushes.Black, colX(3), y)
+                If lblY3Title.Visible Then g.DrawString(y3Labels(i).Text, rowFont, Brushes.Black, colX(4), y)
+                If lblY4Title.Visible Then g.DrawString(y4Labels(i).Text, rowFont, Brushes.Black, colX(5), y)
+                y += CInt(rowFont.GetHeight(g)) + 6
+            Next
+        End Using
+
+        e.HasMorePages = False
+    End Sub
     Private Sub cmbOverlayX_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbOverlayDataX.SelectedIndexChanged
         cmbOverlayUnitsX.Items.Clear()
         If cmbOverlayDataX.SelectedIndex <> Main.LAST Then
