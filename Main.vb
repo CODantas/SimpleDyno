@@ -3266,7 +3266,7 @@ Public Class Main
                         TempString = InterfaceInputFile.ReadLine
                         If TempString = "Label" Then
                             TempString = InterfaceInputFile.ReadLine
-                            f.Add(New SimpleDynoSubLabel())
+                            f.Add(New DigitalCard())
                             AddHandler f(f.Count - 1).RemoveYourself, AddressOf RemoveForm
                             AddHandler f(f.Count - 1).SetToMyFormat, AddressOf SetAllFormats
                             f(f.Count - 1).myType = "Label"
@@ -3302,7 +3302,7 @@ Public Class Main
                         TempString = InterfaceInputFile.ReadLine
                         If TempString = "Label" Then
                             TempString = InterfaceInputFile.ReadLine
-                            f.Add(New SimpleDynoSubLabel())
+                            f.Add(New DigitalCard())
                             AddHandler f(f.Count - 1).RemoveYourself, AddressOf RemoveForm
                             AddHandler f(f.Count - 1).SetToMyFormat, AddressOf SetAllFormats
                             f(f.Count - 1).myType = "Label"
@@ -3485,7 +3485,7 @@ Public Class Main
         btnSaveAs.Enabled = True
         btnClose.Enabled = True
         btnHide.Enabled = True
-        f.Add(New SimpleDynoSubLabel())
+        f.Add(New DigitalCard())
         AddHandler f(f.Count - 1).RemoveYourself, AddressOf RemoveForm
         AddHandler f(f.Count - 1).SetToMyFormat, AddressOf SetAllFormats
         f(f.Count - 1).Initialize(f.Count - 1, Data, DataTags, DataUnits, DataUnitTags, DataAreUsed)

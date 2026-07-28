@@ -231,6 +231,9 @@
     <Compile Include="SimpleDynoSubLabel.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="DigitalCard.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <EmbeddedResource Include="ChartControl.resx">
       <DependentUpon>ChartControl.vb</DependentUpon>
     </EmbeddedResource>
@@ -302,6 +305,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SimpleDynoSubLabel.pt-BR.resx">
       <DependentUpon>SimpleDynoSubLabel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DigitalCard.resx">
+      <DependentUpon>DigitalCard.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DigitalCard.pt-BR.resx">
+      <DependentUpon>DigitalCard.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SimpleDynoSubMultiYTimeGraph.resx">
       <DependentUpon>SimpleDynoSubMultiYTimeGraph.vb</DependentUpon>
