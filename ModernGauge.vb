@@ -259,7 +259,7 @@ Public Class ModernGauge
 
             'Colored range band (green/yellow/red), drawn behind the ticks, redline-style.
             Dim BandPenWidth As Single = CSng(Math.Max(3, myDialRectangle.Width * 0.05))
-            Dim BandInset As Single = BandPenWidth * 1.6
+            Dim BandInset As Single = BandPenWidth * 1.6F
             Dim BandRect As New Rectangle(
                 CInt(myDialRectangle.X + BandInset), CInt(myDialRectangle.Y + BandInset),
                 CInt(myDialRectangle.Width - 2 * BandInset), CInt(myDialRectangle.Height - 2 * BandInset))
