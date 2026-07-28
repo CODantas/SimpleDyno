@@ -225,6 +225,9 @@
     <Compile Include="SimpleDynoSubGauge.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="ModernGauge.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="SimpleDynoSubLabel.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -287,6 +290,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SimpleDynoSubGauge.pt-BR.resx">
       <DependentUpon>SimpleDynoSubGauge.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModernGauge.resx">
+      <DependentUpon>ModernGauge.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModernGauge.pt-BR.resx">
+      <DependentUpon>ModernGauge.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SimpleDynoSubLabel.resx">
       <DependentUpon>SimpleDynoSubLabel.vb</DependentUpon>

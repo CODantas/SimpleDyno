@@ -3274,7 +3274,7 @@ Public Class Main
                             f.Item(f.Count - 1).CreateFromSerializedData(TempString)
                         ElseIf TempString = "Gauge" Then
                             TempString = InterfaceInputFile.ReadLine
-                            f.Add(New SimpleDynoSubGauge())
+                            f.Add(New ModernGauge())
                             AddHandler f(f.Count - 1).RemoveYourself, AddressOf RemoveForm
                             AddHandler f(f.Count - 1).SetToMyFormat, AddressOf SetAllFormats
                             f(f.Count - 1).myType = "Gauge"
@@ -3313,7 +3313,7 @@ Public Class Main
                         ElseIf TempString = "Gauge" Then
                             TempString = InterfaceInputFile.ReadLine
                             Debug.Print(TempString)
-                            f.Add(New SimpleDynoSubGauge())
+                            f.Add(New ModernGauge())
                             AddHandler f(f.Count - 1).RemoveYourself, AddressOf RemoveForm
                             AddHandler f(f.Count - 1).SetToMyFormat, AddressOf SetAllFormats
                             f(f.Count - 1).myType = "Gauge"
@@ -3496,7 +3496,7 @@ Public Class Main
         btnSaveAs.Enabled = True
         btnClose.Enabled = True
         btnHide.Enabled = True
-        f.Add(New SimpleDynoSubGauge())
+        f.Add(New ModernGauge())
         AddHandler f(f.Count - 1).RemoveYourself, AddressOf RemoveForm
         AddHandler f(f.Count - 1).SetToMyFormat, AddressOf SetAllFormats
         f(f.Count - 1).Initialize(f.Count - 1, Data, DataTags, DataUnits, DataUnitTags, DataAreUsed)
