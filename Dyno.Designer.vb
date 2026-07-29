@@ -17,12 +17,15 @@ Partial Class Dyno
     'Required by the Windows Form Designer
     Private components As System.ComponentModel.IContainer
 
+    'Resource manager for translated (resx satellite) strings. Promoted to a class
+    'field so Dyno.vb can also look up localized text outside InitializeComponent.
+    Private ReadOnly resources As New System.ComponentModel.ComponentResourceManager(GetType(Dyno))
+
     'NOTE: The following procedure is required by the Windows Form Designer
-    'It can be modified using the Windows Form Designer.  
+    'It can be modified using the Windows Form Designer.
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Dyno))
         Me.Label12 = New System.Windows.Forms.Label()
         Me.txtCarMass = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
@@ -73,7 +76,7 @@ Partial Class Dyno
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(160, 20)
         Me.Label12.TabIndex = 245
-        Me.Label12.Text = "Vehicle Mass (g)"
+        Me.Label12.Text = resources.GetString("Label12.Text")
         Me.Label12.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'txtCarMass
@@ -95,7 +98,7 @@ Partial Class Dyno
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(160, 20)
         Me.Label2.TabIndex = 275
-        Me.Label2.Text = "Non Critical Parameters"
+        Me.Label2.Text = resources.GetString("Label2.Text")
         Me.Label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'Label20
@@ -105,7 +108,7 @@ Partial Class Dyno
         Me.Label20.Name = "Label20"
         Me.Label20.Size = New System.Drawing.Size(160, 20)
         Me.Label20.TabIndex = 271
-        Me.Label20.Text = "Wheel Diameter (mm)"
+        Me.Label20.Text = resources.GetString("Label20.Text")
         Me.Label20.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'txtWheelDiameter
@@ -127,7 +130,7 @@ Partial Class Dyno
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(160, 20)
         Me.Label5.TabIndex = 272
-        Me.Label5.Text = "Gear Ratio"
+        Me.Label5.Text = resources.GetString("Label5.Text")
         Me.Label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'txtGearRatio
@@ -149,7 +152,7 @@ Partial Class Dyno
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(160, 20)
         Me.Label6.TabIndex = 273
-        Me.Label6.Text = "Frontal Area (mm2)"
+        Me.Label6.Text = resources.GetString("Label6.Text")
         Me.Label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'txtFrontalArea
@@ -171,7 +174,7 @@ Partial Class Dyno
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(160, 20)
         Me.Label8.TabIndex = 274
-        Me.Label8.Text = "Drag Coeff."
+        Me.Label8.Text = resources.GetString("Label8.Text")
         Me.Label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'txtDragCoefficient
@@ -193,7 +196,7 @@ Partial Class Dyno
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(160, 20)
         Me.Label4.TabIndex = 298
-        Me.Label4.Text = "Critical Parameters"
+        Me.Label4.Text = resources.GetString("Label4.Text")
         Me.Label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'txtSignalsPerRPM2
@@ -215,7 +218,7 @@ Partial Class Dyno
         Me.Label24.Name = "Label24"
         Me.Label24.Size = New System.Drawing.Size(131, 20)
         Me.Label24.TabIndex = 297
-        Me.Label24.Text = "Signals per RPM2"
+        Me.Label24.Text = resources.GetString("Label24.Text")
         Me.Label24.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'txtSignalsPerRPM1
@@ -237,7 +240,7 @@ Partial Class Dyno
         Me.Label23.Name = "Label23"
         Me.Label23.Size = New System.Drawing.Size(96, 20)
         Me.Label23.TabIndex = 289
-        Me.Label23.Text = "Signals per RPM"
+        Me.Label23.Text = resources.GetString("Label23.Text")
         Me.Label23.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'txtExtraWallThickness
@@ -283,7 +286,7 @@ Partial Class Dyno
         Me.Label22.Name = "Label22"
         Me.Label22.Size = New System.Drawing.Size(160, 20)
         Me.Label22.TabIndex = 288
-        Me.Label22.Text = "Roller Mass (g)"
+        Me.Label22.Text = resources.GetString("Label22.Text")
         Me.Label22.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'Label31
@@ -293,7 +296,7 @@ Partial Class Dyno
         Me.Label31.Name = "Label31"
         Me.Label31.Size = New System.Drawing.Size(160, 20)
         Me.Label31.TabIndex = 294
-        Me.Label31.Text = "Extra Wall Thickness (mm)"
+        Me.Label31.Text = resources.GetString("Label31.Text")
         Me.Label31.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'Label19
@@ -303,7 +306,7 @@ Partial Class Dyno
         Me.Label19.Name = "Label19"
         Me.Label19.Size = New System.Drawing.Size(160, 20)
         Me.Label19.TabIndex = 286
-        Me.Label19.Text = "Roller Diameter (mm)"
+        Me.Label19.Text = resources.GetString("Label19.Text")
         Me.Label19.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'Label32
@@ -313,7 +316,7 @@ Partial Class Dyno
         Me.Label32.Name = "Label32"
         Me.Label32.Size = New System.Drawing.Size(160, 20)
         Me.Label32.TabIndex = 293
-        Me.Label32.Text = "Extra Diameter (mm)"
+        Me.Label32.Text = resources.GetString("Label32.Text")
         Me.Label32.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'txtRollerWallThickness
@@ -335,7 +338,7 @@ Partial Class Dyno
         Me.Label33.Name = "Label33"
         Me.Label33.Size = New System.Drawing.Size(160, 20)
         Me.Label33.TabIndex = 295
-        Me.Label33.Text = "Extra Mass (g)"
+        Me.Label33.Text = resources.GetString("Label33.Text")
         Me.Label33.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'Label21
@@ -345,7 +348,7 @@ Partial Class Dyno
         Me.Label21.Name = "Label21"
         Me.Label21.Size = New System.Drawing.Size(160, 20)
         Me.Label21.TabIndex = 287
-        Me.Label21.Text = "Roller Wall Thickness (mm)"
+        Me.Label21.Text = resources.GetString("Label21.Text")
         Me.Label21.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'txtExtraDiameter
@@ -391,7 +394,7 @@ Partial Class Dyno
         Me.Label15.Name = "Label15"
         Me.Label15.Size = New System.Drawing.Size(160, 20)
         Me.Label15.TabIndex = 291
-        Me.Label15.Text = "Axle Mass (g)"
+        Me.Label15.Text = resources.GetString("Label15.Text")
         Me.Label15.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'txtAxleMass
@@ -413,7 +416,7 @@ Partial Class Dyno
         Me.Label27.Name = "Label27"
         Me.Label27.Size = New System.Drawing.Size(160, 20)
         Me.Label27.TabIndex = 290
-        Me.Label27.Text = "Axle Diameter (mm)"
+        Me.Label27.Text = resources.GetString("Label27.Text")
         Me.Label27.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'Label28
@@ -423,7 +426,7 @@ Partial Class Dyno
         Me.Label28.Name = "Label28"
         Me.Label28.Size = New System.Drawing.Size(160, 20)
         Me.Label28.TabIndex = 292
-        Me.Label28.Text = "End Cap Mass (g)"
+        Me.Label28.Text = resources.GetString("Label28.Text")
         Me.Label28.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'txtAxleDiameter
@@ -455,7 +458,7 @@ Partial Class Dyno
         Me.lblTargetRollerMass.Name = "lblTargetRollerMass"
         Me.lblTargetRollerMass.Size = New System.Drawing.Size(241, 25)
         Me.lblTargetRollerMass.TabIndex = 302
-        Me.lblTargetRollerMass.Text = "Target Roller Mass"
+        Me.lblTargetRollerMass.Text = resources.GetString("lblTargetRollerMass.Text")
         Me.lblTargetRollerMass.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'lblActualMomentOfInertia
@@ -465,7 +468,7 @@ Partial Class Dyno
         Me.lblActualMomentOfInertia.Name = "lblActualMomentOfInertia"
         Me.lblActualMomentOfInertia.Size = New System.Drawing.Size(241, 24)
         Me.lblActualMomentOfInertia.TabIndex = 301
-        Me.lblActualMomentOfInertia.Text = "Actual MOI"
+        Me.lblActualMomentOfInertia.Text = resources.GetString("lblActualMomentOfInertia.Text")
         Me.lblActualMomentOfInertia.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'lblTargetMomentOfInertia
@@ -475,7 +478,7 @@ Partial Class Dyno
         Me.lblTargetMomentOfInertia.Name = "lblTargetMomentOfInertia"
         Me.lblTargetMomentOfInertia.Size = New System.Drawing.Size(241, 25)
         Me.lblTargetMomentOfInertia.TabIndex = 300
-        Me.lblTargetMomentOfInertia.Text = "Target MOI"
+        Me.lblTargetMomentOfInertia.Text = resources.GetString("lblTargetMomentOfInertia.Text")
         Me.lblTargetMomentOfInertia.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'lblDynoSettings
@@ -485,7 +488,7 @@ Partial Class Dyno
         Me.lblDynoSettings.Name = "lblDynoSettings"
         Me.lblDynoSettings.Size = New System.Drawing.Size(672, 131)
         Me.lblDynoSettings.TabIndex = 303
-        Me.lblDynoSettings.Text = "Dyno Settings Information"
+        Me.lblDynoSettings.Text = resources.GetString("lblDynoSettings.Text")
         '
         'Label1
         '
@@ -494,7 +497,7 @@ Partial Class Dyno
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(160, 20)
         Me.Label1.TabIndex = 304
-        Me.Label1.Text = "Moment of Inertia (MOI)"
+        Me.Label1.Text = resources.GetString("Label1.Text")
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'Dyno
@@ -547,7 +550,7 @@ Partial Class Dyno
         Me.MaximizeBox = False
         Me.Name = "Dyno"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Dyno Setup"
+        Me.Text = resources.GetString("$this.Text")
         CType(Me.picDynoSettings, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()

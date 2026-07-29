@@ -117,6 +117,144 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="btnStartLoggingRaw.Text" xml:space="preserve">
+    <value>Log Raw Data</value>
+  </data>
+  <data name="btnResetMaxima.Text" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="btnAnalysis.Text" xml:space="preserve">
+    <value>Analysis</value>
+  </data>
+  <data name="btnClose.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="btnMultiYTime.Text" xml:space="preserve">
+    <value>Y vs Time</value>
+  </data>
+  <data name="btnLoad.Text" xml:space="preserve">
+    <value>Load</value>
+  </data>
+  <data name="btnSave.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="btnNewGauge.Text" xml:space="preserve">
+    <value>Gauge</value>
+  </data>
+  <data name="btnSaveAs.Text" xml:space="preserve">
+    <value>Save As</value>
+  </data>
+  <data name="Label17.Text" xml:space="preserve">
+    <value>Run Start at</value>
+  </data>
+  <data name="btnNewLabel.Text" xml:space="preserve">
+    <value>Label</value>
+  </data>
+  <data name="btnHide.Text" xml:space="preserve">
+    <value>Hide</value>
+  </data>
+  <data name="btnShow.Text" xml:space="preserve">
+    <value>Show</value>
+  </data>
+  <data name="lblZeroDetect.Text" xml:space="preserve">
+    <value>Zero Detect</value>
+  </data>
+  <data name="btnStartAcquisition.Text" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="lblCOMActive.Text" xml:space="preserve">
+    <value>COM Active</value>
+  </data>
+  <data name="lblInterface.Text" xml:space="preserve">
+    <value>Currently using:</value>
+  </data>
+  <data name="Button1.Text" xml:space="preserve">
+    <value>Correction</value>
+  </data>
+  <data name="StatusBar_Live" xml:space="preserve">
+    <value>Live</value>
+  </data>
+  <data name="StatusBar_LogRaw" xml:space="preserve">
+    <value>Logging Raw</value>
+  </data>
+  <data name="StatusBar_PowerRun" xml:space="preserve">
+    <value>Power Run</value>
+  </data>
+  <data name="StatusBar_ComActive" xml:space="preserve">
+    <value>COM Active</value>
+  </data>
+  <data name="StatusBar_ComInactive" xml:space="preserve">
+    <value>COM Inactive</value>
+  </data>
+  <data name="Main_ValueMustBeBetween" xml:space="preserve">
+    <value> : Value must be between </value>
+  </data>
+  <data name="Main_And" xml:space="preserve">
+    <value> and </value>
+  </data>
+  <data name="Main_MsgBox_BtnStartPowerRunError" xml:space="preserve">
+    <value>btnStartPowerRun_Click Error: </value>
+  </data>
+  <data name="Main_MsgBox_BtnStartLoggingRawError" xml:space="preserve">
+    <value>btnStartLoggingRaw Error: </value>
+  </data>
+  <data name="Main_MsgBox_LoadParametersFromFileError" xml:space="preserve">
+    <value>LoadParametersFromFile Error: </value>
+  </data>
+  <data name="Main_MsgBox_SaveParametersError" xml:space="preserve">
+    <value>SaveParameters Error: </value>
+  </data>
+  <data name="Main_MsgBox_PrepareGraphicsParametersError" xml:space="preserve">
+    <value>PrepareGraphicsParameters Error: </value>
+  </data>
+  <data name="Main_MsgBox_ResetValuesError" xml:space="preserve">
+    <value>ResetValues Error: </value>
+  </data>
+  <data name="Main_MsgBox_WaveInOpenError" xml:space="preserve">
+    <value>InitializeWaveInput / WaveInOpen Error</value>
+  </data>
+  <data name="Main_MsgBox_WaveInPrepareHeaderError" xml:space="preserve">
+    <value>InitializeWaveInput / waveInPrepareHeader Error</value>
+  </data>
+  <data name="Main_MsgBox_WaveInAddBufferError" xml:space="preserve">
+    <value>InitializeWaveInput / waveInAddBuffer Error</value>
+  </data>
+  <data name="Main_MsgBox_WaveInStartError" xml:space="preserve">
+    <value>InitializeWaveInput / waveInStart Error</value>
+  </data>
+  <data name="Main_MsgBox_ProcessWaveAddBufferError" xml:space="preserve">
+    <value>myWaveHandler_ProcessWave / waveInAddBuffer Error</value>
+  </data>
+  <data name="Main_MsgBox_ProcessWaveError" xml:space="preserve">
+    <value>myWaveHandler_ProcessWave Error: </value>
+  </data>
+  <data name="Main_MsgBox_ShutDownWavesResetError" xml:space="preserve">
+    <value>ShutDownWaves / waveInReset Error</value>
+  </data>
+  <data name="Main_MsgBox_ShutDownWavesStopError" xml:space="preserve">
+    <value>ShutDownWaves / waveInStop Error</value>
+  </data>
+  <data name="Main_MsgBox_ShutDownWavesUnprepareHeaderError" xml:space="preserve">
+    <value>ShutDownWaves / waveInUnprepareHeader Error</value>
+  </data>
+  <data name="Main_MsgBox_ShutDownWavesCloseError" xml:space="preserve">
+    <value>ShutDownWaves / waveInClose Error</value>
+  </data>
+  <data name="Main_MsgBox_ShutDownWavesError" xml:space="preserve">
+    <value>ShutDownWaves Error: </value>
+  </data>
+  <data name="Main_MsgBox_ErrorFoundIs" xml:space="preserve">
+    <value>Error found is </value>
+  </data>
+  <data name="Main_MsgBox_ErrorReadingCOMPort" xml:space="preserve">
+    <value>Error reading COM Port.</value>
+  </data>
+  <data name="Main_MsgBox_SerialPortDataReceivedError" xml:space="preserve">
+    <value>Serial Port Data Received Error: </value>
+  </data>
+  <data name="Main_MsgBox_NotAValidInterfaceFile" xml:space="preserve">
+    <value>Not a valid Interface File</value>
+  </data>
   <metadata name="SaveFileDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>163, 17</value>
   </metadata>

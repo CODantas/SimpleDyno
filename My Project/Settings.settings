@@ -3,4 +3,9 @@
   <Profiles>
     <Profile Name="(Default)" />
   </Profiles>
+  <Settings>
+    <Setting Name="Idioma" Type="System.String" Scope="User">
+      <Value Profile="(Default)">pt-BR</Value>
+    </Setting>
+  </Settings>
 </SettingsFile>

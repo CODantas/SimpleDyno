@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="SDF_Minimum" xml:space="preserve">
+    <value>Mínimo</value>
+  </data>
+  <data name="SDF_Actual" xml:space="preserve">
+    <value>Atual</value>
+  </data>
+  <data name="SDF_Maximum" xml:space="preserve">
+    <value>Máximo</value>
+  </data>
+  <data name="SDF_MinAbb" xml:space="preserve">
+    <value>Mín</value>
+  </data>
+  <data name="SDF_MaxAbb" xml:space="preserve">
+    <value>Máx</value>
+  </data>
+  <data name="SDF_DefaultParameter" xml:space="preserve">
+    <value>Parâmetro</value>
+  </data>
+  <data name="SDF_DefaultUnit" xml:space="preserve">
+    <value>Unidade</value>
+  </data>
+  <data name="SDF_DefaultAct" xml:space="preserve">
+    <value>Atu</value>
+  </data>
+  <data name="SDF_SetColors" xml:space="preserve">
+    <value>Definir Cores</value>
+  </data>
+  <data name="SDF_Background" xml:space="preserve">
+    <value>Fundo</value>
+  </data>
+  <data name="SDF_Axes" xml:space="preserve">
+    <value>Eixos</value>
+  </data>
+  <data name="SDF_Data" xml:space="preserve">
+    <value>Dados</value>
+  </data>
+  <data name="SDF_ApplyToAll" xml:space="preserve">
+    <value>Aplicar a Todos</value>
+  </data>
+  <data name="SDF_SetFont" xml:space="preserve">
+    <value>Definir Fonte</value>
+  </data>
+  <data name="SDF_RefreshRate" xml:space="preserve">
+    <value>Taxa de Atualização</value>
+  </data>
+</root>

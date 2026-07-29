@@ -1,6 +1,9 @@
 ﻿Public Class SimpleDynoSubLabel
     Inherits SimpleDynoSubForm
 
+    'Resource manager for translated (resx satellite) strings.
+    Private ReadOnly resources As New System.ComponentModel.ComponentResourceManager(GetType(SimpleDynoSubLabel))
+
     'Control Specific Text Positions
     Private ParameterLabel As Point
     Private ResultLabel As Point
@@ -113,8 +116,8 @@
         Dim str2 As String()
         Dim str3 As String()
 
-        str1 = "Configuration"
-        str2 = {"Vertical", "Horizontal"}
+        str1 = resources.GetString("SDL_Configuration")
+        str2 = {resources.GetString("SDL_Vertical"), resources.GetString("SDL_Horizontal")}
         str3 = {}
      
         TestStrip = CreateAToolStripMenuItem("O", str1, str2, str3) ', str4, str5)

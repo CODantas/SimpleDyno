@@ -2,6 +2,9 @@
 Public Class SimpleDynoSubMultiYTimeGraph
     Inherits SimpleDynoSubForm
 
+    'Resource manager for translated (resx satellite) strings.
+    Private ReadOnly resources As New System.ComponentModel.ComponentResourceManager(GetType(SimpleDynoSubMultiYTimeGraph))
+
     Private myGraphSurface As Rectangle
     Private myDataRectangle As Rectangle
 
@@ -53,8 +56,8 @@ Public Class SimpleDynoSubMultiYTimeGraph
 
         X_PrimaryPointer = 0 'UBound(CopyOfDataNames) 'always points to the session timer
         X_MinCurMaxPointer = 1 'always points to the "current" time
-        X_PrimaryLabel = "Time"
-        X_UnitsLabel = "Seconds"
+        X_PrimaryLabel = resources.GetString("SDMYTG_Time")
+        X_UnitsLabel = resources.GetString("SDMYTG_Seconds")
         NumberOfMajorTicks = 5
         NumberOfMinorTicks = 21
         X_Maximum = 10
@@ -221,7 +224,7 @@ Public Class SimpleDynoSubMultiYTimeGraph
             YTickLabelPositions(4, Count).X = MajorYTickOuter(4, Count).X '- grafx.Graphics.MeasureString(YTickLabels(4, Count), Y_axisfont).Width
         Next
 
-        XAxisLabel = "Time (seconds)"
+        XAxisLabel = resources.GetString("SDMYTG_TimeSecondsAxisLabel")
         'CHECK - Remove the following prior to release
         'For Count = 1 To 4
         '    YAxisLabel(Count) = Y_PrimaryLabel(Count) & vbCrLf & "(" & myMinCurMaxAbb(Y_MinCurMaxPointer(Count)) & " " & Y_UnitsLabel(Count) & ")"
@@ -349,28 +352,28 @@ Public Class SimpleDynoSubMultiYTimeGraph
         Dim str2 As String()
         Dim str3 As String()
 
-        str1 = "Configuration"
-        str2 = {"Lines", "Points"}
+        str1 = resources.GetString("SDMYTG_Configuration")
+        str2 = {resources.GetString("SDMYTG_Lines"), resources.GetString("SDMYTG_Points")}
         str3 = {}
 
         TestStrip = CreateAToolStripMenuItem("O", str1, str2, str3)
         Contextmnu.Items.Add(TestStrip)
 
-        str1 = "Y Range"
-        str2 = {"Minimum", "Maximum"}
+        str1 = resources.GetString("SDMYTG_YRange")
+        str2 = {resources.GetString("SDMYTG_Minimum"), resources.GetString("SDMYTG_Maximum")}
         str3 = {"TXT"}
 
         TestStrip = CreateAToolStripMenuItem("Y", str1, str2, str3)
         Contextmnu.Items.Add(TestStrip)
 
-        str1 = "Time Range"
-        str2 = {"Maximum"}
+        str1 = resources.GetString("SDMYTG_TimeRange")
+        str2 = {resources.GetString("SDMYTG_Maximum")}
         str3 = {"TXT"}
 
         TestStrip = CreateAToolStripMenuItem("T", str1, str2, str3)
         Contextmnu.Items.Add(TestStrip)
 
-        str1 = "Remove Plot"
+        str1 = resources.GetString("SDMYTG_RemovePlot")
         str2 = {}
         str3 = {}
 
@@ -388,8 +391,8 @@ Public Class SimpleDynoSubMultiYTimeGraph
                 myConfiguration = "Points"
             Case Is = "X"
                 IsThisYSelected(XY_Selected) = False
-                Y_PrimaryLabel(XY_Selected) = "Parameter"
-                Y_UnitsLabel(XY_Selected) = "Units"
+                Y_PrimaryLabel(XY_Selected) = resources.GetString("SDMYTG_DefaultParameter")
+                Y_UnitsLabel(XY_Selected) = resources.GetString("SDMYTG_DefaultUnits")
             Case Else
                 Dim Temp As String()
                 Temp = Split(Sent, " ")

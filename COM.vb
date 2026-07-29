@@ -96,13 +96,13 @@
                     txtA4Voltage1_Leave(txtA4Voltage1, tempeventargs)
                 Case Is = "btnCalibratePinA4V2"
                     .SetControlText_Threadsafe(txtA4Voltage2, .NewCustomFormat(CalibrationValues(4)))
-                    txtA4Voltage1_Leave(txtA4Voltage2, tempeventargs)
+                    txtA4Voltage2_Leave(txtA4Voltage2, tempeventargs)
                 Case Is = "btnCalibratePinA5V1"
                     .SetControlText_Threadsafe(txtA5Voltage1, .NewCustomFormat(CalibrationValues(5)))
-                    txtA4Voltage1_Leave(txtA5Voltage1, tempeventargs)
+                    txtA5Voltage1_Leave(txtA5Voltage1, tempeventargs)
                 Case Is = "btnCalibratePinA5V2"
                     .SetControlText_Threadsafe(txtA5Voltage2, .NewCustomFormat(CalibrationValues(5)))
-                    txtA4Voltage1_Leave(txtA5Voltage2, tempeventargs)
+                    txtA5Voltage2_Leave(txtA5Voltage2, tempeventargs)
             End Select
         End With
         NumberOfCalibrationValues = 0
@@ -119,9 +119,9 @@
                 Main.COMPortCalibration()
             Else
                 If TempDouble = Main.A0Voltage2 Then
-                    MsgBox(CType(sender, TextBox).Name & " Values 1 and 2 must be different for calibration", MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValuesMustBeDifferent"), MsgBoxStyle.Exclamation)
                 Else
-                    MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValueMustBeBetween") & LocalMin & resources.GetString("COM_And") & LocalMax, MsgBoxStyle.Exclamation)
                 End If
                 With CType(sender, TextBox)
                     .Text = Main.A0Voltage1.ToString
@@ -144,9 +144,9 @@
                 Main.COMPortCalibration()
             Else
                 If TempDouble = Main.Voltage2 Then
-                    MsgBox(CType(sender, TextBox).Name & " Values 1 and 2 must be different for calibration", MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValuesMustBeDifferent"), MsgBoxStyle.Exclamation)
                 Else
-                    MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValueMustBeBetween") & LocalMin & resources.GetString("COM_And") & LocalMax, MsgBoxStyle.Exclamation)
                 End If
                 With CType(sender, TextBox)
                     .Text = Main.Voltage1.ToString
@@ -169,9 +169,9 @@
                 Main.COMPortCalibration()
             Else
                 If TempDouble = Main.A0Voltage1 Then
-                    MsgBox(CType(sender, TextBox).Name & " Values 1 and 2 must be different for calibration", MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValuesMustBeDifferent"), MsgBoxStyle.Exclamation)
                 Else
-                    MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValueMustBeBetween") & LocalMin & resources.GetString("COM_And") & LocalMax, MsgBoxStyle.Exclamation)
                 End If
                 With CType(sender, TextBox)
                     .Text = Main.A0Voltage2.ToString
@@ -194,9 +194,9 @@
                 Main.COMPortCalibration()
             Else
                 If TempDouble = Main.Voltage1 Then
-                    MsgBox(CType(sender, TextBox).Name & " Values 1 and 2 must be different for calibration", MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValuesMustBeDifferent"), MsgBoxStyle.Exclamation)
                 Else
-                    MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValueMustBeBetween") & LocalMin & resources.GetString("COM_And") & LocalMax, MsgBoxStyle.Exclamation)
                 End If
                 With CType(sender, TextBox)
                     .Text = Main.Voltage2.ToString
@@ -219,9 +219,9 @@
                 Main.COMPortCalibration()
             Else
                 If TempDouble = Main.A1Voltage2 Then
-                    MsgBox(CType(sender, TextBox).Name & " Values 1 and 2 must be different for calibration", MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValuesMustBeDifferent"), MsgBoxStyle.Exclamation)
                 Else
-                    MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValueMustBeBetween") & LocalMin & resources.GetString("COM_And") & LocalMax, MsgBoxStyle.Exclamation)
                 End If
                 With CType(sender, TextBox)
                     .Text = Main.A1Voltage1.ToString
@@ -244,9 +244,9 @@
                 Main.COMPortCalibration()
             Else
                 If TempDouble = Main.Current2 Then
-                    MsgBox(CType(sender, TextBox).Name & " Values 1 and 2 must be different for calibration", MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValuesMustBeDifferent"), MsgBoxStyle.Exclamation)
                 Else
-                    MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValueMustBeBetween") & LocalMin & resources.GetString("COM_And") & LocalMax, MsgBoxStyle.Exclamation)
                 End If
                 With CType(sender, TextBox)
                     .Text = Main.Current1.ToString
@@ -269,9 +269,9 @@
                 Main.COMPortCalibration()
             Else
                 If TempDouble = Main.A1Voltage1 Then
-                    MsgBox(CType(sender, TextBox).Name & " Values 1 and 2 must be different for calibration", MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValuesMustBeDifferent"), MsgBoxStyle.Exclamation)
                 Else
-                    MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValueMustBeBetween") & LocalMin & resources.GetString("COM_And") & LocalMax, MsgBoxStyle.Exclamation)
                 End If
                 With CType(sender, TextBox)
                     .Text = Main.A1Voltage2.ToString
@@ -294,9 +294,9 @@
                 Main.COMPortCalibration()
             Else
                 If TempDouble = Main.Current1 Then
-                    MsgBox(CType(sender, TextBox).Name & " Values 1 and 2 must be different for calibration", MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValuesMustBeDifferent"), MsgBoxStyle.Exclamation)
                 Else
-                    MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValueMustBeBetween") & LocalMin & resources.GetString("COM_And") & LocalMax, MsgBoxStyle.Exclamation)
                 End If
                 With CType(sender, TextBox)
                     .Text = Main.Current2.ToString
@@ -319,9 +319,9 @@
                 Main.COMPortCalibration()
             Else
                 If TempDouble = Main.A2Voltage2 Then
-                    MsgBox(CType(sender, TextBox).Name & " Values 1 and 2 must be different for calibration", MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValuesMustBeDifferent"), MsgBoxStyle.Exclamation)
                 Else
-                    MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValueMustBeBetween") & LocalMin & resources.GetString("COM_And") & LocalMax, MsgBoxStyle.Exclamation)
                 End If
                 With CType(sender, TextBox)
                     .Text = Main.A2Voltage1.ToString
@@ -344,9 +344,9 @@
                 Main.COMPortCalibration()
             Else
                 If TempDouble = Main.Temp1Temperature2 Then
-                    MsgBox(CType(sender, TextBox).Name & " Values 1 and 2 must be different for calibration", MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValuesMustBeDifferent"), MsgBoxStyle.Exclamation)
                 Else
-                    MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValueMustBeBetween") & LocalMin & resources.GetString("COM_And") & LocalMax, MsgBoxStyle.Exclamation)
                 End If
                 With CType(sender, TextBox)
                     .Text = Main.Temp1Temperature1.ToString
@@ -369,9 +369,9 @@
                 Main.COMPortCalibration()
             Else
                 If TempDouble = Main.A2Voltage1 Then
-                    MsgBox(CType(sender, TextBox).Name & " Values 1 and 2 must be different for calibration", MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValuesMustBeDifferent"), MsgBoxStyle.Exclamation)
                 Else
-                    MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValueMustBeBetween") & LocalMin & resources.GetString("COM_And") & LocalMax, MsgBoxStyle.Exclamation)
                 End If
                 With CType(sender, TextBox)
                     .Text = Main.A2Voltage2.ToString
@@ -394,9 +394,9 @@
                 Main.COMPortCalibration()
             Else
                 If TempDouble = Main.Temp1Temperature1 Then
-                    MsgBox(CType(sender, TextBox).Name & " Values 1 and 2 must be different for calibration", MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValuesMustBeDifferent"), MsgBoxStyle.Exclamation)
                 Else
-                    MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValueMustBeBetween") & LocalMin & resources.GetString("COM_And") & LocalMax, MsgBoxStyle.Exclamation)
                 End If
                 With CType(sender, TextBox)
                     .Text = Main.Temp1Temperature2.ToString
@@ -419,9 +419,9 @@
                 Main.COMPortCalibration()
             Else
                 If TempDouble = Main.A3Voltage2 Then
-                    MsgBox(CType(sender, TextBox).Name & " Values 1 and 2 must be different for calibration", MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValuesMustBeDifferent"), MsgBoxStyle.Exclamation)
                 Else
-                    MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValueMustBeBetween") & LocalMin & resources.GetString("COM_And") & LocalMax, MsgBoxStyle.Exclamation)
                 End If
                 With CType(sender, TextBox)
                     .Text = Main.A3Voltage1.ToString
@@ -444,9 +444,9 @@
                 Main.COMPortCalibration()
             Else
                 If TempDouble = Main.Temp2Temperature2 Then
-                    MsgBox(CType(sender, TextBox).Name & "Values 1 and 2 must be different for calibration", MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValuesMustBeDifferent"), MsgBoxStyle.Exclamation)
                 Else
-                    MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValueMustBeBetween") & LocalMin & resources.GetString("COM_And") & LocalMax, MsgBoxStyle.Exclamation)
                 End If
                 With CType(sender, TextBox)
                     .Text = Main.Temp2Temperature1.ToString
@@ -469,9 +469,9 @@
                 Main.COMPortCalibration()
             Else
                 If TempDouble = Main.A3Voltage1 Then
-                    MsgBox(CType(sender, TextBox).Name & " Values 1 and 2 must be different for calibration", MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValuesMustBeDifferent"), MsgBoxStyle.Exclamation)
                 Else
-                    MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValueMustBeBetween") & LocalMin & resources.GetString("COM_And") & LocalMax, MsgBoxStyle.Exclamation)
                 End If
                 With CType(sender, TextBox)
                     .Text = Main.A3Voltage2.ToString
@@ -494,9 +494,9 @@
                 Main.COMPortCalibration()
             Else
                 If TempDouble = Main.Temp2Temperature1 Then
-                    MsgBox(CType(sender, TextBox).Name & " Values 1 and 2 must be different for calibration", MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValuesMustBeDifferent"), MsgBoxStyle.Exclamation)
                 Else
-                    MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValueMustBeBetween") & LocalMin & resources.GetString("COM_And") & LocalMax, MsgBoxStyle.Exclamation)
                 End If
                 With CType(sender, TextBox)
                     .Text = Main.Temp2Temperature2.ToString
@@ -515,7 +515,7 @@
         If Double.TryParse(CType(sender, TextBox).Text, TempDouble) AndAlso Main.CheckNumericalLimits(LocalMin, LocalMax, TempDouble) Then
             Main.Resistance1 = TempDouble
         Else
-            MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+            MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValueMustBeBetween") & LocalMin & resources.GetString("COM_And") & LocalMax, MsgBoxStyle.Exclamation)
             With CType(sender, TextBox)
                 .Text = Main.Resistance1.ToString
                 .Focus()
@@ -528,7 +528,7 @@
         If Double.TryParse(CType(sender, TextBox).Text, TempDouble) AndAlso Main.CheckNumericalLimits(LocalMin, LocalMax, TempDouble) Then
             Main.Resistance2 = TempDouble
         Else
-            MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+            MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValueMustBeBetween") & LocalMin & resources.GetString("COM_And") & LocalMax, MsgBoxStyle.Exclamation)
             With CType(sender, TextBox)
                 .Text = Main.Resistance2.ToString
                 .Focus()
@@ -545,9 +545,9 @@
                 Main.COMPortCalibration()
             Else
                 If TempDouble = Main.A4Voltage2 Then
-                    MsgBox(CType(sender, TextBox).Name & " Values 1 and 2 must be different for calibration", MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValuesMustBeDifferent"), MsgBoxStyle.Exclamation)
                 Else
-                    MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValueMustBeBetween") & LocalMin & resources.GetString("COM_And") & LocalMax, MsgBoxStyle.Exclamation)
                 End If
                 With CType(sender, TextBox)
                     .Text = Main.A4Voltage1.ToString
@@ -570,9 +570,9 @@
                 Main.COMPortCalibration()
             Else
                 If TempDouble = Main.A4Voltage1 Then
-                    MsgBox(CType(sender, TextBox).Name & " Values 1 and 2 must be different for calibration", MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValuesMustBeDifferent"), MsgBoxStyle.Exclamation)
                 Else
-                    MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValueMustBeBetween") & LocalMin & resources.GetString("COM_And") & LocalMax, MsgBoxStyle.Exclamation)
                 End If
                 With CType(sender, TextBox)
                     .Text = Main.A4Voltage2.ToString
@@ -595,9 +595,9 @@
                 Main.COMPortCalibration()
             Else
                 If TempDouble = Main.A4Value2 Then
-                    MsgBox(CType(sender, TextBox).Name & " Values 1 and 2 must be different for calibration", MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValuesMustBeDifferent"), MsgBoxStyle.Exclamation)
                 Else
-                    MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValueMustBeBetween") & LocalMin & resources.GetString("COM_And") & LocalMax, MsgBoxStyle.Exclamation)
                 End If
                 With CType(sender, TextBox)
                     .Text = Main.A4Value1.ToString
@@ -620,9 +620,9 @@
                 Main.COMPortCalibration()
             Else
                 If TempDouble = Main.A4Value1 Then
-                    MsgBox(CType(sender, TextBox).Name & " Values 1 and 2 must be different for calibration", MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValuesMustBeDifferent"), MsgBoxStyle.Exclamation)
                 Else
-                    MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValueMustBeBetween") & LocalMin & resources.GetString("COM_And") & LocalMax, MsgBoxStyle.Exclamation)
                 End If
                 With CType(sender, TextBox)
                     .Text = Main.A4Value2.ToString
@@ -645,9 +645,9 @@
                 Main.COMPortCalibration()
             Else
                 If TempDouble = Main.A5Voltage2 Then
-                    MsgBox(CType(sender, TextBox).Name & " Values 1 and 2 must be different for calibration", MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValuesMustBeDifferent"), MsgBoxStyle.Exclamation)
                 Else
-                    MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValueMustBeBetween") & LocalMin & resources.GetString("COM_And") & LocalMax, MsgBoxStyle.Exclamation)
                 End If
                 With CType(sender, TextBox)
                     .Text = Main.A5Voltage1.ToString
@@ -670,9 +670,9 @@
                 Main.COMPortCalibration()
             Else
                 If TempDouble = Main.A5Voltage1 Then
-                    MsgBox(CType(sender, TextBox).Name & " Values 1 and 2 must be different for calibration", MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValuesMustBeDifferent"), MsgBoxStyle.Exclamation)
                 Else
-                    MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValueMustBeBetween") & LocalMin & resources.GetString("COM_And") & LocalMax, MsgBoxStyle.Exclamation)
                 End If
                 With CType(sender, TextBox)
                     .Text = Main.A5Voltage2.ToString
@@ -695,9 +695,9 @@
                 Main.COMPortCalibration()
             Else
                 If TempDouble = Main.A5Value2 Then
-                    MsgBox(CType(sender, TextBox).Name & " Values 1 and 2 must be different for calibration", MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValuesMustBeDifferent"), MsgBoxStyle.Exclamation)
                 Else
-                    MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValueMustBeBetween") & LocalMin & resources.GetString("COM_And") & LocalMax, MsgBoxStyle.Exclamation)
                 End If
                 With CType(sender, TextBox)
                     .Text = Main.A5Value1.ToString
@@ -720,9 +720,9 @@
                 Main.COMPortCalibration()
             Else
                 If TempDouble = Main.A5Value1 Then
-                    MsgBox(CType(sender, TextBox).Name & " Values 1 and 2 must be different for calibration", MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValuesMustBeDifferent"), MsgBoxStyle.Exclamation)
                 Else
-                    MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+                    MsgBox(CType(sender, TextBox).Name & resources.GetString("COM_ValueMustBeBetween") & LocalMin & resources.GetString("COM_And") & LocalMax, MsgBoxStyle.Exclamation)
                 End If
                 With CType(sender, TextBox)
                     .Text = Main.A5Value2.ToString

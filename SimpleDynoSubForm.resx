@@ -117,4 +117,49 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="SDF_Minimum" xml:space="preserve">
+    <value>Minimum</value>
+  </data>
+  <data name="SDF_Actual" xml:space="preserve">
+    <value>Actual</value>
+  </data>
+  <data name="SDF_Maximum" xml:space="preserve">
+    <value>Maximum</value>
+  </data>
+  <data name="SDF_MinAbb" xml:space="preserve">
+    <value>Min</value>
+  </data>
+  <data name="SDF_MaxAbb" xml:space="preserve">
+    <value>Max</value>
+  </data>
+  <data name="SDF_DefaultParameter" xml:space="preserve">
+    <value>Parameter</value>
+  </data>
+  <data name="SDF_DefaultUnit" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="SDF_DefaultAct" xml:space="preserve">
+    <value>Act</value>
+  </data>
+  <data name="SDF_SetColors" xml:space="preserve">
+    <value>Set Colors</value>
+  </data>
+  <data name="SDF_Background" xml:space="preserve">
+    <value>Background</value>
+  </data>
+  <data name="SDF_Axes" xml:space="preserve">
+    <value>Axes</value>
+  </data>
+  <data name="SDF_Data" xml:space="preserve">
+    <value>Data</value>
+  </data>
+  <data name="SDF_ApplyToAll" xml:space="preserve">
+    <value>Apply to All</value>
+  </data>
+  <data name="SDF_SetFont" xml:space="preserve">
+    <value>Set Font</value>
+  </data>
+  <data name="SDF_RefreshRate" xml:space="preserve">
+    <value>Refresh rate</value>
+  </data>
 </root>

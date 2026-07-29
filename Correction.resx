@@ -117,6 +117,66 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Dyno Correction Factors</value>
+  </data>
+  <data name="chkUseRunDown.Text" xml:space="preserve">
+    <value>Use Coast Down</value>
+  </data>
+  <data name="grpRunDown.Text" xml:space="preserve">
+    <value>Coast Down Options</value>
+  </data>
+  <data name="rdoRollerAndWheel.Text" xml:space="preserve">
+    <value>Roller + Wheel</value>
+  </data>
+  <data name="chkUseCoastDownFile.Text" xml:space="preserve">
+    <value>Use saved run</value>
+  </data>
+  <data name="lblCoastDownFile.Text" xml:space="preserve">
+    <value>No File Loaded</value>
+  </data>
+  <data name="btnLoadCoastDown.Text" xml:space="preserve">
+    <value>Load</value>
+  </data>
+  <data name="rdoRollerAndDrivetrain.Text" xml:space="preserve">
+    <value>Roller + Drivetrain</value>
+  </data>
+  <data name="rdoFreeRoller.Text" xml:space="preserve">
+    <value>Free Roller</value>
+  </data>
+  <data name="GroupBox1.Text" xml:space="preserve">
+    <value>STD/SAE Correction Options</value>
+  </data>
+  <data name="CheckBox1.Text" xml:space="preserve">
+    <value>Use STD/SAE Correction</value>
+  </data>
+  <data name="Correction_NoFileLoaded" xml:space="preserve">
+    <value>No file loaded</value>
+  </data>
+  <data name="Correction_PowerRunFileFilter" xml:space="preserve">
+    <value>Power Run files v6.3 (*.sdp)|*.sdp</value>
+  </data>
+  <data name="Correction_UsingFilePrefix" xml:space="preserve">
+    <value>Using </value>
+  </data>
+  <data name="Correction_MsgBox_NoCoastDownFileSelected" xml:space="preserve">
+    <value>No coast down file was selected. Please confirm your coast down selection</value>
+  </data>
+  <data name="Correction_MsgBox_NoCoastDownDataFound" xml:space="preserve">
+    <value>No coast down data found.</value>
+  </data>
+  <data name="Correction_MsgBox_CoastDownNotApplied" xml:space="preserve">
+    <value>Coast Down not applied to this run</value>
+  </data>
+  <data name="Correction_MsgBox_FreeRollerFound" xml:space="preserve">
+    <value>Free Roller Coast Down data found.</value>
+  </data>
+  <data name="Correction_MsgBox_FreeRollerWheelFound" xml:space="preserve">
+    <value>Free Roller + Wheel Coast Down data found.</value>
+  </data>
+  <data name="Correction_MsgBox_RollerDrivetrainFound" xml:space="preserve">
+    <value>Roller + Drivetrain Coast Down data found</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

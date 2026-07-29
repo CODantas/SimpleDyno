@@ -26,7 +26,7 @@
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <MyType>WindowsForms</MyType>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <OldToolsVersion>0.0</OldToolsVersion>
     <UpgradeBackupLocation />
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -135,7 +135,6 @@
     <Reference Include="System.Drawing">
       <Name>System.Drawing</Name>
     </Reference>
-    <Reference Include="System.Management" />
     <Reference Include="System.Windows.Forms">
       <Name>System.Windows.Forms</Name>
     </Reference>
@@ -168,8 +167,13 @@
     <Compile Include="AssemblyInfo.vb">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ColorPalette.vb" />
     <Compile Include="CurveFunctions.vb" />
     <Compile Include="DataInputFileReader.vb" />
+    <Compile Include="IconManager.vb" />
+    <Compile Include="DashboardStatusBar.vb" />
+    <Compile Include="ThemeManager.vb" />
+    <Compile Include="TypographyManager.vb" />
     <Compile Include="Dyno.Designer.vb">
       <DependentUpon>Dyno.vb</DependentUpon>
     </Compile>
@@ -201,6 +205,9 @@
     <Compile Include="SimpleDynoSubMultiYTimeGraph.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="RealtimeGraph.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
@@ -222,25 +229,55 @@
     <Compile Include="SimpleDynoSubGauge.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="ModernGauge.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="SimpleDynoSubLabel.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="DigitalCard.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <EmbeddedResource Include="ChartControl.resx">
+      <DependentUpon>ChartControl.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartControl.pt-BR.resx">
+      <DependentUpon>ChartControl.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AnalysisForm.resx">
+      <DependentUpon>AnalysisForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AnalysisForm.pt-BR.resx">
       <DependentUpon>AnalysisForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dyno.resx">
       <DependentUpon>Dyno.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Dyno.pt-BR.resx">
+      <DependentUpon>Dyno.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="COM.resx">
+      <DependentUpon>COM.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="COM.pt-BR.resx">
       <DependentUpon>COM.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Fit.resx">
       <DependentUpon>Fit.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Fit.pt-BR.resx">
+      <DependentUpon>Fit.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Correction.resx">
       <DependentUpon>Correction.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Correction.pt-BR.resx">
+      <DependentUpon>Correction.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
+      <DependentUpon>Main.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Main.pt-BR.resx">
       <DependentUpon>Main.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -251,6 +288,45 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SimpleDynoSubForm.resx">
       <DependentUpon>SimpleDynoSubForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SimpleDynoSubForm.pt-BR.resx">
+      <DependentUpon>SimpleDynoSubForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SimpleDynoSubGauge.resx">
+      <DependentUpon>SimpleDynoSubGauge.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SimpleDynoSubGauge.pt-BR.resx">
+      <DependentUpon>SimpleDynoSubGauge.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModernGauge.resx">
+      <DependentUpon>ModernGauge.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModernGauge.pt-BR.resx">
+      <DependentUpon>ModernGauge.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SimpleDynoSubLabel.resx">
+      <DependentUpon>SimpleDynoSubLabel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SimpleDynoSubLabel.pt-BR.resx">
+      <DependentUpon>SimpleDynoSubLabel.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DigitalCard.resx">
+      <DependentUpon>DigitalCard.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DigitalCard.pt-BR.resx">
+      <DependentUpon>DigitalCard.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SimpleDynoSubMultiYTimeGraph.resx">
+      <DependentUpon>SimpleDynoSubMultiYTimeGraph.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RealtimeGraph.resx">
+      <DependentUpon>RealtimeGraph.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RealtimeGraph.pt-BR.resx">
+      <DependentUpon>RealtimeGraph.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SimpleDynoSubMultiYTimeGraph.pt-BR.resx">
+      <DependentUpon>SimpleDynoSubMultiYTimeGraph.vb</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config">
       <SubType>Designer</SubType>
@@ -267,9 +343,9 @@
     <None Include="Resources\DragImage.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+    <BootstrapperPackage Include="Microsoft.Net.Framework.4.8">
       <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <ProductName>Microsoft .NET Framework 4.8 %28x86 and x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

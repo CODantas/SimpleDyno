@@ -1,9 +1,8 @@
 ﻿Imports System.IO
 Public Class Fit
-    'CHECK - This needs to be reset to 0 for release versions
-#Const LoadOldPowerRunData = 1
+#Const LoadOldPowerRunData = 0
 
-    Private AvailableFits As String() = {"Four Parameter", "2nd Order Poly", "3rd Order Poly", "4th Order Poly", "5th Order Poly", "MA Smooth"} ' "Test"} ', "Simple Smoothing"}
+    Private AvailableFits As String()
     Private FitStartPoint As Integer = 1
     Private CurrentSmooth As Double
     Private VoltageSmooth As Double
@@ -50,6 +49,7 @@ Public Class Fit
     Private inputfile As StreamReader
     Private inputdialog As New OpenFileDialog
     Friend Sub Fit_Setup()
+        AvailableFits = {resources.GetString("Fit_FourParameter"), resources.GetString("Fit_2ndOrderPoly"), resources.GetString("Fit_3rdOrderPoly"), resources.GetString("Fit_4thOrderPoly"), resources.GetString("Fit_5thOrderPoly"), resources.GetString("Fit_MASmooth")}
         cmbWhichFit.Items.AddRange(AvailableFits)
         cmbWhichFit.SelectedIndex = 1 'Second Order - fastest initial
         cmbWhichRDFit.Items.AddRange(AvailableFits)
@@ -114,7 +114,7 @@ Public Class Fit
                 rdoRPM1.Checked = True
                 ProcessData()
             Else
-                MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+                MsgBox(CType(sender, TextBox).Name & resources.GetString("Fit_ValueMustBeBetween") & LocalMin & resources.GetString("Fit_And") & LocalMax, MsgBoxStyle.Exclamation)
                 With CType(sender, TextBox)
                     .Text = PowerRunSpikeLevel.ToString
                     .Focus()
@@ -177,7 +177,7 @@ Public Class Fit
                 XTimeMin = x(1)
                 'Debug.Print("xmax " & XTimeMax.ToString & "  xmin " & XTimeMin.ToString)
                 WhichDimension = Main.RPM1_ROLLER
-                YAxisLabel = "RPM"
+                YAxisLabel = resources.GetString("Fit_Axis_RPM")
                 For Count As Integer = 1 To UBound(y)
                     If y(Count) > RawDataMax Then RawDataMax = y(Count)
                     If y(Count) < RawDataMin Then RawDataMin = y(Count)
@@ -191,7 +191,7 @@ Public Class Fit
                 XTimeMax = CoastDownX(UBound(CoastDownX))
                 XTimeMin = CoastDownX(1)
                 WhichDimension = Main.RPM1_ROLLER
-                YAxisLabel = "RPM"
+                YAxisLabel = resources.GetString("Fit_Axis_RPM")
                 For Count As Integer = 1 To UBound(CoastDownY)
                     If CoastDownY(Count) > RawDataMax Then RawDataMax = CoastDownY(Count)
                     If CoastDownY(Count) < RawDataMin Then RawDataMin = CoastDownY(Count)
@@ -206,7 +206,7 @@ Public Class Fit
                 'XTimeMax = Ix(UBound(Ix))
                 'XTimeMin = Ix(1)
                 WhichDimension = Main.AMPS
-                YAxisLabel = "Amps"
+                YAxisLabel = resources.GetString("Fit_Axis_Amps")
                 For Count As Integer = 1 To UBound(FitData, 2)
                     If Main.CollectedData(WhichDimension, Count) > RawDataMax Then RawDataMax = Main.CollectedData(WhichDimension, Count)
                     If Main.CollectedData(WhichDimension, Count) < RawDataMin Then RawDataMin = Main.CollectedData(WhichDimension, Count)
@@ -217,7 +217,7 @@ Public Class Fit
                 'XTimeMax = Vx(UBound(Vx))
                 'XTimeMin = Vx(1)
                 WhichDimension = Main.VOLTS
-                YAxisLabel = "Volts"
+                YAxisLabel = resources.GetString("Fit_Axis_Volts")
                 For Count As Integer = 1 To UBound(FitData, 2)
                     If Main.CollectedData(WhichDimension, Count) > RawDataMax Then RawDataMax = Main.CollectedData(WhichDimension, Count)
                     If Main.CollectedData(WhichDimension, Count) < RawDataMin Then RawDataMin = Main.CollectedData(WhichDimension, Count)
@@ -248,14 +248,15 @@ Public Class Fit
                 .DrawString(TickString, GraphicsFont, AxisBrush, CInt(XLeft + (XTickInterval * (Count + 1))) - .MeasureString(TickString, GraphicsFont).Width / 2, CInt(YBottom) + TickLength)
             Next
             'X-Axis Title
-            .DrawString("Seconds", GraphicsFont, AxisBrush, CInt(PicDataWidth / 2) - .MeasureString("Seconds", GraphicsFont).Width / 2, CInt(YBottom) + TickLength * 2)
+            Dim SecondsLabel As String = resources.GetString("Fit_Axis_Seconds")
+            .DrawString(SecondsLabel, GraphicsFont, AxisBrush, CInt(PicDataWidth / 2) - .MeasureString(SecondsLabel, GraphicsFont).Width / 2, CInt(YBottom) + TickLength * 2)
             'y-axis Title
             .DrawString(YAxisLabel, GraphicsFont, AxisBrush, CInt(XLeft) - .MeasureString(YAxisLabel, GraphicsFont).Width / 2, CInt(Ytop) - CInt(.MeasureString(YAxisLabel, GraphicsFont).Height * 1.5))
 
-            .DrawString("RAW Data", GraphicsFont, Brushes.Green, 10, 5)
-            .DrawString("FIT Data", GraphicsFont, Brushes.Red, 90, 5)
-            .DrawString("Torque Curve (Max = " & Main.NewCustomFormat(RawTDataMax) & ")", GraphicsFont, TempTorqueDataBrush, 170, 5)
-            .DrawString("Power Curve (Max = " & Main.NewCustomFormat(RawPDataMax) & ")", GraphicsFont, TempPowerDataBrush, 350, 5)
+            .DrawString(resources.GetString("Fit_Legend_RawData"), GraphicsFont, Brushes.Green, 10, 5)
+            .DrawString(resources.GetString("Fit_Legend_FitData"), GraphicsFont, Brushes.Red, 90, 5)
+            .DrawString(resources.GetString("Fit_Legend_TorqueCurveMaxPrefix") & Main.NewCustomFormat(RawTDataMax) & ")", GraphicsFont, TempTorqueDataBrush, 170, 5)
+            .DrawString(resources.GetString("Fit_Legend_PowerCurveMaxPrefix") & Main.NewCustomFormat(RawPDataMax) & ")", GraphicsFont, TempPowerDataBrush, 350, 5)
 
 
             'Draw Raw data
@@ -267,11 +268,10 @@ Public Class Fit
                             .DrawLine(RawDataPen, CInt(XLeft + ((x(Count) - XTimeMin) / (XTimeMax - XTimeMin)) * (XRight - XLeft)), CInt(YBottom - (y(Count) * Main.DataUnits(WhichDimension, 0) - RawDataMin) / (RawDataMax - RawDataMin) * (YBottom - Ytop)), CInt(XLeft + ((x(Count + 1) - XTimeMin)) / (XTimeMax - XTimeMin) * (XRight - XLeft)), CInt(YBottom - (y(Count + 1) * Main.DataUnits(WhichDimension, 0) - RawDataMin) / (RawDataMax - RawDataMin) * (YBottom - Ytop)))
                             If blnRPMFit Then
                                 .DrawLine(FitDataPen, CInt(XLeft + ((x(Count) - XTimeMin) / (XTimeMax - XTimeMin)) * (XRight - XLeft)), CInt(YBottom - (fy(Count) * Main.DataUnits(WhichDimension, 0) - RawDataMin) / (RawDataMax - RawDataMin) * (YBottom - Ytop)), CInt(XLeft + ((x(Count + 1) - XTimeMin)) / (XTimeMax - XTimeMin) * (XRight - XLeft)), CInt(YBottom - (fy(Count + 1) * Main.DataUnits(WhichDimension, 0) - RawDataMin) / (RawDataMax - RawDataMin) * (YBottom - Ytop)))
-                                'CHECK - get rid of this try catch block when done
                                 Try
                                     .DrawLine(TempTorqueDataPen, CInt(XLeft + ((x(Count) - XTimeMin) / (XTimeMax - XTimeMin)) * (XRight - XLeft)), CInt(YBottom - (FitData(Main.TORQUE_ROLLER, Count) - RawTDataMin) / (RawTDataMax - RawTDataMin) * (YBottom - Ytop)), CInt(XLeft + ((x(Count + 1) - XTimeMin)) / (XTimeMax - XTimeMin) * (XRight - XLeft)), CInt(YBottom - (FitData(Main.TORQUE_ROLLER, Count + 1) - RawTDataMin) / (RawTDataMax - RawTDataMin) * (YBottom - Ytop)))
                                 Catch ex As Exception
-                                    Stop
+                                    'Skip drawing this segment if coordinates are invalid (e.g. Infinity/NaN from bad data)
                                 End Try
                                 .DrawLine(TempPowerDataPen, CInt(XLeft + ((x(Count) - XTimeMin) / (XTimeMax - XTimeMin)) * (XRight - XLeft)), CInt(YBottom - (FitData(Main.POWER, Count) - RawPDataMin) / (RawPDataMax - RawPDataMin) * (YBottom - Ytop)), CInt(XLeft + ((x(Count + 1) - XTimeMin)) / (XTimeMax - XTimeMin) * (XRight - XLeft)), CInt(YBottom - (FitData(Main.POWER, Count + 1) - RawPDataMin) / (RawPDataMax - RawPDataMin) * (YBottom - Ytop)))
                             End If
@@ -303,33 +303,28 @@ Public Class Fit
 
             End If
 
-            'If Main.DataPoints > 1 And blnfit Then
-            '    'For Count As Integer = 1 To UBound(fy) - 1 'UBound(FitData, 2) - 1
-            '    Select Case WhichFitData
-            '        Case Is = RPM
-            '            For Count As Integer = 1 To UBound(y) - 1
-            '                .DrawLine(FitDataPen, CInt(XLeft + ((x(Count) - XTimeMin) / (XTimeMax - XTimeMin)) * (XRight - XLeft)), CInt(YBottom - (fy(Count) * Main.DataUnits(WhichDimension, 0) - RawDataMin) / (RawDataMax - RawDataMin) * (YBottom - Ytop)), CInt(XLeft + ((x(Count + 1) - XTimeMin)) / (XTimeMax - XTimeMin) * (XRight - XLeft)), CInt(YBottom - (fy(Count + 1) * Main.DataUnits(WhichDimension, 0) - RawDataMin) / (RawDataMax - RawDataMin) * (YBottom - Ytop)))
-            '                .DrawLine(TempTorqueDataPen, CInt(XLeft + ((x(Count) - XTimeMin) / (XTimeMax - XTimeMin)) * (XRight - XLeft)), CInt(YBottom - (FitData(Main.TORQUE_ROLLER, Count) - RawTDataMin) / (RawTDataMax - RawTDataMin) * (YBottom - Ytop)), CInt(XLeft + ((x(Count + 1) - XTimeMin)) / (XTimeMax - XTimeMin) * (XRight - XLeft)), CInt(YBottom - (FitData(Main.TORQUE_ROLLER, Count + 1) - RawTDataMin) / (RawTDataMax - RawTDataMin) * (YBottom - Ytop)))
-            '                .DrawLine(TempPowerDataPen, CInt(XLeft + ((x(Count) - XTimeMin) / (XTimeMax - XTimeMin)) * (XRight - XLeft)), CInt(YBottom - (FitData(Main.POWER, Count) - RawPDataMin) / (RawPDataMax - RawPDataMin) * (YBottom - Ytop)), CInt(XLeft + ((x(Count + 1) - XTimeMin)) / (XTimeMax - XTimeMin) * (XRight - XLeft)), CInt(YBottom - (FitData(Main.POWER, Count + 1) - RawPDataMin) / (RawPDataMax - RawPDataMin) * (YBottom - Ytop)))
-            '            Next
-            '        Case Is = RUNDOWN
-            '            For Count As Integer = 1 To UBound(CoastDownY) - 1
-            '                .DrawLine(FitDataPen, CInt(XLeft + ((CoastDownX(Count) - XTimeMin) / (XTimeMax - XTimeMin)) * (XRight - XLeft)), CInt(YBottom - (CoastDownFY(Count) * Main.DataUnits(WhichDimension, 0) - RawDataMin) / (RawDataMax - RawDataMin) * (YBottom - Ytop)), CInt(XLeft + ((CoastDownX(Count + 1) - XTimeMin)) / (XTimeMax - XTimeMin) * (XRight - XLeft)), CInt(YBottom - (CoastDownFY(Count + 1) * Main.DataUnits(WhichDimension, 0) - RawDataMin) / (RawDataMax - RawDataMin) * (YBottom - Ytop)))
-            '                .DrawLine(TempTorqueDataPen, CInt(XLeft + ((CoastDownX(Count) - XTimeMin) / (XTimeMax - XTimeMin)) * (XRight - XLeft)), CInt(YBottom - (CoastDownT(Count) - RawTDataMin) / (RawTDataMax - RawTDataMin) * (YBottom - Ytop)), CInt(XLeft + ((CoastDownX(Count + 1) - XTimeMin)) / (XTimeMax - XTimeMin) * (XRight - XLeft)), CInt(YBottom - (CoastDownT(Count + 1) - RawTDataMin) / (RawTDataMax - RawTDataMin) * (YBottom - Ytop)))
-            '                .DrawLine(TempPowerDataPen, CInt(XLeft + ((CoastDownX(Count) - XTimeMin) / (XTimeMax - XTimeMin)) * (XRight - XLeft)), CInt(YBottom - (CoastDownP(Count) - RawPDataMin) / (RawPDataMax - RawPDataMin) * (YBottom - Ytop)), CInt(XLeft + ((CoastDownX(Count + 1) - XTimeMin)) / (XTimeMax - XTimeMin) * (XRight - XLeft)), CInt(YBottom - (CoastDownP(Count + 1) - RawPDataMin) / (RawPDataMax - RawPDataMin) * (YBottom - Ytop)))
-            '            Next
-            '        Case Is = VOLTAGE, CURRENT
-            '            For Count As Integer = 1 To UBound(y) - 1
-            '                .DrawLine(FitDataPen, CInt(XLeft + ((Main.CollectedData(Main.SESSIONTIME, Count)) / XTimeMax) * (XRight - XLeft)), CInt(YBottom - (FitData(WhichDimension, Count) * Main.DataUnits(WhichDimension, 0) - RawDataMin) / (RawDataMax - RawDataMin) * (YBottom - Ytop)), CInt(XLeft + ((Main.CollectedData(Main.SESSIONTIME, Count + 1)) / XTimeMax) * (XRight - XLeft)), CInt(YBottom - (FitData(WhichDimension, Count + 1) * Main.DataUnits(WhichDimension, 0) - RawDataMin) / (RawDataMax - RawDataMin) * (YBottom - Ytop)))
-            '            Next
-            '    End Select
-            'End If
-
         End With
 
+        Dim PreviousBackgroundImage As Image = pnlDataWindow.BackgroundImage
         pnlDataWindow.BackgroundImage = DataBitMap
         pnlDataWindow.Invalidate()
+        If PreviousBackgroundImage IsNot Nothing Then PreviousBackgroundImage.Dispose()
 
+        'Dispose the GDI+ objects created above - this Sub runs on every
+        'graph redraw, so leaving these undisposed accumulates GDI handles.
+        DataWindowBMP.Dispose()
+        AxesPen.Dispose()
+        AxisBrush.Dispose()
+        RawDataPen.Dispose()
+        CopyDataPen.Dispose()
+        RawDataBrush.Dispose()
+        FitDataPen.Dispose()
+        FitDataBrush.Dispose()
+        TempTorqueDataPen.Dispose()
+        TempPowerDataPen.Dispose()
+        TempTorqueDataBrush.Dispose()
+        TempPowerDataBrush.Dispose()
+        GraphicsFont.Dispose()
     End Sub
 #End Region
 #Region "Mathematical Curve Fitting Section"
@@ -397,7 +392,8 @@ Public Class Fit
             End If
             Main.RestartForms()
         Catch e As Exception
-            MsgBox("ProcessData Error: " & e.ToString, MsgBoxStyle.Exclamation)
+            MsgBox(resources.GetString("Fit_MsgBox_ProcessDataError") & e.Message, MsgBoxStyle.Exclamation)
+            Main.SaveCrashRecoverySnapshotAndClosePort()
             End
         End Try
     End Sub
@@ -416,8 +412,9 @@ Public Class Fit
         'x(0) = Main.CollectedData(Main.SESSIONTIME, FitStartPoint - 1)
         'y(0) = Main.CollectedData(Main.RPM1_ROLLER, FitStartPoint - 1)
 
-        PowerRunSpikeLevel = CDbl(txtPowerRunSpikeLevel.Text)
-        lblProgress.Text = "RPM1 Spike removal..."
+        Dim ParsedSpikeLevel As Double
+        If Double.TryParse(txtPowerRunSpikeLevel.Text, ParsedSpikeLevel) Then PowerRunSpikeLevel = ParsedSpikeLevel
+        lblProgress.Text = resources.GetString("Fit_Progress_RPM1SpikeRemoval")
         prgFit.Maximum = Main.DataPoints
         For count = FitStartPoint To Main.DataPoints
             prgFit.Value = count
@@ -434,7 +431,7 @@ Public Class Fit
             End If
         Next
         prgFit.Value = prgFit.Maximum
-        lblProgress.Text = "Done"
+        lblProgress.Text = resources.GetString("Fit_Progress_Done")
         'Then reset FitData to that size and copy all of the Collected data to that array.
 
         ReDim Preserve FitData(Main.LAST, MaxPosition) '- FitStartPoint + 1)
@@ -459,7 +456,7 @@ Public Class Fit
         blnRPMFit = False
         WhichFitData = RPM
         pnlDataWindowSetup() 'Shows the user the data we are fitting.
-        lblProgress.Text = "Fitting RPM1..."
+        lblProgress.Text = resources.GetString("Fit_Progress_FittingRPM1")
         'DC 21JAN16 - Old code based on VBA source from Optimiz.xla
         'Note that the old code returns the function values for the fitted Y parameter
         'Call NonLin, sending the local copies of the data by ref
@@ -495,7 +492,7 @@ Public Class Fit
 
             If Main.frmCorrection.chkUseRunDown.Checked AndAlso blnCoastDownDownFit Then CreateCoastDownData()
             prgFit.Value = prgFit.Maximum
-            lblProgress.Text = "Done"
+            lblProgress.Text = resources.GetString("Fit_Progress_Done")
             Me.Cursor = Cursors.Default
             Main.ProcessingData = False
             Main.Cursor = Cursors.Default
@@ -511,7 +508,7 @@ Public Class Fit
 
         If Main.frmCorrection.blnUsingLoadedRunDownFile = False Then
 
-            lblUsingRunDownFile.Text = "No Coast Down File Loaded"
+            lblUsingRunDownFile.Text = resources.GetString("Fit_NoCoastDownFileLoaded")
 
             Main.ProcessingData = True
             Main.Cursor = Cursors.WaitCursor
@@ -522,10 +519,11 @@ Public Class Fit
 
             'CoastDownY(0) = Main.CollectedData(Main.RPM1_ROLLER, Main.DataPoints)
             'CoastDownX(0) = Main.CollectedData(Main.SESSIONTIME, Main.DataPoints)
-            PowerRunSpikeLevel = CDbl(txtPowerRunSpikeLevel.Text)
+            Dim ParsedSpikeLevel As Double
+            If Double.TryParse(txtPowerRunSpikeLevel.Text, ParsedSpikeLevel) Then PowerRunSpikeLevel = ParsedSpikeLevel
             Count2 = 0
             RawRPM1Max = 0
-            lblProgress.Text = "Coast Down Spike removal..."
+            lblProgress.Text = resources.GetString("Fit_Progress_CoastDownSpikeRemoval")
             prgFit.Maximum = Main.DataPoints
             For Count = Main.DataPoints To 1 Step -1
                 prgFit.Value = Count2 '
@@ -542,7 +540,7 @@ Public Class Fit
                 End If
             Next
             prgFit.Value = prgFit.Maximum
-            lblProgress.Text = "Done"
+            lblProgress.Text = resources.GetString("Fit_Progress_Done")
             'Then reset FitData to that size and copy all of the Collected data to that array.
             'ReDim FitData(Main.LAST, MaxPosition) '- FitStartPoint + 1) 'CHECK - DON'T MODIFY THIS AGAIN
             ReDim Preserve CoastDownY(MaxPosition + 1) ' - FitStartPoint + 1)
@@ -559,7 +557,7 @@ Public Class Fit
 
             'Flag to the code and to the user that we are fitting the data
 
-            lblProgress.Text = "Fitting Coast Down..."
+            lblProgress.Text = resources.GetString("Fit_Progress_FittingCoastDown")
 
             'x and y need to have their order reversed as they were pouplated from the end of the run to the top of the run down
             Array.Reverse(CoastDownX) ', ', 1, UBound(CoastDownX))
@@ -580,7 +578,7 @@ Public Class Fit
                 'Note these are based on RPM and not time which means we have to find the closest RPM in the power up section
                 'This is going to be a pain.
                 prgFit.Value = prgFit.Maximum
-                lblProgress.Text = "Done"
+                lblProgress.Text = resources.GetString("Fit_Progress_Done")
                 Me.Cursor = Cursors.Default
                 Main.ProcessingData = False
                 Main.Cursor = Cursors.Default
@@ -597,30 +595,11 @@ Public Class Fit
                     'Debug.Print(CoastDownX(Count) & " " & CoastDownFY(Count) & " " & CoastDownT(Count) & " " & CoastDownP(Count))
                 Next
                 CreateCoastDownData()
-                'MsgBox(MaxRunDownRPM.ToString, vbOKOnly)
-                'This section should be in its own routine as it needs to be called if the RPM1 data is refit.
-                'Also, if the spike threshold is changed, both RPM1 and Coast Down need to be refit.
-                'For Count = 1 To UBound(FitData, 2)
-                '    If FitData(Main.RPM1_ROLLER, Count) >= MaxRunDownRPM Then
-                '        FitData(Main.TORQUE_COASTDOWN, Count) = -1 * (CoastDownFY(2) - CoastDownFY(1)) / (CoastDownX(2) - CoastDownX(1)) * Main.DynoMomentOfInertia 'this is the roller torque, should calc the wheel and motor at this point also
-                '    Else
-                '        MinDifference = 999999
-                '        For Count2 = 1 To UBound(CoastDownFY)
-                '            Difference = Math.Abs(CoastDownFY(Count2) - FitData(Main.RPM1_ROLLER, Count))
-                '            If Difference < MinDifference Then
-                '                MinDifference = Difference
-                '                MinDifferenceIndex = Count2
-                '            End If
-                '        Next
-                '        FitData(Main.TORQUE_COASTDOWN, Count) = -1 * (CoastDownFY(MinDifferenceIndex) - CoastDownFY(MinDifferenceIndex + 1)) / (CoastDownX(MinDifferenceIndex) - CoastDownX(MinDifferenceIndex + 1)) * Main.DynoMomentOfInertia 'this is the roller torque, should calc the wheel and motor at this point also
-                '    End If
-                '    FitData(Main.POWER_COASTDOWN, Count) = FitData(Main.TORQUE_COASTDOWN, Count) * ((FitData(Main.RPM1_ROLLER, Count) + FitData(Main.RPM1_ROLLER, Count - 1)) / 2)
-                'Next
                 blnfit = True
                 pnlDataWindowSetup()
             Else
                 'what are we doing if the fit didn;t complete
-                MsgBox("Skipped Fitdata", vbOKOnly)
+                MsgBox(resources.GetString("Fit_MsgBox_SkippedFitdata"), vbOKOnly)
             End If
 
         Else
@@ -643,30 +622,10 @@ Public Class Fit
                 Next
             End With
             FitData(Main.RPM1_ROLLER, 0) = FitData(Main.RPM1_ROLLER, 1)
-            'Dim Difference As Double, MinDifference As Double, MinDifferenceIndex As Integer
-            'Need to find the closest value
-            'First need to find the highestt run down fit poin
-            'Dim MaxRunDownRPM As Double
             For Count = 1 To UBound(CoastDownFY)
                 If CoastDownFY(Count) > MaxRunDownRPM Then MaxRunDownRPM = CoastDownFY(Count)
             Next
             CreateCoastDownData()
-            'For Count = 1 To UBound(FitData, 2)
-            '    If FitData(Main.RPM1_ROLLER, Count) >= MaxRunDownRPM Then
-            '        FitData(Main.TORQUE_COASTDOWN, Count) = -1 * (CoastDownFY(2) - CoastDownFY(1)) / (CoastDownX(2) - CoastDownX(1)) * Main.DynoMomentOfInertia 'this is the roller torque, should calc the wheel and motor at this point also
-            '    Else
-            '        MinDifference = 999999
-            '        For Count2 = 1 To UBound(CoastDownFY)
-            '            Difference = Math.Abs(CoastDownFY(Count2) - FitData(Main.RPM1_ROLLER, Count))
-            '            If Difference < MinDifference Then
-            '                MinDifference = Difference
-            '                MinDifferenceIndex = Count2
-            '            End If
-            '        Next
-            '        FitData(Main.TORQUE_COASTDOWN, Count) = -1 * (CoastDownFY(MinDifferenceIndex) - CoastDownFY(MinDifferenceIndex + 1)) / (CoastDownX(MinDifferenceIndex) - CoastDownX(MinDifferenceIndex + 1)) * Main.DynoMomentOfInertia 'this is the roller torque, should calc the wheel and motor at this point also
-            '    End If
-            '    FitData(Main.POWER_COASTDOWN, Count) = FitData(Main.TORQUE_COASTDOWN, Count) * ((FitData(Main.RPM1_ROLLER, Count) + FitData(Main.RPM1_ROLLER, Count - 1)) / 2)
-            'Next
             blnCoastDownDownFit = True
         End If
 
@@ -678,7 +637,11 @@ Public Class Fit
         Dim Count As Integer, Count2 As Integer, MinDifference As Double, difference As Double, MinDifferenceIndex As Integer
         For Count = 1 To UBound(FitData, 2)
             If FitData(Main.RPM1_ROLLER, Count) >= MaxRunDownRPM Then
-                FitData(Main.TORQUE_COASTDOWN, Count) = -1 * (CoastDownFY(2) - CoastDownFY(1)) / (CoastDownX(2) - CoastDownX(1)) * Main.DynoMomentOfInertia 'this is the roller torque, should calc the wheel and motor at this point also
+                If (CoastDownX(2) - CoastDownX(1)) <> 0 Then
+                    FitData(Main.TORQUE_COASTDOWN, Count) = -1 * (CoastDownFY(2) - CoastDownFY(1)) / (CoastDownX(2) - CoastDownX(1)) * Main.DynoMomentOfInertia 'this is the roller torque, should calc the wheel and motor at this point also
+                Else
+                    FitData(Main.TORQUE_COASTDOWN, Count) = 0
+                End If
             Else
                 MinDifference = 999999
                 For Count2 = 1 To UBound(CoastDownFY) - 1
@@ -689,9 +652,13 @@ Public Class Fit
                     End If
                 Next
                 Try
-                    FitData(Main.TORQUE_COASTDOWN, Count) = -1 * (CoastDownFY(MinDifferenceIndex) - CoastDownFY(MinDifferenceIndex + 1)) / (CoastDownX(MinDifferenceIndex) - CoastDownX(MinDifferenceIndex + 1)) * Main.DynoMomentOfInertia 'this is the roller torque, should calc the wheel and motor at this point also
+                    If (CoastDownX(MinDifferenceIndex) - CoastDownX(MinDifferenceIndex + 1)) <> 0 Then
+                        FitData(Main.TORQUE_COASTDOWN, Count) = -1 * (CoastDownFY(MinDifferenceIndex) - CoastDownFY(MinDifferenceIndex + 1)) / (CoastDownX(MinDifferenceIndex) - CoastDownX(MinDifferenceIndex + 1)) * Main.DynoMomentOfInertia 'this is the roller torque, should calc the wheel and motor at this point also
+                    Else
+                        FitData(Main.TORQUE_COASTDOWN, Count) = 0
+                    End If
                 Catch ex As Exception
-                    Stop
+                    FitData(Main.TORQUE_COASTDOWN, Count) = 0
                 End Try
 
             End If
@@ -702,7 +669,7 @@ Public Class Fit
         Main.ProcessingData = True
         Main.Cursor = Cursors.WaitCursor
         Me.Cursor = Cursors.WaitCursor
-        lblProgress.Text = "Smoothing voltage..."
+        lblProgress.Text = resources.GetString("Fit_Progress_SmoothingVoltage")
         VoltageSmooth = (scrlVoltageSmooth.Maximum + 1 - scrlVoltageSmooth.Value) / 2
         Dim Count As Integer
         ReDim Vx(UBound(FitData, 2)), Vy(UBound(FitData, 2)), Vfy(UBound(FitData, 2))
@@ -723,7 +690,7 @@ Public Class Fit
         Me.Cursor = Cursors.Default
         Main.ProcessingData = False
         Main.Cursor = Cursors.Default
-        lblProgress.Text = "Done"
+        lblProgress.Text = resources.GetString("Fit_Progress_Done")
         blnfit = True
         pnlDataWindowSetup()
     End Sub
@@ -731,7 +698,7 @@ Public Class Fit
         Main.ProcessingData = True
         Main.Cursor = Cursors.WaitCursor
         Me.Cursor = Cursors.WaitCursor
-        lblProgress.Text = "Smoothing current..."
+        lblProgress.Text = resources.GetString("Fit_Progress_SmoothingCurrent")
         CurrentSmooth = (scrlCurrentSmooth.Maximum + 1 - scrlCurrentSmooth.Value) / 2
         Dim Count As Integer
         ReDim Ix(UBound(FitData, 2)), Iy(UBound(FitData, 2)), Ify(UBound(FitData, 2))
@@ -751,7 +718,7 @@ Public Class Fit
         Me.Cursor = Cursors.Default
         Main.ProcessingData = False
         Main.Cursor = Cursors.Default
-        lblProgress.Text = "Done"
+        lblProgress.Text = resources.GetString("Fit_Progress_Done")
         blnfit = True
         pnlDataWindowSetup()
     End Sub
@@ -847,8 +814,16 @@ Public Class Fit
                 ' FitData(Main.TORQUE_ROLLER, Count) = (FitData(Main.RPM1_ROLLER, Count) - FitData(Main.RPM1_ROLLER, Count - 1)) / (FitData(Main.SESSIONTIME, Count) - FitData(Main.SESSIONTIME, Count - 1)) * Main.DynoMomentOfInertia 'this is the roller torque, should calc the wheel and motor at this point also
                 'NOTE - new power calculation uses (new-old) / 2  - REMOVED 06DEC13
                 'FitData(Main.POWER, Count) = FitData(Main.TORQUE_ROLLER, Count) * ((FitData(Main.RPM1_ROLLER, Count) + FitData(Main.RPM1_ROLLER, Count - 1)) / 2)
-                FitData(Main.TORQUE_WHEEL, Count) = FitData(Main.POWER, Count) / FitData(Main.RPM1_WHEEL, Count)
-                FitData(Main.TORQUE_MOTOR, Count) = FitData(Main.POWER, Count) / FitData(Main.RPM1_MOTOR, Count)
+                If FitData(Main.RPM1_WHEEL, Count) <> 0 Then
+                    FitData(Main.TORQUE_WHEEL, Count) = FitData(Main.POWER, Count) / FitData(Main.RPM1_WHEEL, Count)
+                Else
+                    FitData(Main.TORQUE_WHEEL, Count) = 0
+                End If
+                If FitData(Main.RPM1_MOTOR, Count) <> 0 Then
+                    FitData(Main.TORQUE_MOTOR, Count) = FitData(Main.POWER, Count) / FitData(Main.RPM1_MOTOR, Count)
+                Else
+                    FitData(Main.TORQUE_MOTOR, Count) = 0
+                End If
                 'Calculated Corrected values for power and torque if use rundown is selected
                 If Main.frmCorrection.chkUseRunDown.Checked Then
                     'Select how the coast down values are to be applied
@@ -951,8 +926,16 @@ Public Class Fit
                 'NOTE - new power calculation uses (new-old) / 2
                 Main.CollectedData(Main.POWER, Count) = Main.CollectedData(Main.TORQUE_ROLLER, Count) * ((Main.CollectedData(Main.RPM1_ROLLER, Count) + Main.CollectedData(Main.RPM1_ROLLER, Count - 1)) / 2)
                 'now re-calc wheel and motor torque based on Power
-                Main.CollectedData(Main.TORQUE_WHEEL, Count) = Main.CollectedData(Main.POWER, Count) / Main.CollectedData(Main.RPM1_WHEEL, Count)
-                Main.CollectedData(Main.TORQUE_MOTOR, Count) = Main.CollectedData(Main.POWER, Count) / Main.CollectedData(Main.RPM1_MOTOR, Count)
+                If Main.CollectedData(Main.RPM1_WHEEL, Count) <> 0 Then
+                    Main.CollectedData(Main.TORQUE_WHEEL, Count) = Main.CollectedData(Main.POWER, Count) / Main.CollectedData(Main.RPM1_WHEEL, Count)
+                Else
+                    Main.CollectedData(Main.TORQUE_WHEEL, Count) = 0
+                End If
+                If Main.CollectedData(Main.RPM1_MOTOR, Count) <> 0 Then
+                    Main.CollectedData(Main.TORQUE_MOTOR, Count) = Main.CollectedData(Main.POWER, Count) / Main.CollectedData(Main.RPM1_MOTOR, Count)
+                Else
+                    Main.CollectedData(Main.TORQUE_MOTOR, Count) = 0
+                End If
                 'recalc Drag and set a max speed based on it
                 Main.CollectedData(Main.DRAG, Count) = Main.CollectedData(Main.SPEED, Count) ^ 3 * Main.ForceAir
                 'Update other parameters requiring calculations
@@ -1056,14 +1039,14 @@ Public Class Fit
                 blnFitFinished = True
             Case Is = 6 'Test algorithm(s)
                 If rdoRPM1.Checked Then
-                    lblProgress.Text = "Smoothing RPM1..."
+                    lblProgress.Text = resources.GetString("Fit_Progress_SmoothingRPM1")
                     RPM1Smooth = (scrlRPM1Smooth.Maximum + 1 - scrlRPM1Smooth.Value) / 2
                     MovingAverageSmooth(SentY, SentFY, RPM1Smooth)
                     blnfit = True
                     blnFitFinished = True
                 End If
                 If rdoRunDown.Checked Then
-                    lblProgress.Text = "Smoothing Coast Down..."
+                    lblProgress.Text = resources.GetString("Fit_Progress_SmoothingCoastDown")
                     CoastDownSmooth = (scrlCoastDownSmooth.Maximum + 1 - scrlCoastDownSmooth.Value) / 2
                     MovingAverageSmooth(SentY, SentFY, CoastDownSmooth)
                     blnfit = True
@@ -1562,7 +1545,7 @@ Public Class Fit
             Main.frmAnalysis.ShowDialog()
         Else
             'Main.StopFitting = True
-            MsgBox("All of the expected curve fits were not completed. Please make sure all data are fit appropriately", vbOKOnly)
+            MsgBox(resources.GetString("Fit_MsgBox_AllCurveFitsNotCompleted"), vbOKOnly)
             Me.Show() 'Main.btnShow_Click(Me, System.EventArgs.Empty)
         End If
     End Sub

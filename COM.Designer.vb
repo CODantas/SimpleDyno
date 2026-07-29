@@ -17,12 +17,15 @@ Partial Class COM
     'Required by the Windows Form Designer
     Private components As System.ComponentModel.IContainer
 
+    'Resource manager for translated (resx satellite) strings. Promoted to a class
+    'field so COM.vb can also look up localized text outside InitializeComponent.
+    Private ReadOnly resources As New System.ComponentModel.ComponentResourceManager(GetType(COM))
+
     'NOTE: The following procedure is required by the Windows Form Designer
-    'It can be modified using the Windows Form Designer.  
+    'It can be modified using the Windows Form Designer.
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(COM))
         Me.Label72 = New System.Windows.Forms.Label()
         Me.Label68 = New System.Windows.Forms.Label()
         Me.Label69 = New System.Windows.Forms.Label()
@@ -115,7 +118,7 @@ Partial Class COM
         Me.Label72.Name = "Label72"
         Me.Label72.Size = New System.Drawing.Size(49, 23)
         Me.Label72.TabIndex = 185
-        Me.Label72.Text = "Volts"
+        Me.Label72.Text = resources.GetString("Label72.Text")
         '
         'Label68
         '
@@ -124,7 +127,7 @@ Partial Class COM
         Me.Label68.Name = "Label68"
         Me.Label68.Size = New System.Drawing.Size(37, 13)
         Me.Label68.TabIndex = 184
-        Me.Label68.Text = "Ohms)"
+        Me.Label68.Text = resources.GetString("Label68.Text")
         '
         'Label69
         '
@@ -133,7 +136,7 @@ Partial Class COM
         Me.Label69.Name = "Label69"
         Me.Label69.Size = New System.Drawing.Size(37, 13)
         Me.Label69.TabIndex = 183
-        Me.Label69.Text = "Ohms)"
+        Me.Label69.Text = resources.GetString("Label69.Text")
         '
         'Label66
         '
@@ -142,7 +145,7 @@ Partial Class COM
         Me.Label66.Name = "Label66"
         Me.Label66.Size = New System.Drawing.Size(37, 13)
         Me.Label66.TabIndex = 182
-        Me.Label66.Text = "(Using"
+        Me.Label66.Text = resources.GetString("Label66.Text")
         '
         'Label67
         '
@@ -151,7 +154,7 @@ Partial Class COM
         Me.Label67.Name = "Label67"
         Me.Label67.Size = New System.Drawing.Size(37, 13)
         Me.Label67.TabIndex = 181
-        Me.Label67.Text = "(Using"
+        Me.Label67.Text = resources.GetString("Label67.Text")
         '
         'txtResistance2
         '
@@ -180,7 +183,7 @@ Partial Class COM
         Me.btnCalibrateI2.Name = "btnCalibrateI2"
         Me.btnCalibrateI2.Size = New System.Drawing.Size(56, 21)
         Me.btnCalibrateI2.TabIndex = 178
-        Me.btnCalibrateI2.Text = "Calibrate"
+        Me.btnCalibrateI2.Text = resources.GetString("btnCalibrateI2.Text")
         Me.btnCalibrateI2.UseVisualStyleBackColor = True
         '
         'btnCalibrateI1
@@ -190,7 +193,7 @@ Partial Class COM
         Me.btnCalibrateI1.Name = "btnCalibrateI1"
         Me.btnCalibrateI1.Size = New System.Drawing.Size(56, 21)
         Me.btnCalibrateI1.TabIndex = 177
-        Me.btnCalibrateI1.Text = "Calibrate"
+        Me.btnCalibrateI1.Text = resources.GetString("btnCalibrateI1.Text")
         Me.btnCalibrateI1.UseVisualStyleBackColor = True
         '
         'btnCalibrateV2
@@ -200,7 +203,7 @@ Partial Class COM
         Me.btnCalibrateV2.Name = "btnCalibrateV2"
         Me.btnCalibrateV2.Size = New System.Drawing.Size(56, 21)
         Me.btnCalibrateV2.TabIndex = 176
-        Me.btnCalibrateV2.Text = "Calibrate"
+        Me.btnCalibrateV2.Text = resources.GetString("btnCalibrateV2.Text")
         Me.btnCalibrateV2.UseVisualStyleBackColor = True
         '
         'btnCalibrateV1
@@ -210,7 +213,7 @@ Partial Class COM
         Me.btnCalibrateV1.Name = "btnCalibrateV1"
         Me.btnCalibrateV1.Size = New System.Drawing.Size(56, 21)
         Me.btnCalibrateV1.TabIndex = 175
-        Me.btnCalibrateV1.Text = "Calibrate"
+        Me.btnCalibrateV1.Text = resources.GetString("btnCalibrateV1.Text")
         Me.btnCalibrateV1.UseVisualStyleBackColor = True
         '
         'Label63
@@ -221,7 +224,7 @@ Partial Class COM
         Me.Label63.Name = "Label63"
         Me.Label63.Size = New System.Drawing.Size(73, 23)
         Me.Label63.TabIndex = 174
-        Me.Label63.Text = "Current"
+        Me.Label63.Text = resources.GetString("Label63.Text")
         '
         'Label62
         '
@@ -231,7 +234,7 @@ Partial Class COM
         Me.Label62.Name = "Label62"
         Me.Label62.Size = New System.Drawing.Size(72, 23)
         Me.Label62.TabIndex = 173
-        Me.Label62.Text = "Voltage"
+        Me.Label62.Text = resources.GetString("Label62.Text")
         '
         'txtInputCurrent2
         '
@@ -260,7 +263,7 @@ Partial Class COM
         Me.Label37.Name = "Label37"
         Me.Label37.Size = New System.Drawing.Size(71, 13)
         Me.Label37.TabIndex = 164
-        Me.Label37.Text = "Voltage (V) = "
+        Me.Label37.Text = resources.GetString("Label37.Text")
         Me.Label37.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'txtInputVoltage2
@@ -291,7 +294,7 @@ Partial Class COM
         Me.Label18.Name = "Label18"
         Me.Label18.Size = New System.Drawing.Size(56, 23)
         Me.Label18.TabIndex = 161
-        Me.Label18.Text = "Amps"
+        Me.Label18.Text = resources.GetString("Label18.Text")
         '
         'lblCurrentAmps
         '
@@ -320,7 +323,7 @@ Partial Class COM
         Me.Label29.Name = "Label29"
         Me.Label29.Size = New System.Drawing.Size(82, 13)
         Me.Label29.TabIndex = 157
-        Me.Label29.Text = "When Pin A0 = "
+        Me.Label29.Text = resources.GetString("Label29.Text")
         '
         'txtA1Voltage2
         '
@@ -370,7 +373,7 @@ Partial Class COM
         Me.Label71.Name = "Label71"
         Me.Label71.Size = New System.Drawing.Size(129, 23)
         Me.Label71.TabIndex = 215
-        Me.Label71.Text = "Temperature2"
+        Me.Label71.Text = resources.GetString("Label71.Text")
         '
         'btnCalibrateTemp2T2
         '
@@ -379,7 +382,7 @@ Partial Class COM
         Me.btnCalibrateTemp2T2.Name = "btnCalibrateTemp2T2"
         Me.btnCalibrateTemp2T2.Size = New System.Drawing.Size(56, 21)
         Me.btnCalibrateTemp2T2.TabIndex = 214
-        Me.btnCalibrateTemp2T2.Text = "Calibrate"
+        Me.btnCalibrateTemp2T2.Text = resources.GetString("btnCalibrateTemp2T2.Text")
         Me.btnCalibrateTemp2T2.UseVisualStyleBackColor = True
         '
         'btnCalibrateTemp2T1
@@ -389,7 +392,7 @@ Partial Class COM
         Me.btnCalibrateTemp2T1.Name = "btnCalibrateTemp2T1"
         Me.btnCalibrateTemp2T1.Size = New System.Drawing.Size(56, 21)
         Me.btnCalibrateTemp2T1.TabIndex = 213
-        Me.btnCalibrateTemp2T1.Text = "Calibrate"
+        Me.btnCalibrateTemp2T1.Text = resources.GetString("btnCalibrateTemp2T1.Text")
         Me.btnCalibrateTemp2T1.UseVisualStyleBackColor = True
         '
         'btnCalibrateTemp1T2
@@ -399,7 +402,7 @@ Partial Class COM
         Me.btnCalibrateTemp1T2.Name = "btnCalibrateTemp1T2"
         Me.btnCalibrateTemp1T2.Size = New System.Drawing.Size(56, 21)
         Me.btnCalibrateTemp1T2.TabIndex = 212
-        Me.btnCalibrateTemp1T2.Text = "Calibrate"
+        Me.btnCalibrateTemp1T2.Text = resources.GetString("btnCalibrateTemp1T2.Text")
         Me.btnCalibrateTemp1T2.UseVisualStyleBackColor = True
         '
         'btnCalibrateTemp1T1
@@ -409,7 +412,7 @@ Partial Class COM
         Me.btnCalibrateTemp1T1.Name = "btnCalibrateTemp1T1"
         Me.btnCalibrateTemp1T1.Size = New System.Drawing.Size(56, 21)
         Me.btnCalibrateTemp1T1.TabIndex = 211
-        Me.btnCalibrateTemp1T1.Text = "Calibrate"
+        Me.btnCalibrateTemp1T1.Text = resources.GetString("btnCalibrateTemp1T1.Text")
         Me.btnCalibrateTemp1T1.UseVisualStyleBackColor = True
         '
         'Label64
@@ -420,7 +423,7 @@ Partial Class COM
         Me.Label64.Name = "Label64"
         Me.Label64.Size = New System.Drawing.Size(129, 23)
         Me.Label64.TabIndex = 210
-        Me.Label64.Text = "Temperature1"
+        Me.Label64.Text = resources.GetString("Label64.Text")
         '
         'txtInputTemp2Temperature2
         '
@@ -550,7 +553,7 @@ Partial Class COM
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(62, 23)
         Me.Label1.TabIndex = 245
-        Me.Label1.Text = "Pin A5"
+        Me.Label1.Text = resources.GetString("Label1.Text")
         '
         'btnCalibratePinA5V2
         '
@@ -559,7 +562,7 @@ Partial Class COM
         Me.btnCalibratePinA5V2.Name = "btnCalibratePinA5V2"
         Me.btnCalibratePinA5V2.Size = New System.Drawing.Size(56, 21)
         Me.btnCalibratePinA5V2.TabIndex = 244
-        Me.btnCalibratePinA5V2.Text = "Calibrate"
+        Me.btnCalibratePinA5V2.Text = resources.GetString("btnCalibratePinA5V2.Text")
         Me.btnCalibratePinA5V2.UseVisualStyleBackColor = True
         '
         'btnCalibratePinA5V1
@@ -569,7 +572,7 @@ Partial Class COM
         Me.btnCalibratePinA5V1.Name = "btnCalibratePinA5V1"
         Me.btnCalibratePinA5V1.Size = New System.Drawing.Size(56, 21)
         Me.btnCalibratePinA5V1.TabIndex = 243
-        Me.btnCalibratePinA5V1.Text = "Calibrate"
+        Me.btnCalibratePinA5V1.Text = resources.GetString("btnCalibratePinA5V1.Text")
         Me.btnCalibratePinA5V1.UseVisualStyleBackColor = True
         '
         'btnCalibratePinA4V2
@@ -579,7 +582,7 @@ Partial Class COM
         Me.btnCalibratePinA4V2.Name = "btnCalibratePinA4V2"
         Me.btnCalibratePinA4V2.Size = New System.Drawing.Size(56, 21)
         Me.btnCalibratePinA4V2.TabIndex = 242
-        Me.btnCalibratePinA4V2.Text = "Calibrate"
+        Me.btnCalibratePinA4V2.Text = resources.GetString("btnCalibratePinA4V2.Text")
         Me.btnCalibratePinA4V2.UseVisualStyleBackColor = True
         '
         'btnCalibratePinA4V1
@@ -589,7 +592,7 @@ Partial Class COM
         Me.btnCalibratePinA4V1.Name = "btnCalibratePinA4V1"
         Me.btnCalibratePinA4V1.Size = New System.Drawing.Size(56, 21)
         Me.btnCalibratePinA4V1.TabIndex = 241
-        Me.btnCalibratePinA4V1.Text = "Calibrate"
+        Me.btnCalibratePinA4V1.Text = resources.GetString("btnCalibratePinA4V1.Text")
         Me.btnCalibratePinA4V1.UseVisualStyleBackColor = True
         '
         'Label2
@@ -600,7 +603,7 @@ Partial Class COM
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(62, 23)
         Me.Label2.TabIndex = 240
-        Me.Label2.Text = "Pin A4"
+        Me.Label2.Text = resources.GetString("Label2.Text")
         '
         'txtPin5Value2
         '
@@ -709,7 +712,7 @@ Partial Class COM
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(71, 13)
         Me.Label4.TabIndex = 247
-        Me.Label4.Text = "Voltage (V) = "
+        Me.Label4.Text = resources.GetString("Label4.Text")
         Me.Label4.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'Label5
@@ -719,7 +722,7 @@ Partial Class COM
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(82, 13)
         Me.Label5.TabIndex = 246
-        Me.Label5.Text = "When Pin A0 = "
+        Me.Label5.Text = resources.GetString("Label5.Text")
         '
         'Label3
         '
@@ -728,7 +731,7 @@ Partial Class COM
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(65, 13)
         Me.Label3.TabIndex = 251
-        Me.Label3.Text = "Current (I) = "
+        Me.Label3.Text = resources.GetString("Label3.Text")
         '
         'Label6
         '
@@ -737,7 +740,7 @@ Partial Class COM
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(82, 13)
         Me.Label6.TabIndex = 250
-        Me.Label6.Text = "When Pin A1 = "
+        Me.Label6.Text = resources.GetString("Label6.Text")
         '
         'Label7
         '
@@ -746,7 +749,7 @@ Partial Class COM
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(65, 13)
         Me.Label7.TabIndex = 249
-        Me.Label7.Text = "Current (I) = "
+        Me.Label7.Text = resources.GetString("Label7.Text")
         '
         'Label8
         '
@@ -755,7 +758,7 @@ Partial Class COM
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(82, 13)
         Me.Label8.TabIndex = 248
-        Me.Label8.Text = "When Pin A1 = "
+        Me.Label8.Text = resources.GetString("Label8.Text")
         '
         'Label9
         '
@@ -764,7 +767,7 @@ Partial Class COM
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(72, 13)
         Me.Label9.TabIndex = 255
-        Me.Label9.Text = "Temp1 (°C) = "
+        Me.Label9.Text = resources.GetString("Label9.Text")
         Me.Label9.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'Label11
@@ -774,7 +777,7 @@ Partial Class COM
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(82, 13)
         Me.Label11.TabIndex = 254
-        Me.Label11.Text = "When Pin A2 = "
+        Me.Label11.Text = resources.GetString("Label11.Text")
         '
         'Label12
         '
@@ -783,7 +786,7 @@ Partial Class COM
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(72, 13)
         Me.Label12.TabIndex = 253
-        Me.Label12.Text = "Temp1 (°C) = "
+        Me.Label12.Text = resources.GetString("Label12.Text")
         Me.Label12.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'Label13
@@ -793,7 +796,7 @@ Partial Class COM
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(82, 13)
         Me.Label13.TabIndex = 252
-        Me.Label13.Text = "When Pin A2 = "
+        Me.Label13.Text = resources.GetString("Label13.Text")
         '
         'Label14
         '
@@ -802,7 +805,7 @@ Partial Class COM
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(72, 13)
         Me.Label14.TabIndex = 259
-        Me.Label14.Text = "Temp2 (°C) = "
+        Me.Label14.Text = resources.GetString("Label14.Text")
         '
         'Label15
         '
@@ -811,7 +814,7 @@ Partial Class COM
         Me.Label15.Name = "Label15"
         Me.Label15.Size = New System.Drawing.Size(82, 13)
         Me.Label15.TabIndex = 258
-        Me.Label15.Text = "When Pin A3 = "
+        Me.Label15.Text = resources.GetString("Label15.Text")
         '
         'Label16
         '
@@ -820,7 +823,7 @@ Partial Class COM
         Me.Label16.Name = "Label16"
         Me.Label16.Size = New System.Drawing.Size(72, 13)
         Me.Label16.TabIndex = 257
-        Me.Label16.Text = "Temp2 (°C) = "
+        Me.Label16.Text = resources.GetString("Label16.Text")
         '
         'Label17
         '
@@ -829,7 +832,7 @@ Partial Class COM
         Me.Label17.Name = "Label17"
         Me.Label17.Size = New System.Drawing.Size(82, 13)
         Me.Label17.TabIndex = 256
-        Me.Label17.Text = "When Pin A3 = "
+        Me.Label17.Text = resources.GetString("Label17.Text")
         '
         'Label19
         '
@@ -838,7 +841,7 @@ Partial Class COM
         Me.Label19.Name = "Label19"
         Me.Label19.Size = New System.Drawing.Size(62, 13)
         Me.Label19.TabIndex = 263
-        Me.Label19.Text = "A4 Value = "
+        Me.Label19.Text = resources.GetString("Label19.Text")
         Me.Label19.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'Label20
@@ -848,7 +851,7 @@ Partial Class COM
         Me.Label20.Name = "Label20"
         Me.Label20.Size = New System.Drawing.Size(82, 13)
         Me.Label20.TabIndex = 262
-        Me.Label20.Text = "When Pin A4 = "
+        Me.Label20.Text = resources.GetString("Label20.Text")
         '
         'Label21
         '
@@ -857,7 +860,7 @@ Partial Class COM
         Me.Label21.Name = "Label21"
         Me.Label21.Size = New System.Drawing.Size(62, 13)
         Me.Label21.TabIndex = 261
-        Me.Label21.Text = "A4 Value = "
+        Me.Label21.Text = resources.GetString("Label21.Text")
         Me.Label21.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'Label22
@@ -867,7 +870,7 @@ Partial Class COM
         Me.Label22.Name = "Label22"
         Me.Label22.Size = New System.Drawing.Size(82, 13)
         Me.Label22.TabIndex = 260
-        Me.Label22.Text = "When Pin A4 = "
+        Me.Label22.Text = resources.GetString("Label22.Text")
         '
         'Label23
         '
@@ -876,7 +879,7 @@ Partial Class COM
         Me.Label23.Name = "Label23"
         Me.Label23.Size = New System.Drawing.Size(62, 13)
         Me.Label23.TabIndex = 267
-        Me.Label23.Text = "A5 Value = "
+        Me.Label23.Text = resources.GetString("Label23.Text")
         '
         'Label24
         '
@@ -885,7 +888,7 @@ Partial Class COM
         Me.Label24.Name = "Label24"
         Me.Label24.Size = New System.Drawing.Size(82, 13)
         Me.Label24.TabIndex = 266
-        Me.Label24.Text = "When Pin A5 = "
+        Me.Label24.Text = resources.GetString("Label24.Text")
         '
         'Label25
         '
@@ -894,7 +897,7 @@ Partial Class COM
         Me.Label25.Name = "Label25"
         Me.Label25.Size = New System.Drawing.Size(62, 13)
         Me.Label25.TabIndex = 265
-        Me.Label25.Text = "A5 Value = "
+        Me.Label25.Text = resources.GetString("Label25.Text")
         '
         'Label26
         '
@@ -903,7 +906,7 @@ Partial Class COM
         Me.Label26.Name = "Label26"
         Me.Label26.Size = New System.Drawing.Size(82, 13)
         Me.Label26.TabIndex = 264
-        Me.Label26.Text = "When Pin A5 = "
+        Me.Label26.Text = resources.GetString("Label26.Text")
         '
         'COM
         '
@@ -996,7 +999,7 @@ Partial Class COM
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Name = "COM"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "COM Port Calibration"
+        Me.Text = resources.GetString("$this.Text")
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

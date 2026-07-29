@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Calibração da Porta COM</value>
+  </data>
+  <data name="Label72.Text" xml:space="preserve">
+    <value>Volts</value>
+  </data>
+  <data name="Label68.Text" xml:space="preserve">
+    <value>Ohms)</value>
+  </data>
+  <data name="Label69.Text" xml:space="preserve">
+    <value>Ohms)</value>
+  </data>
+  <data name="Label66.Text" xml:space="preserve">
+    <value>(Usando</value>
+  </data>
+  <data name="Label67.Text" xml:space="preserve">
+    <value>(Usando</value>
+  </data>
+  <data name="btnCalibrateI2.Text" xml:space="preserve">
+    <value>Calibrar</value>
+  </data>
+  <data name="btnCalibrateI1.Text" xml:space="preserve">
+    <value>Calibrar</value>
+  </data>
+  <data name="btnCalibrateV2.Text" xml:space="preserve">
+    <value>Calibrar</value>
+  </data>
+  <data name="btnCalibrateV1.Text" xml:space="preserve">
+    <value>Calibrar</value>
+  </data>
+  <data name="Label63.Text" xml:space="preserve">
+    <value>Corrente</value>
+  </data>
+  <data name="Label62.Text" xml:space="preserve">
+    <value>Tensão</value>
+  </data>
+  <data name="Label37.Text" xml:space="preserve">
+    <value>Tensão (V) = </value>
+  </data>
+  <data name="Label18.Text" xml:space="preserve">
+    <value>Amperes</value>
+  </data>
+  <data name="Label29.Text" xml:space="preserve">
+    <value>Quando o Pino A0 = </value>
+  </data>
+  <data name="Label71.Text" xml:space="preserve">
+    <value>Temperatura2</value>
+  </data>
+  <data name="btnCalibrateTemp2T2.Text" xml:space="preserve">
+    <value>Calibrar</value>
+  </data>
+  <data name="btnCalibrateTemp2T1.Text" xml:space="preserve">
+    <value>Calibrar</value>
+  </data>
+  <data name="btnCalibrateTemp1T2.Text" xml:space="preserve">
+    <value>Calibrar</value>
+  </data>
+  <data name="btnCalibrateTemp1T1.Text" xml:space="preserve">
+    <value>Calibrar</value>
+  </data>
+  <data name="Label64.Text" xml:space="preserve">
+    <value>Temperatura1</value>
+  </data>
+  <data name="Label1.Text" xml:space="preserve">
+    <value>Pino A5</value>
+  </data>
+  <data name="btnCalibratePinA5V2.Text" xml:space="preserve">
+    <value>Calibrar</value>
+  </data>
+  <data name="btnCalibratePinA5V1.Text" xml:space="preserve">
+    <value>Calibrar</value>
+  </data>
+  <data name="btnCalibratePinA4V2.Text" xml:space="preserve">
+    <value>Calibrar</value>
+  </data>
+  <data name="btnCalibratePinA4V1.Text" xml:space="preserve">
+    <value>Calibrar</value>
+  </data>
+  <data name="Label2.Text" xml:space="preserve">
+    <value>Pino A4</value>
+  </data>
+  <data name="Label4.Text" xml:space="preserve">
+    <value>Tensão (V) = </value>
+  </data>
+  <data name="Label5.Text" xml:space="preserve">
+    <value>Quando o Pino A0 = </value>
+  </data>
+  <data name="Label3.Text" xml:space="preserve">
+    <value>Corrente (I) = </value>
+  </data>
+  <data name="Label6.Text" xml:space="preserve">
+    <value>Quando o Pino A1 = </value>
+  </data>
+  <data name="Label7.Text" xml:space="preserve">
+    <value>Corrente (I) = </value>
+  </data>
+  <data name="Label8.Text" xml:space="preserve">
+    <value>Quando o Pino A1 = </value>
+  </data>
+  <data name="Label9.Text" xml:space="preserve">
+    <value>Temp1 (°C) = </value>
+  </data>
+  <data name="Label11.Text" xml:space="preserve">
+    <value>Quando o Pino A2 = </value>
+  </data>
+  <data name="Label12.Text" xml:space="preserve">
+    <value>Temp1 (°C) = </value>
+  </data>
+  <data name="Label13.Text" xml:space="preserve">
+    <value>Quando o Pino A2 = </value>
+  </data>
+  <data name="Label14.Text" xml:space="preserve">
+    <value>Temp2 (°C) = </value>
+  </data>
+  <data name="Label15.Text" xml:space="preserve">
+    <value>Quando o Pino A3 = </value>
+  </data>
+  <data name="Label16.Text" xml:space="preserve">
+    <value>Temp2 (°C) = </value>
+  </data>
+  <data name="Label17.Text" xml:space="preserve">
+    <value>Quando o Pino A3 = </value>
+  </data>
+  <data name="Label19.Text" xml:space="preserve">
+    <value>Valor A4 = </value>
+  </data>
+  <data name="Label20.Text" xml:space="preserve">
+    <value>Quando o Pino A4 = </value>
+  </data>
+  <data name="Label21.Text" xml:space="preserve">
+    <value>Valor A4 = </value>
+  </data>
+  <data name="Label22.Text" xml:space="preserve">
+    <value>Quando o Pino A4 = </value>
+  </data>
+  <data name="Label23.Text" xml:space="preserve">
+    <value>Valor A5 = </value>
+  </data>
+  <data name="Label24.Text" xml:space="preserve">
+    <value>Quando o Pino A5 = </value>
+  </data>
+  <data name="Label25.Text" xml:space="preserve">
+    <value>Valor A5 = </value>
+  </data>
+  <data name="Label26.Text" xml:space="preserve">
+    <value>Quando o Pino A5 = </value>
+  </data>
+  <data name="COM_ValuesMustBeDifferent" xml:space="preserve">
+    <value> Os valores 1 e 2 devem ser diferentes para a calibração</value>
+  </data>
+  <data name="COM_ValueMustBeBetween" xml:space="preserve">
+    <value> : O valor deve estar entre </value>
+  </data>
+  <data name="COM_And" xml:space="preserve">
+    <value> e </value>
+  </data>
+</root>

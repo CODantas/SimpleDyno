@@ -2,12 +2,15 @@
 'Damian Cunningham 2010 - 2014
 Imports System.IO
 Imports System.IO.Ports
-Imports System.Management
 Imports System.Drawing.Drawing2D
 Imports System.Collections.Generic
 Imports System.Runtime.InteropServices
 Public Class Main
     Inherits System.Windows.Forms.Form
+
+    'Resource manager for translated (resx satellite) strings. Used both by
+    'InitializeComponent and by code elsewhere in this class (e.g. MsgBox).
+    Private ReadOnly resources As New System.ComponentModel.ComponentResourceManager(GetType(Main))
 #Region "Compiler Constants"
     'These constants are used to control how the app is compiled
 #Const QueryPerformance = 0 'Triggers performance monitoring
@@ -150,6 +153,7 @@ Public Class Main
     Private Const MAXIMUM As Integer = 2
     Private Const MINCURMAXPOINTER As Integer = 3
     Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents btnLanguage As System.Windows.Forms.Button
 
 #End Region
 #Region "SimpleDyno Function Declarations"
@@ -158,7 +162,7 @@ Public Class Main
     Private myCallBackFunction As New WaveCallBackProcedure(AddressOf MyWaveCallBackProcedure) 'use with callback
 
     'Custom Rounding and Formatting Functions
-    Friend Function CustomRound(ByVal Sent As Double) As Double
+    Friend Shared Function CustomRound(ByVal Sent As Double) As Double
         'This is not particularly fast, but it is not used often?
         Dim TenCount As Double = 1
         If Sent > 0 Then
@@ -177,7 +181,7 @@ Public Class Main
     End Function
 
     'Formatting function for numbers and significant digits presented
-    Friend Function NewCustomFormat(ByVal sent As Double) As String
+    Friend Shared Function NewCustomFormat(ByVal sent As Double) As String
         Dim TempFormat As String
         Select Case sent
             Case Is >= 100
@@ -414,6 +418,20 @@ Public Class Main
     'Private DataInputFile As StreamReader 'In Main, this is used to load other peoples raw data when GearRatio is 999
     Private LogRawDataFileName As String
     Public Shared LogPowerRunDataFileName As String
+    'Cached at session start (cmbAcquisition/cmbCOMPorts/cmbBaudRate) so WriteRawDataToFile never has to
+    'read live ComboBox properties from a non-UI thread (audio callback / SerialPort.DataReceived handler).
+    Friend SessionAcquisitionText As String
+    Friend SessionCOMPortText As String
+    Friend SessionBaudRateText As String
+    'Periodically snapshots CollectedData to disk during an active Power Run / Log Raw session so a
+    'crash doesn't lose data that was never explicitly saved. Runs on the UI thread (Windows.Forms.Timer).
+    Private WithEvents AutosaveTimer As New System.Windows.Forms.Timer With {.Interval = 10000}
+    Private Const AutosaveFileName As String = "SimpleDyno_Autosave.sdr"
+    'Fase 4 (modernizacao de UI): status bar de rodape, somente leitura. Nao le nenhum estado
+    'de dentro de myWaveHandler_ProcessWave/DataReceivedHandler - so campos ja expostos na
+    'UI thread (WhichDataMode, lblCOMActive.BackColor).
+    Private pnlDashboardStatusBar As DashboardStatusBar
+    Private WithEvents DashboardStatusBarRefreshTimer As New System.Windows.Forms.Timer With {.Interval = 500}
     'Private ParameterInputFile As StreamReader
     'Private ParameterOutputFile As StreamWriter
 
@@ -435,6 +453,8 @@ Public Class Main
         InitializeComponent()
 
         'Add any initialization after the InitializeComponent() call
+        ApplyDashboardTheme()
+        InitializeDashboardChrome()
 
     End Sub
 
@@ -491,7 +511,6 @@ Public Class Main
     Friend WithEvents cmbBufferSize As System.Windows.Forms.ComboBox
     Friend WithEvents btnPerformanceTest As System.Windows.Forms.Button
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Main))
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
         Me.btnStartLoggingRaw = New System.Windows.Forms.Button()
         Me.btnResetMaxima = New System.Windows.Forms.Button()
@@ -528,6 +547,7 @@ Public Class Main
         Me.cmbBufferSize = New System.Windows.Forms.ComboBox()
         Me.btnPerformanceTest = New System.Windows.Forms.Button()
         Me.Button1 = New System.Windows.Forms.Button()
+        Me.btnLanguage = New System.Windows.Forms.Button()
         Me.pnlSignalWindow = New SimpleDyno.DoubleBufferPanel()
         Me.SuspendLayout()
         '
@@ -542,7 +562,7 @@ Public Class Main
         Me.btnStartLoggingRaw.Name = "btnStartLoggingRaw"
         Me.btnStartLoggingRaw.Size = New System.Drawing.Size(68, 21)
         Me.btnStartLoggingRaw.TabIndex = 42
-        Me.btnStartLoggingRaw.Text = "Log Raw Data"
+        Me.btnStartLoggingRaw.Text = resources.GetString("btnStartLoggingRaw.Text")
         '
         'btnResetMaxima
         '
@@ -551,7 +571,7 @@ Public Class Main
         Me.btnResetMaxima.Name = "btnResetMaxima"
         Me.btnResetMaxima.Size = New System.Drawing.Size(68, 21)
         Me.btnResetMaxima.TabIndex = 41
-        Me.btnResetMaxima.Text = "Reset"
+        Me.btnResetMaxima.Text = resources.GetString("btnResetMaxima.Text")
         '
         'btnStartPowerRun
         '
@@ -589,7 +609,7 @@ Public Class Main
         Me.btnAnalysis.Name = "btnAnalysis"
         Me.btnAnalysis.Size = New System.Drawing.Size(68, 21)
         Me.btnAnalysis.TabIndex = 171
-        Me.btnAnalysis.Text = "Analysis"
+        Me.btnAnalysis.Text = resources.GetString("btnAnalysis.Text")
         Me.btnAnalysis.UseVisualStyleBackColor = True
         '
         'txtThreshold2
@@ -628,7 +648,7 @@ Public Class Main
         Me.btnClose.Name = "btnClose"
         Me.btnClose.Size = New System.Drawing.Size(68, 21)
         Me.btnClose.TabIndex = 86
-        Me.btnClose.Text = "Close"
+        Me.btnClose.Text = resources.GetString("btnClose.Text")
         Me.btnClose.UseVisualStyleBackColor = True
         '
         'btnMultiYTime
@@ -638,7 +658,7 @@ Public Class Main
         Me.btnMultiYTime.Name = "btnMultiYTime"
         Me.btnMultiYTime.Size = New System.Drawing.Size(68, 21)
         Me.btnMultiYTime.TabIndex = 85
-        Me.btnMultiYTime.Text = "Y vs Time"
+        Me.btnMultiYTime.Text = resources.GetString("btnMultiYTime.Text")
         Me.btnMultiYTime.UseVisualStyleBackColor = True
         '
         'btnLoad
@@ -649,7 +669,7 @@ Public Class Main
         Me.btnLoad.Name = "btnLoad"
         Me.btnLoad.Size = New System.Drawing.Size(68, 21)
         Me.btnLoad.TabIndex = 77
-        Me.btnLoad.Text = "Load"
+        Me.btnLoad.Text = resources.GetString("btnLoad.Text")
         Me.btnLoad.UseVisualStyleBackColor = True
         '
         'btnSave
@@ -661,7 +681,7 @@ Public Class Main
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(68, 21)
         Me.btnSave.TabIndex = 78
-        Me.btnSave.Text = "Save"
+        Me.btnSave.Text = resources.GetString("btnSave.Text")
         Me.btnSave.UseVisualStyleBackColor = True
         '
         'btnNewGauge
@@ -671,7 +691,7 @@ Public Class Main
         Me.btnNewGauge.Name = "btnNewGauge"
         Me.btnNewGauge.Size = New System.Drawing.Size(68, 21)
         Me.btnNewGauge.TabIndex = 83
-        Me.btnNewGauge.Text = "Gauge"
+        Me.btnNewGauge.Text = resources.GetString("btnNewGauge.Text")
         Me.btnNewGauge.UseVisualStyleBackColor = True
         '
         'btnSaveAs
@@ -682,7 +702,7 @@ Public Class Main
         Me.btnSaveAs.Name = "btnSaveAs"
         Me.btnSaveAs.Size = New System.Drawing.Size(68, 21)
         Me.btnSaveAs.TabIndex = 79
-        Me.btnSaveAs.Text = "Save As"
+        Me.btnSaveAs.Text = resources.GetString("btnSaveAs.Text")
         Me.btnSaveAs.UseVisualStyleBackColor = True
         '
         'Label17
@@ -693,7 +713,7 @@ Public Class Main
         Me.Label17.Name = "Label17"
         Me.Label17.Size = New System.Drawing.Size(66, 13)
         Me.Label17.TabIndex = 58
-        Me.Label17.Text = "Run Start at"
+        Me.Label17.Text = resources.GetString("Label17.Text")
         Me.Label17.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'btnNewLabel
@@ -703,7 +723,7 @@ Public Class Main
         Me.btnNewLabel.Name = "btnNewLabel"
         Me.btnNewLabel.Size = New System.Drawing.Size(68, 21)
         Me.btnNewLabel.TabIndex = 82
-        Me.btnNewLabel.Text = "Label"
+        Me.btnNewLabel.Text = resources.GetString("btnNewLabel.Text")
         Me.btnNewLabel.UseVisualStyleBackColor = True
         '
         'btnHide
@@ -714,7 +734,7 @@ Public Class Main
         Me.btnHide.Name = "btnHide"
         Me.btnHide.Size = New System.Drawing.Size(68, 21)
         Me.btnHide.TabIndex = 80
-        Me.btnHide.Text = "Hide"
+        Me.btnHide.Text = resources.GetString("btnHide.Text")
         Me.btnHide.UseVisualStyleBackColor = True
         '
         'btnShow
@@ -725,7 +745,7 @@ Public Class Main
         Me.btnShow.Name = "btnShow"
         Me.btnShow.Size = New System.Drawing.Size(68, 21)
         Me.btnShow.TabIndex = 81
-        Me.btnShow.Text = "Show"
+        Me.btnShow.Text = resources.GetString("btnShow.Text")
         Me.btnShow.UseVisualStyleBackColor = True
         '
         'txtPowerRunThreshold
@@ -760,7 +780,7 @@ Public Class Main
         Me.lblZeroDetect.Name = "lblZeroDetect"
         Me.lblZeroDetect.Size = New System.Drawing.Size(64, 13)
         Me.lblZeroDetect.TabIndex = 32
-        Me.lblZeroDetect.Text = "Zero Detect"
+        Me.lblZeroDetect.Text = resources.GetString("lblZeroDetect.Text")
         Me.lblZeroDetect.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'btnStartAcquisition
@@ -769,7 +789,7 @@ Public Class Main
         Me.btnStartAcquisition.Name = "btnStartAcquisition"
         Me.btnStartAcquisition.Size = New System.Drawing.Size(105, 21)
         Me.btnStartAcquisition.TabIndex = 163
-        Me.btnStartAcquisition.Text = "Start"
+        Me.btnStartAcquisition.Text = resources.GetString("btnStartAcquisition.Text")
         Me.btnStartAcquisition.UseVisualStyleBackColor = True
         '
         'cmbAcquisition
@@ -820,7 +840,7 @@ Public Class Main
         Me.lblCOMActive.Name = "lblCOMActive"
         Me.lblCOMActive.Size = New System.Drawing.Size(66, 19)
         Me.lblCOMActive.TabIndex = 157
-        Me.lblCOMActive.Text = "COM Active"
+        Me.lblCOMActive.Text = resources.GetString("lblCOMActive.Text")
         Me.lblCOMActive.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'OpenFileDialog1
@@ -834,7 +854,7 @@ Public Class Main
         Me.lblInterface.Name = "lblInterface"
         Me.lblInterface.Size = New System.Drawing.Size(205, 13)
         Me.lblInterface.TabIndex = 174
-        Me.lblInterface.Text = "Currently using:"
+        Me.lblInterface.Text = resources.GetString("lblInterface.Text")
         Me.lblInterface.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'txtInterface
@@ -890,7 +910,17 @@ Public Class Main
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(68, 21)
         Me.Button1.TabIndex = 185
-        Me.Button1.Text = "Correction"
+        Me.Button1.Text = resources.GetString("Button1.Text")
+        '
+        'btnLanguage
+        '
+        Me.btnLanguage.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnLanguage.Location = New System.Drawing.Point(630, 40)
+        Me.btnLanguage.Name = "btnLanguage"
+        Me.btnLanguage.Size = New System.Drawing.Size(85, 30)
+        Me.btnLanguage.TabIndex = 186
+        Me.btnLanguage.Text = "PT-BR / EN"
+        Me.btnLanguage.UseVisualStyleBackColor = True
         '
         'pnlSignalWindow
         '
@@ -907,7 +937,7 @@ Public Class Main
         Me.AutoScaleBaseSize = New System.Drawing.Size(5, 14)
         Me.AutoScroll = True
         Me.CausesValidation = False
-        Me.ClientSize = New System.Drawing.Size(626, 112)
+        Me.ClientSize = New System.Drawing.Size(716, 112)
         Me.Controls.Add(Me.txtThreshold1)
         Me.Controls.Add(Me.pnlSignalWindow)
         Me.Controls.Add(Me.txtThreshold2)
@@ -943,6 +973,7 @@ Public Class Main
         Me.Controls.Add(Me.btnPerformanceTest)
         Me.Controls.Add(Me.cmbBufferSize)
         Me.Controls.Add(Me.Button1)
+        Me.Controls.Add(Me.btnLanguage)
         Me.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
@@ -955,6 +986,120 @@ Public Class Main
 
     End Sub
 
+#End Region
+#Region "Fase 4 UI modernization: dashboard chrome (re-skin + status bar)"
+    'Applies the dark theme (ColorPalette) to every control InitializeComponent already created.
+    'Only touches BackColor/ForeColor/FlatStyle/AutoEllipsis - never Font, Location, Size, Name,
+    'TabIndex or any Handles binding. Font is deliberately left untouched: this layout is a dense
+    'grid of fixed-size/AutoSize controls with near-zero margins (design ClientSize 716x112), and
+    'swapping Tahoma for the wider-rendering Segoe UI at the same point size clipped/overlapped
+    'several labels and buttons - found via screenshot during manual verification, so it was
+    'reverted rather than compensated with per-control auto-shrink logic.
+    'AutoEllipsis=True on buttons: FlatStyle.Flat word-wraps button text onto a second line more
+    'eagerly than the native System style did (e.g. "Power Run" on a 68px-wide, 21px-tall button
+    'wrapped to "Power"/"Run", with "Run" entirely invisible below the button's single-line
+    'height) - also found via screenshot. AutoEllipsis forces single-line rendering with a
+    'trailing "..." instead, which is legible for any text/localization length rather than
+    'silently dropping text off the bottom.
+    Private Sub ApplyDashboardTheme()
+        Me.BackColor = ColorPalette.Background
+
+        For Each ctrl As Control In Me.Controls
+            If TypeOf ctrl Is Button Then
+                Dim btn As Button = DirectCast(ctrl, Button)
+                btn.FlatStyle = FlatStyle.Flat
+                btn.BackColor = ColorPalette.CardBackground
+                btn.ForeColor = ColorPalette.TextPrimary
+                btn.FlatAppearance.BorderColor = ColorPalette.GridLines
+                btn.FlatAppearance.BorderSize = 1
+                btn.FlatAppearance.MouseOverBackColor = ColorPalette.Surface
+                btn.FlatAppearance.MouseDownBackColor = ColorPalette.GridLines
+                btn.UseVisualStyleBackColor = False
+                btn.AutoEllipsis = True
+                btn.ForeColor = If(btn.Enabled, ColorPalette.TextPrimary, ColorPalette.TextSecondary)
+                AddHandler btn.EnabledChanged, AddressOf DashboardButton_EnabledChanged
+                ShrinkButtonFontToFit(btn)
+            ElseIf TypeOf ctrl Is Label Then
+                Dim lbl As Label = DirectCast(ctrl, Label)
+                lbl.ForeColor = ColorPalette.TextSecondary
+            ElseIf TypeOf ctrl Is TextBox Then
+                Dim txt As TextBox = DirectCast(ctrl, TextBox)
+                txt.BackColor = ColorPalette.Surface
+                txt.ForeColor = ColorPalette.TextPrimary
+                txt.BorderStyle = BorderStyle.FixedSingle
+            ElseIf TypeOf ctrl Is ComboBox Then
+                Dim cmb As ComboBox = DirectCast(ctrl, ComboBox)
+                cmb.FlatStyle = FlatStyle.Flat
+                cmb.BackColor = ColorPalette.Surface
+                cmb.ForeColor = ColorPalette.TextPrimary
+            ElseIf TypeOf ctrl Is CheckBox Then
+                Dim chk As CheckBox = DirectCast(ctrl, CheckBox)
+                chk.ForeColor = ColorPalette.TextSecondary
+            ElseIf TypeOf ctrl Is DoubleBufferPanel Then
+                ctrl.BackColor = ColorPalette.Surface
+            End If
+        Next
+    End Sub
+
+    'FlatStyle.Flat lays out button text differently than the native System style did - several
+    'buttons whose (pt-BR) text was already tight for their fixed pixel width now overflow onto a
+    'second line that the button is too short to show (e.g. "Power Run" wrapped to "Power"/"Run",
+    'with "Run" entirely invisible) - found via screenshot, confirmed via Button.GetPreferredSize
+    '(the same layout math WinForms uses to paint, unlike a bare TextRenderer.MeasureText call
+    'which under-predicted the wrap). Shrinks only the affected button's own font in 0.5pt steps
+    'until GetPreferredSize reports it fits on one line; AutoEllipsis (set above) is the fallback
+    'if the floor size is reached without fitting.
+    Private Sub ShrinkButtonFontToFit(ByVal btn As Button)
+        Const MinFontSize As Single = 6.0F
+        Do While btn.GetPreferredSize(New Size(0, 0)).Width > btn.Width AndAlso btn.Font.Size > MinFontSize
+            Dim shrunk As New Font(btn.Font.Name, btn.Font.Size - 0.5F, btn.Font.Style)
+            btn.Font = shrunk
+        Loop
+    End Sub
+
+    'FlatStyle.Flat buttons don't dim their own text when Enabled=False the way the native
+    'System-style button used to - several buttons (btnSave/btnSaveAs/btnHide/btnShow) start
+    'disabled and looked identical to the enabled ones after the reskin. Re-applied whenever
+    'Enabled changes at runtime (Click handlers toggle it during Power Run/Log Raw), not just once.
+    Private Sub DashboardButton_EnabledChanged(ByVal sender As Object, ByVal e As EventArgs)
+        Dim btn As Button = DirectCast(sender, Button)
+        btn.ForeColor = If(btn.Enabled, ColorPalette.TextPrimary, ColorPalette.TextSecondary)
+    End Sub
+
+    'Appends a thin read-only DashboardStatusBar strip below the existing control grid, growing the
+    'form's ClientSize to fit it. Nothing existing is moved or resized.
+    Private Sub InitializeDashboardChrome()
+        Const DashboardStatusBarHeight As Integer = 22
+        Dim originalHeight As Integer = Me.ClientSize.Height
+
+        pnlDashboardStatusBar = New DashboardStatusBar() With {
+            .Location = New Point(0, originalHeight),
+            .Size = New Size(Me.ClientSize.Width, DashboardStatusBarHeight),
+            .Anchor = AnchorStyles.Left Or AnchorStyles.Right Or AnchorStyles.Bottom
+        }
+        Me.Controls.Add(pnlDashboardStatusBar)
+        Me.ClientSize = New Size(Me.ClientSize.Width, originalHeight + DashboardStatusBarHeight)
+
+        DashboardStatusBarRefreshTimer.Start()
+    End Sub
+
+    Private Sub DashboardStatusBarRefreshTimer_Tick(ByVal sender As Object, ByVal e As EventArgs) Handles DashboardStatusBarRefreshTimer.Tick
+        Dim modeText As String
+        Select Case WhichDataMode
+            Case LIVE
+                modeText = resources.GetString("StatusBar_Live")
+            Case LOGRAW
+                modeText = resources.GetString("StatusBar_LogRaw")
+            Case POWERRUN
+                modeText = resources.GetString("StatusBar_PowerRun")
+            Case Else
+                modeText = String.Empty
+        End Select
+        pnlDashboardStatusBar.AcquisitionStatus = modeText
+
+        Dim comActive As Boolean = (lblCOMActive.BackColor <> System.Windows.Forms.Control.DefaultBackColor)
+        pnlDashboardStatusBar.ComStatus = If(comActive, resources.GetString("StatusBar_ComActive"), resources.GetString("StatusBar_ComInactive"))
+    End Sub
 #End Region
 #Region "Form Load, WndProc, Button and Trackbar Events, Delgates and Close"
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
@@ -1041,6 +1186,17 @@ Public Class Main
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
         btnHide_Click(Me, EventArgs.Empty)
         frmCorrection.ShowDialog()
+    End Sub
+    Private Sub btnLanguage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnLanguage.Click
+        If My.Settings.Idioma = "pt-BR" Then
+            My.Settings.Idioma = "en-US"
+            My.Settings.Save()
+            MsgBox("Language changed to English. Please restart the application to apply.", MsgBoxStyle.Information)
+        Else
+            My.Settings.Idioma = "pt-BR"
+            My.Settings.Save()
+            MsgBox("Idioma alterado para PortuguÃªs. Reinicie o aplicativo para aplicar.", MsgBoxStyle.Information)
+        End If
     End Sub
     Private Sub pnlSignalWindow_MouseClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pnlSignalWindow.MouseClick
         If e.Button = MouseButtons.Right Then
@@ -1185,6 +1341,28 @@ Public Class Main
 
         End If
     End Sub
+    'Fase 5 (modernizacao de UI): mesma informacao que already existe via btnStartPowerRun/
+    'btnStartLoggingRaw.BackColor (ver pontos exatos em myWaveHandler_ProcessWave e
+    'DataReceivedHandler), so que exposta tambem para a DashboardStatusBar. Segue o mesmo
+    'padrao InvokeRequired/Invoke dos outros adapters *_ThreadSafe acima.
+    Public Enum AcquisitionStatus
+        Idle
+        PowerRunArmed
+        PowerRunRecording
+        PowerRunBufferFull
+        LogRawArmed
+        LogRawRecording
+        LogRawBufferFull
+    End Enum
+    Delegate Sub NotifyAcquisitionStatusChanged_Delegate(ByVal status As AcquisitionStatus)
+    Friend Sub NotifyAcquisitionStatusChanged_ThreadSafe(ByVal status As AcquisitionStatus)
+        If Me.InvokeRequired Then
+            Dim MyDelegate As New NotifyAcquisitionStatusChanged_Delegate(AddressOf NotifyAcquisitionStatusChanged_ThreadSafe)
+            Me.Invoke(MyDelegate, New Object() {status})
+        Else
+            pnlDashboardStatusBar.RecordingState = status
+        End If
+    End Sub
     Private Sub chkAdvancedProcessing_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkAdvancedProcessing.CheckedChanged
         If chkAdvancedProcessing.Checked = True Then
             UseAdvancedProcessing = True
@@ -1192,7 +1370,7 @@ Public Class Main
             UseAdvancedProcessing = False
         End If
     End Sub
-    Friend Function CheckNumericalLimits(ByVal SentMin As Double, ByVal SentMax As Double, ByVal SentValue As Double) As Boolean
+    Friend Shared Function CheckNumericalLimits(ByVal SentMin As Double, ByVal SentMax As Double, ByVal SentValue As Double) As Boolean
         If SentValue >= SentMin AndAlso SentValue <= SentMax Then
             Return True
         Else
@@ -1210,8 +1388,10 @@ Public Class Main
                 With btnStartPowerRun
                     .BackColor = System.Windows.Forms.Control.DefaultBackColor
                 End With
+                NotifyAcquisitionStatusChanged_ThreadSafe(AcquisitionStatus.Idle)
                 StopFitting = True
                 WhichDataMode = LIVE
+                AutosaveTimer.Stop()
             Else
                 btnHide_Click(Me, EventArgs.Empty)
                 With SaveFileDialog1
@@ -1221,6 +1401,7 @@ Public Class Main
                 End With
                 If SaveFileDialog1.FileName <> "" Then
                     LogPowerRunDataFileName = SaveFileDialog1.FileName
+                    CacheSessionFields()
                     ResetValues()
                     DataPoints = 0
                     ' DataPoints2 = 0
@@ -1229,8 +1410,10 @@ Public Class Main
                     With btnStartPowerRun
                         .BackColor = Color.Red
                     End With
+                    NotifyAcquisitionStatusChanged_ThreadSafe(AcquisitionStatus.PowerRunArmed)
                     WhichDataMode = POWERRUN
                     StopFitting = False
+                    AutosaveTimer.Start()
                     frmFit.ProcessData()
                 Else
                     btnShow_Click(Me, EventArgs.Empty)
@@ -1238,8 +1421,9 @@ Public Class Main
             End If
         Catch e1 As Exception
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox("btnStartPowerRun_Click Error: " & e1.ToString, MsgBoxStyle.Exclamation)
+            MsgBox(resources.GetString("Main_MsgBox_BtnStartPowerRunError") & e1.Message, MsgBoxStyle.Exclamation)
             btnShow_Click(Me, EventArgs.Empty)
+            SaveCrashRecoverySnapshotAndClosePort()
             End
         End Try
     End Sub
@@ -1251,114 +1435,7 @@ Public Class Main
         Try
             If WhichDataMode = LOGRAW Then 'We are stopping the log raw session and should write the data
                 'WRITE THE DATA
-                Dim DataOutputFile As New System.IO.StreamWriter(LogRawDataFileName)
-                With DataOutputFile
-                    'NOTE: The data files are space delimited
-                    'Write out the header information
-                    .WriteLine(LogRawVersion) 'Confirms log raw version
-                    .WriteLine(LogRawDataFileName & vbCrLf & DateAndTime.Today.ToString & vbCrLf)
-                    .WriteLine("Acquisition: " & cmbAcquisition.SelectedItem.ToString)
-                    .WriteLine("Number_of_Channels: " & NUMBER_OF_CHANNELS.ToString)
-                    .WriteLine("Sampling_Rate " & SAMPLE_RATE.ToString)
-                    If cmbCOMPorts.SelectedItem IsNot Nothing Then
-                        .WriteLine("COM_Port: " & cmbCOMPorts.SelectedItem.ToString)
-                    Else
-                        .WriteLine("No_COM_Port_Selected")
-                    End If
-                    If cmbBaudRate.SelectedItem IsNot Nothing Then
-                        .WriteLine("Baud_Rate: " & cmbBaudRate.SelectedItem.ToString)
-                    Else
-                        .WriteLine("No_Baud_Rate_Selected")
-                    End If
-                    .WriteLine("Car_Mass: " & Main.frmDyno.CarMass.ToString & " grams")
-                    .WriteLine("Frontal_Area: " & Main.frmDyno.FrontalArea.ToString & " mm2")
-                    .WriteLine("Drag_Coefficient: " & Main.frmDyno.DragCoefficient.ToString)
-                    .WriteLine("Gear_Ratio: " & Main.GearRatio.ToString)
-                    .WriteLine("Wheel_Diameter: " & Main.frmDyno.WheelDiameter.ToString & " mm")
-                    .WriteLine("Roller_Diameter: " & Main.frmDyno.RollerDiameter.ToString & " mm")
-                    .WriteLine("Roller_Wall_Thickness: " & Main.frmDyno.RollerWallThickness.ToString & " mm")
-                    .WriteLine("Roller_Mass: " & Main.frmDyno.RollerMass.ToString & " grams")
-                    .WriteLine("Axle_Diameter: " & Main.frmDyno.AxleDiameter.ToString & " mm")
-                    .WriteLine("Axle_Mass: " & Main.frmDyno.AxleMass.ToString & " grams")
-                    .WriteLine("End_Cap_Mass: " & Main.frmDyno.EndCapMass.ToString & " grams")
-                    .WriteLine("Extra_Diameter: " & Main.frmDyno.ExtraDiameter.ToString & " mm")
-                    .WriteLine("Extra_Wall_Thickness: " & Main.frmDyno.ExtraWallThickness.ToString & " mm")
-                    .WriteLine("Extra_Mass: " & Main.frmDyno.ExtraMass.ToString & " grams")
-                    .WriteLine("Target_MOI: " & Main.IdealMomentOfInertia.ToString & " kg/m2")
-                    .WriteLine("Actual_MOI: " & Main.DynoMomentOfInertia.ToString & " kg/m2")
-                    .WriteLine("Target_Roller_Mass: " & Main.IdealRollerMass.ToString & " grams")
-                    .WriteLine("Signals_Per_RPM1: " & Main.frmDyno.SignalsPerRPM.ToString)
-                    .WriteLine("Signals_Per_RPM2: " & Main.frmDyno.SignalsPerRPM2.ToString)
-                    .WriteLine("Channel_1_Threshold " & HighSignalThreshold.ToString)
-                    .WriteLine("Channel_2_Threshold " & HighSignalThreshold2.ToString)
-                    'The following not needed for Log Raw
-                    '.WriteLine("Run_RPM_Threshold " & PowerRunThreshold.ToString)
-                    '.WriteLine("Run_Spike_Removal_Threshold " & Fit.PowerRunSpikeLevel.ToString)
-                    .WriteLine(vbCrLf)
-
-                    'Create the column headings string based on the Data structure 
-                    'Only Primary SI units of the values are written
-                    Dim tempstring As String = ""
-                    Dim tempsplit As String()
-                    Dim paramcount As Integer
-                    Dim count As Integer
-
-                    'Add the raw data.  In V6 we are also calculating the raw torques, powers etc. This makes the file larger but will make Excel work easier
-                    .WriteLine(vbCrLf & "PRIMARY_CHANNEL_RAW_DATA")
-                    .WriteLine("NUMBER_OF_POINTS_COLLECTED" & " " & Main.DataPoints.ToString)
-                    'Again, create the header row
-                    tempstring = ""
-                    For paramcount = 0 To Main.LAST - 1
-                        tempsplit = Split(Main.DataUnitTags(paramcount), " ")
-                        tempstring = tempstring & Main.DataTags(paramcount).Replace(" ", "_") & "(" & tempsplit(0) & ") "
-                    Next
-                    'Write the column headings
-                    .WriteLine(tempstring)
-                    'Need to set the zeroth value to support using the count and count-1 approach to torque and power calculations
-                    Main.CollectedData(Main.RPM1_ROLLER, 0) = Main.CollectedData(Main.RPM1_ROLLER, 1)
-                    For count = 1 To Main.DataPoints - 1
-                        're-calc speed, wheel and motor RPMs based on collected data
-                        Main.CollectedData(Main.SPEED, count) = Main.CollectedData(Main.RPM1_ROLLER, count) * Main.RollerRadsPerSecToMetersPerSec
-                        Main.CollectedData(Main.RPM1_WHEEL, count) = Main.CollectedData(Main.RPM1_ROLLER, count) * Main.RollerRPMtoWheelRPM
-                        Main.CollectedData(Main.RPM1_MOTOR, count) = Main.CollectedData(Main.RPM1_ROLLER, count) * Main.RollerRPMtoMotorRPM
-                        're-calc roller torque and power useing the collected data
-                        Main.CollectedData(Main.TORQUE_ROLLER, count) = (Main.CollectedData(Main.RPM1_ROLLER, count) - Main.CollectedData(Main.RPM1_ROLLER, count - 1)) / (Main.CollectedData(Main.SESSIONTIME, count) - Main.CollectedData(Main.SESSIONTIME, count - 1)) * Main.DynoMomentOfInertia 'this is the roller torque, should calc the wheel and motor at this point also
-                        'NOTE - new power calculation uses (new-old) / 2
-                        Main.CollectedData(Main.POWER, count) = Main.CollectedData(Main.TORQUE_ROLLER, count) * ((Main.CollectedData(Main.RPM1_ROLLER, count) + Main.CollectedData(Main.RPM1_ROLLER, count - 1)) / 2)
-                        'now re-calc wheel and motor torque based on Power
-                        Main.CollectedData(Main.TORQUE_WHEEL, count) = Main.CollectedData(Main.POWER, count) / Main.CollectedData(Main.RPM1_WHEEL, count)
-                        Main.CollectedData(Main.TORQUE_MOTOR, count) = Main.CollectedData(Main.POWER, count) / Main.CollectedData(Main.RPM1_MOTOR, count)
-                        'recalc Drag and set a max speed based on it
-                        Main.CollectedData(Main.DRAG, count) = Main.CollectedData(Main.SPEED, count) ^ 3 * Main.ForceAir
-                        'Update other parameters requiring calculations
-                        'Main.RPM2 will be already there but the ratio and rollout need to be calculated
-                        If Main.CollectedData(Main.RPM2, count) <> 0 Then
-                            Main.CollectedData(Main.RPM2_RATIO, count) = Main.CollectedData(Main.RPM2, count) / Main.CollectedData(Main.RPM1_WHEEL, count)
-                            Main.CollectedData(Main.RPM2_ROLLOUT, count) = Main.WheelCircumference / Main.CollectedData(Main.RPM2_RATIO, count)
-                        Else
-                            Main.CollectedData(Main.RPM2_RATIO, count) = 0
-                            Main.CollectedData(Main.RPM2_ROLLOUT, count) = 0
-                        End If
-                        'Volts and Amps will already be there but watts in and efficiency need to be added
-                        Main.CollectedData(Main.WATTS_IN, count) = Main.CollectedData(Main.VOLTS, count) * Main.CollectedData(Main.AMPS, count)
-                        If Main.CollectedData(Main.WATTS_IN, count) <> 0 Then
-                            Main.CollectedData(Main.EFFICIENCY, count) = Main.CollectedData(Main.POWER, count) / Main.CollectedData(Main.WATTS_IN, count) * 100
-                        Else
-                            Main.CollectedData(Main.EFFICIENCY, count) = 0
-                        End If
-                        'Build the results string...
-                        tempstring = ""
-                        For paramcount = 0 To Main.LAST - 1
-                            tempsplit = Split(Main.DataUnitTags(paramcount), " ") ' How many units are there
-                            tempstring = tempstring & Main.CollectedData(paramcount, count) * Main.DataUnits(paramcount, 0) & " " 'DataTags(paramcount).Replace(" ", "_") & "(" & tempsplit(unitcount) & ") "
-                        Next
-                        '...and write it
-                        .WriteLine(tempstring)
-                    Next
-
-                End With
-                'Save the file
-                DataOutputFile.Close()
+                WriteRawDataToFile(LogRawDataFileName)
                 btnStartLoggingRaw.Enabled = True
 
                 '/////////////////////END COPIED CODE
@@ -1367,8 +1444,10 @@ Public Class Main
                 With btnStartLoggingRaw
                     .BackColor = System.Windows.Forms.Control.DefaultBackColor
                 End With
+                NotifyAcquisitionStatusChanged_ThreadSafe(AcquisitionStatus.Idle)
                 'StopFitting = True
                 WhichDataMode = LIVE
+                AutosaveTimer.Stop()
             Else
                 btnHide_Click(Me, EventArgs.Empty)
                 With SaveFileDialog1
@@ -1378,6 +1457,7 @@ Public Class Main
                 End With
                 If SaveFileDialog1.FileName <> "" Then
                     LogRawDataFileName = SaveFileDialog1.FileName
+                    CacheSessionFields()
                     ResetValues()
                     DataPoints = 0
                     Data(SESSIONTIME, ACTUAL) = 0
@@ -1386,18 +1466,211 @@ Public Class Main
                     With btnStartLoggingRaw
                         .BackColor = Color.Red
                     End With
+                    NotifyAcquisitionStatusChanged_ThreadSafe(AcquisitionStatus.LogRawArmed)
                     WhichDataMode = LOGRAW
+                    AutosaveTimer.Start()
                 Else
                     btnShow_Click(Me, EventArgs.Empty)
                 End If
             End If
         Catch e1 As Exception
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox("btnStartLoggingRaw Error: " & e1.ToString, MsgBoxStyle.Exclamation)
+            MsgBox(resources.GetString("Main_MsgBox_BtnStartLoggingRawError") & e1.Message, MsgBoxStyle.Exclamation)
             btnShow_Click(Me, EventArgs.Empty)
+            SaveCrashRecoverySnapshotAndClosePort()
             End
         End Try
 
+    End Sub
+
+    ''' <summary>
+    ''' Caches cmbAcquisition/cmbCOMPorts/cmbBaudRate as strings at the start of a Power Run / Log Raw
+    ''' session, so WriteRawDataToFile never needs to read live ComboBox properties from a non-UI thread
+    ''' (the audio callback and SerialPort.DataReceived handler both call WriteRawDataToFile on their own
+    ''' thread as part of the crash-recovery safety net).
+    ''' </summary>
+    Friend Sub CacheSessionFields()
+        SessionAcquisitionText = cmbAcquisition.SelectedItem.ToString
+        If cmbCOMPorts.SelectedItem IsNot Nothing Then
+            SessionCOMPortText = cmbCOMPorts.SelectedItem.ToString
+        Else
+            SessionCOMPortText = ""
+        End If
+        If cmbBaudRate.SelectedItem IsNot Nothing Then
+            SessionBaudRateText = cmbBaudRate.SelectedItem.ToString
+        Else
+            SessionBaudRateText = ""
+        End If
+    End Sub
+
+    ''' <summary>
+    ''' Writes the currently collected raw data (Main.CollectedData/Main.DataPoints) to TargetFileName in
+    ''' the .sdr Log Raw format, recalculating speed/torque/power along the way. Safe to call while a
+    ''' collection session is still in progress: the recalculation loop deliberately stops at
+    ''' DataPoints - 1 because DataReceivedHandler/myWaveHandler_ProcessWave increment DataPoints before
+    ''' populating CollectedData(*, DataPoints), so that last row may still be mid-write. Overwrites
+    ''' TargetFileName from scratch each call (CollectedData/DataPoints always hold the full accumulated
+    ''' state), which is what both the normal Log Raw save and the periodic autosave/crash-snapshot need.
+    ''' Reads only cached session fields (Session*Text) and Main state - never a live Control property -
+    ''' so it is safe to call from the audio callback / SerialPort.DataReceived threads.
+    ''' </summary>
+    Friend Sub WriteRawDataToFile(TargetFileName As String)
+        Using DataOutputFile As New System.IO.StreamWriter(TargetFileName)
+            With DataOutputFile
+                'NOTE: The data files are space delimited
+                'Write out the header information
+                .WriteLine(LogRawVersion) 'Confirms log raw version
+                .WriteLine(TargetFileName & vbCrLf & DateAndTime.Today.ToString & vbCrLf)
+                .WriteLine("Acquisition: " & SessionAcquisitionText)
+                .WriteLine("Number_of_Channels: " & NUMBER_OF_CHANNELS.ToString)
+                .WriteLine("Sampling_Rate " & SAMPLE_RATE.ToString)
+                If SessionCOMPortText <> "" Then
+                    .WriteLine("COM_Port: " & SessionCOMPortText)
+                Else
+                    .WriteLine("No_COM_Port_Selected")
+                End If
+                If SessionBaudRateText <> "" Then
+                    .WriteLine("Baud_Rate: " & SessionBaudRateText)
+                Else
+                    .WriteLine("No_Baud_Rate_Selected")
+                End If
+                .WriteLine("Car_Mass: " & Main.frmDyno.CarMass.ToString & " grams")
+                .WriteLine("Frontal_Area: " & Main.frmDyno.FrontalArea.ToString & " mm2")
+                .WriteLine("Drag_Coefficient: " & Main.frmDyno.DragCoefficient.ToString)
+                .WriteLine("Gear_Ratio: " & Main.GearRatio.ToString)
+                .WriteLine("Wheel_Diameter: " & Main.frmDyno.WheelDiameter.ToString & " mm")
+                .WriteLine("Roller_Diameter: " & Main.frmDyno.RollerDiameter.ToString & " mm")
+                .WriteLine("Roller_Wall_Thickness: " & Main.frmDyno.RollerWallThickness.ToString & " mm")
+                .WriteLine("Roller_Mass: " & Main.frmDyno.RollerMass.ToString & " grams")
+                .WriteLine("Axle_Diameter: " & Main.frmDyno.AxleDiameter.ToString & " mm")
+                .WriteLine("Axle_Mass: " & Main.frmDyno.AxleMass.ToString & " grams")
+                .WriteLine("End_Cap_Mass: " & Main.frmDyno.EndCapMass.ToString & " grams")
+                .WriteLine("Extra_Diameter: " & Main.frmDyno.ExtraDiameter.ToString & " mm")
+                .WriteLine("Extra_Wall_Thickness: " & Main.frmDyno.ExtraWallThickness.ToString & " mm")
+                .WriteLine("Extra_Mass: " & Main.frmDyno.ExtraMass.ToString & " grams")
+                .WriteLine("Target_MOI: " & Main.IdealMomentOfInertia.ToString & " kg/m2")
+                .WriteLine("Actual_MOI: " & Main.DynoMomentOfInertia.ToString & " kg/m2")
+                .WriteLine("Target_Roller_Mass: " & Main.IdealRollerMass.ToString & " grams")
+                .WriteLine("Signals_Per_RPM1: " & Main.frmDyno.SignalsPerRPM.ToString)
+                .WriteLine("Signals_Per_RPM2: " & Main.frmDyno.SignalsPerRPM2.ToString)
+                .WriteLine("Channel_1_Threshold " & HighSignalThreshold.ToString)
+                .WriteLine("Channel_2_Threshold " & HighSignalThreshold2.ToString)
+                'The following not needed for Log Raw
+                '.WriteLine("Run_RPM_Threshold " & PowerRunThreshold.ToString)
+                '.WriteLine("Run_Spike_Removal_Threshold " & Fit.PowerRunSpikeLevel.ToString)
+                .WriteLine(vbCrLf)
+
+                'Create the column headings string based on the Data structure
+                'Only Primary SI units of the values are written
+                Dim tempstring As String = ""
+                Dim tempsplit As String()
+                Dim paramcount As Integer
+                Dim count As Integer
+
+                'Add the raw data.  In V6 we are also calculating the raw torques, powers etc. This makes the file larger but will make Excel work easier
+                .WriteLine(vbCrLf & "PRIMARY_CHANNEL_RAW_DATA")
+                .WriteLine("NUMBER_OF_POINTS_COLLECTED" & " " & Main.DataPoints.ToString)
+                'Again, create the header row
+                tempstring = ""
+                For paramcount = 0 To Main.LAST - 1
+                    tempsplit = Split(Main.DataUnitTags(paramcount), " ")
+                    tempstring = tempstring & Main.DataTags(paramcount).Replace(" ", "_") & "(" & tempsplit(0) & ") "
+                Next
+                'Write the column headings
+                .WriteLine(tempstring)
+                'Need to set the zeroth value to support using the count and count-1 approach to torque and power calculations
+                Main.CollectedData(Main.RPM1_ROLLER, 0) = Main.CollectedData(Main.RPM1_ROLLER, 1)
+                For count = 1 To Main.DataPoints - 1
+                    're-calc speed, wheel and motor RPMs based on collected data
+                    Main.CollectedData(Main.SPEED, count) = Main.CollectedData(Main.RPM1_ROLLER, count) * Main.RollerRadsPerSecToMetersPerSec
+                    Main.CollectedData(Main.RPM1_WHEEL, count) = Main.CollectedData(Main.RPM1_ROLLER, count) * Main.RollerRPMtoWheelRPM
+                    Main.CollectedData(Main.RPM1_MOTOR, count) = Main.CollectedData(Main.RPM1_ROLLER, count) * Main.RollerRPMtoMotorRPM
+                    're-calc roller torque and power useing the collected data
+                    Main.CollectedData(Main.TORQUE_ROLLER, count) = (Main.CollectedData(Main.RPM1_ROLLER, count) - Main.CollectedData(Main.RPM1_ROLLER, count - 1)) / (Main.CollectedData(Main.SESSIONTIME, count) - Main.CollectedData(Main.SESSIONTIME, count - 1)) * Main.DynoMomentOfInertia 'this is the roller torque, should calc the wheel and motor at this point also
+                    'NOTE - new power calculation uses (new-old) / 2
+                    Main.CollectedData(Main.POWER, count) = Main.CollectedData(Main.TORQUE_ROLLER, count) * ((Main.CollectedData(Main.RPM1_ROLLER, count) + Main.CollectedData(Main.RPM1_ROLLER, count - 1)) / 2)
+                    'now re-calc wheel and motor torque based on Power
+                    Main.CollectedData(Main.TORQUE_WHEEL, count) = Main.CollectedData(Main.POWER, count) / Main.CollectedData(Main.RPM1_WHEEL, count)
+                    Main.CollectedData(Main.TORQUE_MOTOR, count) = Main.CollectedData(Main.POWER, count) / Main.CollectedData(Main.RPM1_MOTOR, count)
+                    'recalc Drag and set a max speed based on it
+                    Main.CollectedData(Main.DRAG, count) = Main.CollectedData(Main.SPEED, count) ^ 3 * Main.ForceAir
+                    'Update other parameters requiring calculations
+                    'Main.RPM2 will be already there but the ratio and rollout need to be calculated
+                    If Main.CollectedData(Main.RPM2, count) <> 0 Then
+                        Main.CollectedData(Main.RPM2_RATIO, count) = Main.CollectedData(Main.RPM2, count) / Main.CollectedData(Main.RPM1_WHEEL, count)
+                        Main.CollectedData(Main.RPM2_ROLLOUT, count) = Main.WheelCircumference / Main.CollectedData(Main.RPM2_RATIO, count)
+                    Else
+                        Main.CollectedData(Main.RPM2_RATIO, count) = 0
+                        Main.CollectedData(Main.RPM2_ROLLOUT, count) = 0
+                    End If
+                    'Volts and Amps will already be there but watts in and efficiency need to be added
+                    Main.CollectedData(Main.WATTS_IN, count) = Main.CollectedData(Main.VOLTS, count) * Main.CollectedData(Main.AMPS, count)
+                    If Main.CollectedData(Main.WATTS_IN, count) <> 0 Then
+                        Main.CollectedData(Main.EFFICIENCY, count) = Main.CollectedData(Main.POWER, count) / Main.CollectedData(Main.WATTS_IN, count) * 100
+                    Else
+                        Main.CollectedData(Main.EFFICIENCY, count) = 0
+                    End If
+                    'Build the results string...
+                    tempstring = ""
+                    For paramcount = 0 To Main.LAST - 1
+                        tempsplit = Split(Main.DataUnitTags(paramcount), " ") ' How many units are there
+                        tempstring = tempstring & Main.CollectedData(paramcount, count) * Main.DataUnits(paramcount, 0) & " " 'DataTags(paramcount).Replace(" ", "_") & "(" & tempsplit(unitcount) & ") "
+                    Next
+                    '...and write it
+                    .WriteLine(tempstring)
+                Next
+
+            End With
+        End Using
+    End Sub
+
+    ''' <summary>
+    ''' Periodic snapshot of the in-progress collection to AutosaveFileName. Runs on the UI thread
+    ''' (Windows.Forms.Timer), and is a no-op once WhichDataMode leaves POWERRUN/LOGRAW - this lets the
+    ''' timer keep running (started/stopped only from the UI-thread session start/cancel handlers) without
+    ''' ever needing to be Start/Stop'ed from the non-UI threads that can also end a session (audio
+    ''' callback, SerialPort.DataReceived). A failed autosave must never interrupt the active session.
+    ''' </summary>
+    Private Sub AutosaveTimer_Tick(sender As Object, e As EventArgs) Handles AutosaveTimer.Tick
+        Try
+            If DataPoints > 0 AndAlso (WhichDataMode = POWERRUN OrElse WhichDataMode = LOGRAW) Then
+                WriteRawDataToFile(Path.Combine(SettingsDirectory, AutosaveFileName))
+            End If
+        Catch
+            'Autosave failures must never interrupt an active data-collection session.
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' Best-effort crash-recovery snapshot, called right before an unhandled-exception Catch block ends
+    ''' the process with End(). Never throws - a failure here must never block the original End() from
+    ''' running (fail-fast behavior is intentionally preserved, this only adds a safety net before it).
+    ''' Safe to call from any thread: only touches Main.CollectedData/DataPoints and the Session*Text
+    ''' fields cached at session start, never a live Control property.
+    ''' </summary>
+    Friend Sub SaveCrashRecoverySnapshot()
+        Try
+            If DataPoints > 0 Then
+                Dim TimeStamp As String = DateTime.Now.ToString("yyyyMMdd_HHmmss")
+                WriteRawDataToFile(Path.Combine(SettingsDirectory, "SimpleDyno_CrashRecovery_" & TimeStamp & ".sdr"))
+            End If
+        Catch
+        End Try
+    End Sub
+
+    ''' <summary>
+    ''' SaveCrashRecoverySnapshot() plus closing the serial port, for crash points that run on the UI
+    ''' thread or on a thread other than the SerialPort's own DataReceived event thread. SerialClose()
+    ''' pumps Application.DoEvents() internally, so it must NOT be called from DataReceivedHandler itself
+    ''' (closing a SerialPort from within its own DataReceived handler risks a deadlock - see
+    ''' DataReceivedHandler's own Catch, which calls SaveCrashRecoverySnapshot() only, never this Sub).
+    ''' </summary>
+    Friend Sub SaveCrashRecoverySnapshotAndClosePort()
+        SaveCrashRecoverySnapshot()
+        Try
+            SerialClose()
+        Catch
+        End Try
     End Sub
 #End Region
 #Region "Text Box Checking"
@@ -1448,7 +1721,7 @@ Public Class Main
             WaitForNewSignal = TempDouble
         Else
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+            MsgBox(CType(sender, TextBox).Name & resources.GetString("Main_ValueMustBeBetween") & LocalMin & resources.GetString("Main_And") & LocalMax, MsgBoxStyle.Exclamation)
             btnShow_Click(Me, EventArgs.Empty)
             With CType(sender, TextBox)
                 .Text = WaitForNewSignal.ToString
@@ -1467,7 +1740,7 @@ Public Class Main
             MinimumPowerRunPoints = frmDyno.SignalsPerRPM * 10 'This somewhat arbitrary 
         Else
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+            MsgBox(CType(sender, TextBox).Name & resources.GetString("Main_ValueMustBeBetween") & LocalMin & resources.GetString("Main_And") & LocalMax, MsgBoxStyle.Exclamation)
             btnShow_Click(Me, EventArgs.Empty)
             With CType(sender, TextBox)
                 .Text = PowerRunThreshold.ToString
@@ -1548,8 +1821,6 @@ Public Class Main
                                 End If
                             Next
                             btnStartAcquisition.Select()
-                        Case Is = "Enter Alternates Here" ' this section for interpreting older versions of the settings file if needed
-
                     End Select
 
                 ElseIf File.Exists(SettingsDirectory & "\SimpleDynoSettings_6_3.sds") Then 'this is a one off for moving from 6.3 forward
@@ -1624,7 +1895,7 @@ Public Class Main
             End If
         Catch e As Exception
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox("LoadParametersFromFile Error: " & e.ToString, MsgBoxStyle.Exclamation)
+            MsgBox(resources.GetString("Main_MsgBox_LoadParametersFromFileError") & e.Message, MsgBoxStyle.Exclamation)
             End
         End Try
     End Sub
@@ -1725,69 +1996,15 @@ Public Class Main
                 End If
             Next
 
-            'For Each c As Control In Me.Controls
-            '    If TypeOf c Is TextBox Then
-            '        ParameterOutputFile.WriteLine("[" & c.Name.ToString & "]" & c.Text)
-            '    End If
-            '    If TypeOf c Is ComboBox Then
-            '        cmbNew = DirectCast(c, ComboBox)
-            '        ParameterOutputFile.WriteLine("[" & c.Name.ToString & "]" & cmbNew.SelectedItem.ToString)
-            '    End If
-            'Next
-
-            'For Each c As Control In frmDyno.Controls
-            '    If TypeOf c Is TextBox Then
-            '        ParameterOutputFile.WriteLine("[" & c.Name.ToString & "]" & c.Text)
-            '    End If
-            '    If TypeOf c Is ComboBox Then
-            '        cmbNew = DirectCast(c, ComboBox)
-            '        ParameterOutputFile.WriteLine("[" & c.Name.ToString & "]" & cmbNew.SelectedItem.ToString)
-            '    End If
-            'Next
-
-            'For Each c As Control In frmCOM.Controls
-            '    If TypeOf c Is TextBox Then
-            '        ParameterOutputFile.WriteLine("[" & c.Name.ToString & "]" & c.Text)
-            '    End If
-            '    If TypeOf c Is ComboBox Then
-            '        cmbNew = DirectCast(c, ComboBox)
-            '        ParameterOutputFile.WriteLine("[" & c.Name.ToString & "]" & cmbNew.SelectedItem.ToString)
-            '    End If
-            'Next
-
-            'For Each c As Control In frmAnalysis.Controls
-            '    If TypeOf c Is TextBox Then
-            '        ParameterOutputFile.WriteLine("[" & c.Name.ToString & "]" & c.Text)
-            '    End If
-            '    If TypeOf c Is ComboBox Then
-            '        cmbNew = DirectCast(c, ComboBox)
-            '        ParameterOutputFile.WriteLine("[" & c.Name.ToString & "]" & cmbNew.SelectedItem.ToString)
-            '    End If
-            'Next
-
-            'For Each c As Control In frmFit.Controls
-            '    If TypeOf c Is TextBox Then
-            '        ParameterOutputFile.WriteLine("[" & c.Name.ToString & "]" & c.Text)
-            '    End If
-            '    If TypeOf c Is ComboBox Then
-            '        cmbNew = DirectCast(c, ComboBox)
-            '        ParameterOutputFile.WriteLine("[" & c.Name.ToString & "]" & cmbNew.SelectedItem.ToString)
-            '    End If
-            '    If TypeOf c Is VScrollBar Then
-            '        scrlNew = DirectCast(c, VScrollBar)
-            '        ParameterOutputFile.WriteLine("[" & c.Name.ToString & "]" & scrlNew.Value)
-            '    End If
-            'Next
-
             ParameterOutputFile.Close()
 
         Catch e As Exception
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox("From SaveParameters Error: " & e.ToString, MsgBoxStyle.Exclamation)
+            MsgBox(resources.GetString("Main_MsgBox_SaveParametersError") & e.Message, MsgBoxStyle.Exclamation)
             End
         End Try
     End Sub
-    Private Sub PrepareArrays()
+    Friend Sub PrepareArrays()
 
         'Set all parameters to be available in interface components
         For count As Integer = 1 To LAST - 1
@@ -1923,15 +2140,15 @@ Public Class Main
         DataActions(CORRECTED_EFFICIENCY) = Function(x) x.Corr_Efficiency
 
         DataTags(TEMPERATURE1) = "Temperature1"
-        DataUnitTags(TEMPERATURE1) = "°C"
+        DataUnitTags(TEMPERATURE1) = "ï¿½C"
         DataUnits(TEMPERATURE1, 0) = 1
         Data(TEMPERATURE1, MINIMUM) = 10000
         DataActions(TEMPERATURE1) = Function(x) x.Temperature1
 
         DataTags(TEMPERATURE2) = "Temperature2"
-        DataUnitTags(TEMPERATURE2) = "°C"
+        DataUnitTags(TEMPERATURE2) = "ï¿½C"
         DataUnits(TEMPERATURE2, 0) = 1
-        Data(TEMPERATURE1, MINIMUM) = 10000
+        Data(TEMPERATURE2, MINIMUM) = 10000
         DataActions(TEMPERATURE2) = Function(x) x.Temperature2
 
         DataTags(PIN04VALUE) = "Pin 4 Value"
@@ -1966,7 +2183,7 @@ Public Class Main
         DataTags(CHAN1_DUTYCYCLE) = "Ch1 Duty Cycle"
         DataUnitTags(CHAN1_DUTYCYCLE) = "%"
         DataUnits(CHAN1_DUTYCYCLE, 0) = 1
-        DataActions(CHAN2_DUTYCYCLE) = Function(x) x.Ch1_Duty_Cycle
+        DataActions(CHAN1_DUTYCYCLE) = Function(x) x.Ch1_Duty_Cycle
 
         DataTags(CHAN2_FREQUENCY) = "Ch2 Frequency"
         DataUnitTags(CHAN2_FREQUENCY) = "Hz"
@@ -2110,7 +2327,7 @@ Public Class Main
 
         Catch e As Exception
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox("PrepareGraphicsParameters Error: " & e.ToString, MsgBoxStyle.Exclamation)
+            MsgBox(resources.GetString("Main_MsgBox_PrepareGraphicsParametersError") & e.Message, MsgBoxStyle.Exclamation)
             End
 
         End Try
@@ -2130,7 +2347,8 @@ Public Class Main
 
         Catch e As Exception
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox("ResetValues Error: " & e.ToString, MsgBoxStyle.Exclamation)
+            MsgBox(resources.GetString("Main_MsgBox_ResetValuesError") & e.Message, MsgBoxStyle.Exclamation)
+            SaveCrashRecoverySnapshotAndClosePort()
             End
         End Try
     End Sub
@@ -2152,7 +2370,7 @@ Public Class Main
         i = waveInOpen(WaveInHandle, IntPtr.op_Explicit(WAVE_MAPPER), waveFormat, myCallBackFunction, IntPtr.Zero, CALLBACK_FUNCTION)
         If i <> 0 Then
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox("InitializeWaveInput / WaveInOpen Error", MsgBoxStyle.Exclamation)
+            MsgBox(resources.GetString("Main_MsgBox_WaveInOpenError"), MsgBoxStyle.Exclamation)
             End
         End If
 
@@ -2216,7 +2434,7 @@ Public Class Main
             i = waveInPrepareHeader(WaveInHandle, WaveBufferHeaders(j), Marshal.SizeOf(WaveBufferHeaders(j)))
             If i <> 0 Then
                 btnHide_Click(Me, EventArgs.Empty)
-                MsgBox("InitializeWaveInput / waveInPrepareHeader Error", MsgBoxStyle.Exclamation)
+                MsgBox(resources.GetString("Main_MsgBox_WaveInPrepareHeaderError"), MsgBoxStyle.Exclamation)
                 End
             End If
         Next
@@ -2225,7 +2443,7 @@ Public Class Main
             i = waveInAddBuffer(WaveInHandle, WaveBufferHeaders(j), Marshal.SizeOf(WaveBufferHeaders(j)))
             If i <> 0 Then
                 btnHide_Click(Me, EventArgs.Empty)
-                MsgBox("InitializeWaveInput / waveInAddBuffer Error", MsgBoxStyle.Exclamation)
+                MsgBox(resources.GetString("Main_MsgBox_WaveInAddBufferError"), MsgBoxStyle.Exclamation)
                 End
             End If
         Next
@@ -2233,7 +2451,7 @@ Public Class Main
         i = waveInStart(WaveInHandle)
         If i <> 0 Then
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox("InitializeWaveInput / waveInStart Error", MsgBoxStyle.Exclamation)
+            MsgBox(resources.GetString("Main_MsgBox_WaveInStartError"), MsgBoxStyle.Exclamation)
             End
         Else
             WavesStarted = True
@@ -2259,7 +2477,8 @@ Public Class Main
                 i = waveInAddBuffer(WaveInHandle, WaveBufferHeaders(BufferCount), Marshal.SizeOf(WaveBufferHeaders(BufferCount)))  '...and add the buffer back to the queue
                 If i <> 0 Then 'Check that there were no problems adding back the buffer.'This could be skipped in a release version using a compiler constant
                     btnHide_Click(Me, EventArgs.Empty)
-                    MsgBox("myWaveHandler_ProcessWave / waveInAddBuffer Error" & i, MsgBoxStyle.Exclamation)
+                    MsgBox(resources.GetString("Main_MsgBox_ProcessWaveAddBufferError") & i, MsgBoxStyle.Exclamation)
+                    SaveCrashRecoverySnapshotAndClosePort()
                     End
                 End If
 
@@ -2368,6 +2587,7 @@ Public Class Main
                                             TotalElapsedTime += ElapsedTime
                                         End If
                                         If DataPoints = MinimumPowerRunPoints Then btnStartPowerRun.BackColor = Color.Green
+                                        If DataPoints = MinimumPowerRunPoints Then NotifyAcquisitionStatusChanged_ThreadSafe(AcquisitionStatus.PowerRunRecording)
                                         CollectedData(SESSIONTIME, DataPoints) = TotalElapsedTime
                                         CollectedData(RPM1_ROLLER, DataPoints) = Data(RPM1_ROLLER, ACTUAL)
                                         CollectedData(RPM2, DataPoints) = Data(RPM2, ACTUAL)
@@ -2393,6 +2613,7 @@ Public Class Main
                                     DataPoints += 1
                                     If DataPoints = 1 Then
                                         btnStartLoggingRaw.BackColor = Color.Green
+                                        NotifyAcquisitionStatusChanged_ThreadSafe(AcquisitionStatus.LogRawRecording)
                                         TotalElapsedTime = 0
                                     Else
                                         TotalElapsedTime += ElapsedTime
@@ -2416,6 +2637,7 @@ Public Class Main
                                     If DataPoints = MAXDATAPOINTS Then
                                         DataPoints = MAXDATAPOINTS - 1
                                         btnStartLoggingRaw.BackColor = Color.Red
+                                        NotifyAcquisitionStatusChanged_ThreadSafe(AcquisitionStatus.LogRawBufferFull)
                                     End If
                             End Select
                         End If
@@ -2561,12 +2783,14 @@ Public Class Main
                         If DataPoints = MAXDATAPOINTS Then
                             DataPoints = MAXDATAPOINTS - 1
                             btnStartLoggingRaw.BackColor = Color.Red
+                            NotifyAcquisitionStatusChanged_ThreadSafe(AcquisitionStatus.LogRawBufferFull)
                         End If
                     End If
                 End If
 
                 If WhichDataMode = POWERRUN AndAlso DataPoints > MinimumPowerRunPoints AndAlso Data(RPM1_ROLLER, ACTUAL) <= ActualPowerRunThreshold Then
                     SetControlBackColor_ThreadSafe(btnStartPowerRun, System.Windows.Forms.Control.DefaultBackColor)
+                    NotifyAcquisitionStatusChanged_ThreadSafe(AcquisitionStatus.Idle)
                     'DataPoints -= 1
                     PauseForms()
                     WhichDataMode = LIVE
@@ -2589,7 +2813,8 @@ Public Class Main
 #End If
         Catch e As Exception
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox("myWaveHandler_ProcessWave Error: " & e.ToString, MsgBoxStyle.Exclamation)
+            MsgBox(resources.GetString("Main_MsgBox_ProcessWaveError") & e.Message, MsgBoxStyle.Exclamation)
+            SaveCrashRecoverySnapshotAndClosePort()
             End
         End Try
     End Sub
@@ -2610,20 +2835,23 @@ Public Class Main
                 i = waveInReset(WaveInHandle)
                 If i <> 0 Then
                     btnHide_Click(Me, EventArgs.Empty)
-                    MsgBox("ShutDownWaves / waveInReset Error", MsgBoxStyle.Exclamation)
+                    MsgBox(resources.GetString("Main_MsgBox_ShutDownWavesResetError"), MsgBoxStyle.Exclamation)
+                    SaveCrashRecoverySnapshotAndClosePort()
                     End
                 End If
                 i = waveInStop(WaveInHandle)
                 If i <> 0 Then
                     btnHide_Click(Me, EventArgs.Empty)
-                    MsgBox("ShutDownWaves / waveInStop Error", MsgBoxStyle.Exclamation)
+                    MsgBox(resources.GetString("Main_MsgBox_ShutDownWavesStopError"), MsgBoxStyle.Exclamation)
+                    SaveCrashRecoverySnapshotAndClosePort()
                     End
                 End If
                 For j = 0 To NUMBER_OF_BUFFERS - 1
                     i = waveInUnprepareHeader(WaveInHandle, WaveBufferHeaders(j), Marshal.SizeOf(WaveBufferHeaders(j)))
                     If i <> 0 Then
                         btnHide_Click(Me, EventArgs.Empty)
-                        MsgBox("ShutDownWaves / waveInUnprepareHeader Error" & i, MsgBoxStyle.Exclamation)
+                        MsgBox(resources.GetString("Main_MsgBox_ShutDownWavesUnprepareHeaderError") & i, MsgBoxStyle.Exclamation)
+                        SaveCrashRecoverySnapshotAndClosePort()
                         End
                     End If
                 Next
@@ -2650,7 +2878,8 @@ Public Class Main
                 i = waveInClose(WaveInHandle)
                 If i <> 0 Then
                     btnHide_Click(Me, EventArgs.Empty)
-                    MsgBox("ShutDownWaves / waveInClose Error", MsgBoxStyle.Exclamation)
+                    MsgBox(resources.GetString("Main_MsgBox_ShutDownWavesCloseError"), MsgBoxStyle.Exclamation)
+                    SaveCrashRecoverySnapshotAndClosePort()
                     End
                 Else
 
@@ -2660,7 +2889,7 @@ Public Class Main
                 WavesStarted = False
             Catch e As Exception
                 btnHide_Click(Me, EventArgs.Empty)
-                MsgBox("ShutDownWaves Error: " & e.ToString, MsgBoxStyle.Exclamation)
+                MsgBox(resources.GetString("Main_MsgBox_ShutDownWavesError") & e.Message, MsgBoxStyle.Exclamation)
                 End
             End Try
         End If
@@ -2704,7 +2933,7 @@ Public Class Main
         PauseForms()
         ShutDownWaves()
         SerialClose()
-        SignalWindowBMP.Clear(System.Windows.Forms.Control.DefaultBackColor)
+        SignalWindowBMP.Clear(ColorPalette.Surface)
         pnlSignalWindow.BackgroundImage = SignalBitmap
         pnlSignalWindow.Invalidate()
         SetControlBackColor_ThreadSafe(lblCOMActive, System.Windows.Forms.Control.DefaultBackColor)
@@ -2818,17 +3047,14 @@ Public Class Main
         Try
             Problem = "Setting COM Available to false"
             COMPortsAvailable = False
-            Problem = "Creating PortSearcher Object"
-            Dim portSearcher As New ManagementObjectSearcher("\root\CIMV2", "SELECT Name from Win32_PnPEntity WHERE ConfigManagerErrorCode = 0") 'PnPEntity")
+            Problem = "Enumerating available COM ports"
+            Dim AvailablePorts() As String = SerialPort.GetPortNames()
             Problem = "Starting Loop For Ports"
-            For Each port As System.Management.ManagementObject In portSearcher.Get()
-                Problem = "About to check port name"
-                If port("Name") IsNot Nothing AndAlso port("Name").ToString.ToUpper.Contains("(COM") Then
-                    Problem = "Found COM - adding to CMB"
-                    cmbCOMPorts.Items.Add(port("Name").ToString)
-                    Problem = "Setting COM Available to True"
-                    COMPortsAvailable = True
-                End If
+            For Each portName As String In AvailablePorts
+                Problem = "Adding port to CMB"
+                cmbCOMPorts.Items.Add(portName)
+                Problem = "Setting COM Available to True"
+                COMPortsAvailable = True
             Next
             Problem = "Check Available COM Ports Status"
             If COMPortsAvailable Then
@@ -2844,18 +3070,14 @@ Public Class Main
             'MsgBox("No Problems Found", MsgBoxStyle.OkOnly)
         Catch ex As Exception
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox("Error found is " & Problem & " " & ex.ToString, MsgBoxStyle.Exclamation)
+            MsgBox(resources.GetString("Main_MsgBox_ErrorFoundIs") & Problem & " " & ex.Message, MsgBoxStyle.Exclamation)
             btnShow_Click(Me, EventArgs.Empty)
-            'Maybe Use GetPortNames 
-            'Dim AvailablePorts() As String = SerialPort.GetPortNames
-            'If AvailablePorts.Length > 0 Then ...
         End Try
     End Sub
     Private Sub SerialOpen(ByVal SentPort As String, ByVal SentRate As Integer)
         Do Until mySerialPort.IsOpen = False
             Application.DoEvents()
         Loop
-        SentPort = "COM" & SentPort.Substring(SentPort.IndexOf("(COM") + 4).TrimEnd(")"c)
         mySerialPort = New SerialPort(SentPort)
         mySerialPort.BaudRate = SentRate
         mySerialPort.Parity = Parity.None
@@ -2877,7 +3099,7 @@ Public Class Main
             Next
         Catch e As Exception
             btnHide_Click(Me, EventArgs.Empty)
-            MsgBox("Error reading COM Port.", CType(vbOK, MsgBoxStyle))
+            MsgBox(resources.GetString("Main_MsgBox_ErrorReadingCOMPort"), CType(vbOK, MsgBoxStyle))
             If mySerialPort.IsOpen Then mySerialPort.Close()
             'Enable Calibration buttons on com form
             For Each c As Control In frmCOM.Controls
@@ -2892,10 +3114,10 @@ Public Class Main
         ClosingCOMPort = True
         If mySerialPort.IsOpen Then
             RemoveHandler mySerialPort.DataReceived, AddressOf DataReceivedHandler
-            Dim t As Integer
-            'CHECK - this is a real hack
-            Do Until t = 100000
-                t += 1
+            'Give any in-flight read/write a moment to settle before closing the port.
+            Dim closeWait As New System.Diagnostics.Stopwatch()
+            closeWait.Start()
+            Do Until closeWait.ElapsedMilliseconds >= 300
                 Application.DoEvents()
             Loop
             mySerialPort.Close()
@@ -3028,6 +3250,7 @@ Public Class Main
                                                 TotalElapsedTime += (RPM1NewTriggerTime - RPM1OldTriggerTime)
                                             End If
                                             If DataPoints = MinimumPowerRunPoints Then btnStartPowerRun.BackColor = Color.Green
+                                            If DataPoints = MinimumPowerRunPoints Then NotifyAcquisitionStatusChanged_ThreadSafe(AcquisitionStatus.PowerRunRecording)
                                             CollectedData(SESSIONTIME, DataPoints) = TotalElapsedTime
                                             CollectedData(RPM1_ROLLER, DataPoints) = Data(RPM1_ROLLER, ACTUAL)
                                             CollectedData(RPM2, DataPoints) = Data(RPM2, ACTUAL)
@@ -3041,6 +3264,7 @@ Public Class Main
                                             If DataPoints = MAXDATAPOINTS Then
                                                 DataPoints = MAXDATAPOINTS - 1
                                                 btnStartPowerRun.BackColor = Color.Red
+                                                NotifyAcquisitionStatusChanged_ThreadSafe(AcquisitionStatus.PowerRunBufferFull)
                                             End If
                                         End If
 
@@ -3049,6 +3273,7 @@ Public Class Main
                                         If DataPoints = 1 Then
                                             TotalElapsedTime = 0
                                             btnStartLoggingRaw.BackColor = Color.Green
+                                            NotifyAcquisitionStatusChanged_ThreadSafe(AcquisitionStatus.LogRawRecording)
                                         Else
                                             TotalElapsedTime += ElapsedTime
                                         End If
@@ -3125,6 +3350,7 @@ Public Class Main
 
                     If WhichDataMode = POWERRUN AndAlso DataPoints > MinimumPowerRunPoints AndAlso Data(RPM1_ROLLER, ACTUAL) <= ActualPowerRunThreshold Then
                         SetControlBackColor_ThreadSafe(btnStartPowerRun, System.Windows.Forms.Control.DefaultBackColor)
+                        NotifyAcquisitionStatusChanged_ThreadSafe(AcquisitionStatus.Idle)
                         'DataPoints -= 1
                         PauseForms()
                         WhichDataMode = LIVE
@@ -3140,8 +3366,11 @@ Public Class Main
                 End If
             Catch ex As Exception
                 btnHide_Click(Me, EventArgs.Empty)
-                MsgBox("Serial Port Data Received Error: " & ex.ToString, MsgBoxStyle.Exclamation)
+                MsgBox(resources.GetString("Main_MsgBox_SerialPortDataReceivedError") & ex.Message, MsgBoxStyle.Exclamation)
                 'btnShow_Click(Me, EventArgs.Empty)
+                'Snapshot only - do NOT close mySerialPort here: this IS the SerialPort's own DataReceived
+                'event thread, and Close() waits for that thread to finish, risking a deadlock.
+                SaveCrashRecoverySnapshot()
                 End
             End Try
         End If
@@ -3183,7 +3412,9 @@ Public Class Main
     Private Sub LoadInterface()
         If txtInterface.Text <> "No Interface Loaded" Then
             Dim TempString As String
-            Dim InterfaceInputFile As New System.IO.StreamReader(txtInterface.Text)
+            Dim InterfaceInputFile As System.IO.StreamReader
+            Try
+            InterfaceInputFile = New System.IO.StreamReader(txtInterface.Text)
             TempString = InterfaceInputFile.ReadLine
             Select Case TempString
                 Case Is = InterfaceVersion, "SimpleDyno_Interface_6_4"
@@ -3191,7 +3422,7 @@ Public Class Main
                         TempString = InterfaceInputFile.ReadLine
                         If TempString = "Label" Then
                             TempString = InterfaceInputFile.ReadLine
-                            f.Add(New SimpleDynoSubLabel())
+                            f.Add(New DigitalCard())
                             AddHandler f(f.Count - 1).RemoveYourself, AddressOf RemoveForm
                             AddHandler f(f.Count - 1).SetToMyFormat, AddressOf SetAllFormats
                             f(f.Count - 1).myType = "Label"
@@ -3199,7 +3430,7 @@ Public Class Main
                             f.Item(f.Count - 1).CreateFromSerializedData(TempString)
                         ElseIf TempString = "Gauge" Then
                             TempString = InterfaceInputFile.ReadLine
-                            f.Add(New SimpleDynoSubGauge())
+                            f.Add(New ModernGauge())
                             AddHandler f(f.Count - 1).RemoveYourself, AddressOf RemoveForm
                             AddHandler f(f.Count - 1).SetToMyFormat, AddressOf SetAllFormats
                             f(f.Count - 1).myType = "Gauge"
@@ -3207,7 +3438,7 @@ Public Class Main
                             f.Item(f.Count - 1).CreateFromSerializedData(TempString)
                         ElseIf TempString = "MultiYTimeGraph" Then
                             TempString = InterfaceInputFile.ReadLine
-                            f.Add(New SimpleDynoSubMultiYTimeGraph())
+                            f.Add(New RealtimeGraph())
                             AddHandler f(f.Count - 1).RemoveYourself, AddressOf RemoveForm
                             AddHandler f(f.Count - 1).SetToMyFormat, AddressOf SetAllFormats
                             f(f.Count - 1).myType = "MultiYTimeGraph"
@@ -3227,7 +3458,7 @@ Public Class Main
                         TempString = InterfaceInputFile.ReadLine
                         If TempString = "Label" Then
                             TempString = InterfaceInputFile.ReadLine
-                            f.Add(New SimpleDynoSubLabel())
+                            f.Add(New DigitalCard())
                             AddHandler f(f.Count - 1).RemoveYourself, AddressOf RemoveForm
                             AddHandler f(f.Count - 1).SetToMyFormat, AddressOf SetAllFormats
                             f(f.Count - 1).myType = "Label"
@@ -3238,7 +3469,7 @@ Public Class Main
                         ElseIf TempString = "Gauge" Then
                             TempString = InterfaceInputFile.ReadLine
                             Debug.Print(TempString)
-                            f.Add(New SimpleDynoSubGauge())
+                            f.Add(New ModernGauge())
                             AddHandler f(f.Count - 1).RemoveYourself, AddressOf RemoveForm
                             AddHandler f(f.Count - 1).SetToMyFormat, AddressOf SetAllFormats
                             f(f.Count - 1).myType = "Gauge"
@@ -3246,7 +3477,7 @@ Public Class Main
                             f.Item(f.Count - 1).CreateFromSerializedData(InterfaceConvert_63_toCurrent(TempString))
                         ElseIf TempString = "MultiYTimeGraph" Then
                             TempString = InterfaceInputFile.ReadLine
-                            f.Add(New SimpleDynoSubMultiYTimeGraph())
+                            f.Add(New RealtimeGraph())
                             AddHandler f(f.Count - 1).RemoveYourself, AddressOf RemoveForm
                             AddHandler f(f.Count - 1).SetToMyFormat, AddressOf SetAllFormats
                             f(f.Count - 1).myType = "MultiYTimeGraph"
@@ -3264,15 +3495,14 @@ Public Class Main
                     btnSave_Click(Me, EventArgs.Empty) ' This added here to make sure any version changes are saved
                 Case Else
                     btnHide_Click(Me, EventArgs.Empty)
-                    MsgBox("Not a valid Interface File", vbOKOnly)
+                    MsgBox(resources.GetString("Main_MsgBox_NotAValidInterfaceFile"), vbOKOnly)
                     btnShow_Click(Me, EventArgs.Empty)
                     InterfaceInputFile.Close()
                     InterfaceInputFile.Dispose()
             End Select
-           
-            
-
-
+            Finally
+                If InterfaceInputFile IsNot Nothing Then InterfaceInputFile.Dispose()
+            End Try
         End If
     End Sub
     Private Function InterfaceConvert_63_toCurrent(ByVal Sent As String) As String
@@ -3411,7 +3641,7 @@ Public Class Main
         btnSaveAs.Enabled = True
         btnClose.Enabled = True
         btnHide.Enabled = True
-        f.Add(New SimpleDynoSubLabel())
+        f.Add(New DigitalCard())
         AddHandler f(f.Count - 1).RemoveYourself, AddressOf RemoveForm
         AddHandler f(f.Count - 1).SetToMyFormat, AddressOf SetAllFormats
         f(f.Count - 1).Initialize(f.Count - 1, Data, DataTags, DataUnits, DataUnitTags, DataAreUsed)
@@ -3422,7 +3652,7 @@ Public Class Main
         btnSaveAs.Enabled = True
         btnClose.Enabled = True
         btnHide.Enabled = True
-        f.Add(New SimpleDynoSubGauge())
+        f.Add(New ModernGauge())
         AddHandler f(f.Count - 1).RemoveYourself, AddressOf RemoveForm
         AddHandler f(f.Count - 1).SetToMyFormat, AddressOf SetAllFormats
         f(f.Count - 1).Initialize(f.Count - 1, Data, DataTags, DataUnits, DataUnitTags, DataAreUsed)
@@ -3432,7 +3662,7 @@ Public Class Main
         btnSaveAs.Enabled = True
         btnClose.Enabled = True
         btnHide.Enabled = True
-        f.Add(New SimpleDynoSubMultiYTimeGraph())
+        f.Add(New RealtimeGraph())
         AddHandler f(f.Count - 1).RemoveYourself, AddressOf RemoveForm
         AddHandler f(f.Count - 1).SetToMyFormat, AddressOf SetAllFormats
         f(f.Count - 1).Initialize(f.Count - 1, Data, DataTags, DataUnits, DataUnitTags, DataAreUsed)

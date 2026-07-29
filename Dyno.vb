@@ -36,13 +36,7 @@
     End Sub
     Private Sub txtCarMass_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtCarMass.Enter
         picDynoSettings.BackgroundImage = My.Resources.CarMass
-        lblDynoSettings.Text = _
-            "Enter the mass of the car in grams.  This value has NO impact on the accuracy of the dyno results.  " & _
-            "The value entered is used in combination with the roller diameter to calculate a target moment of inertia for the rollers.  " & _
-            "A dyno that reaches this target value (Target Dyno MOI = 100%) will most closely represent real world conditions for the car.  " & _
-            "The actual moment of inertia (Actual Dyno MOI) for your dyno is updated each time you make new entries for roller, end cap, and axle dimensions and weights.  " & _
-            "You can use this information to help design your dyno.  If you find that you dyno is 'underweight' you can use additional discs at the end of the rollers or axles " & _
-            "(known as 'Extras') to increase the Actual Dyno MOI."
+        lblDynoSettings.Text = resources.GetString("Dyno_Help_CarMass")
     End Sub
     Private Sub txtCarMass_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtCarMass.Leave
         Dim LocalMin As Double = 1
@@ -51,7 +45,7 @@
             CarMass = TempDouble
             UpdateMomentOfInertias()
         Else
-            MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+            MsgBox(CType(sender, TextBox).Name & resources.GetString("Dyno_ValueMustBeBetween") & LocalMin & resources.GetString("Dyno_And") & LocalMax, MsgBoxStyle.Exclamation)
             With CType(sender, TextBox)
                 .Text = CarMass.ToString
                 .Focus()
@@ -60,12 +54,7 @@
     End Sub
     Private Sub txtFrontalArea_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFrontalArea.Enter
         picDynoSettings.BackgroundImage = My.Resources.FrontalArea
-        lblDynoSettings.Text = _
-            "Enter the frontal area of your car in mm squared.  This value has NO impact on the accuracy of the dyno results.  " & _
-            "The value is calculated by multiplying the height of the car by the width of the car (both measures in mm).  " & _
-            "The frontal area is used in combination with the drag coefficient to calculate power losses due to air resistance.  " & _
-            "These losses are calulated and recorded during 'Power Run' sessions and the power losses due to drag cn be plotted.  " & _
-            "Where the power output curve and the drag curve intersect provides an estimate of corrected top speed."
+        lblDynoSettings.Text = resources.GetString("Dyno_Help_FrontalArea")
     End Sub
     Private Sub txtFrontalArea_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtFrontalArea.Leave
         Dim LocalMin As Double = 0
@@ -74,7 +63,7 @@
             FrontalArea = TempDouble
             UpdateMomentOfInertias()
         Else
-            MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+            MsgBox(CType(sender, TextBox).Name & resources.GetString("Dyno_ValueMustBeBetween") & LocalMin & resources.GetString("Dyno_And") & LocalMax, MsgBoxStyle.Exclamation)
             With CType(sender, TextBox)
                 .Text = FrontalArea.ToString
                 .Focus()
@@ -83,12 +72,7 @@
     End Sub
     Private Sub txtDragCoefficient_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtDragCoefficient.Enter
         picDynoSettings.BackgroundImage = My.Resources.DragImage
-        lblDynoSettings.Text = _
-            "Enter your estimate for the drag coefficient for your car.  This value has NO impact on the accuracy of the dyno results.  " & _
-            "Typical values will range from 0.5 - 1.0.  " & _
-            "The drag coefficient is used in combination with the frontal area  to calculate power losses due to air resistance.  " & _
-           "These losses are calulated and recorded during 'Power Run' sessions and the power losses due to drag cn be plotted.  " & _
-            "Where the power output curve and the drag curve intersect provides an estimate of corrected top speed."
+        lblDynoSettings.Text = resources.GetString("Dyno_Help_DragCoefficient")
     End Sub
     Private Sub txtDragCoefficient_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtDragCoefficient.Leave
         Dim LocalMin As Double = 0
@@ -97,7 +81,7 @@
             DragCoefficient = TempDouble
             UpdateMomentOfInertias()
         Else
-            MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+            MsgBox(CType(sender, TextBox).Name & resources.GetString("Dyno_ValueMustBeBetween") & LocalMin & resources.GetString("Dyno_And") & LocalMax, MsgBoxStyle.Exclamation)
             With CType(sender, TextBox)
                 .Text = DragCoefficient.ToString
                 .Focus()
@@ -106,11 +90,7 @@
     End Sub
     Private Sub txtGearRatio_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtGearRatio.Enter
         picDynoSettings.BackgroundImage = My.Resources.GearRatio
-        lblDynoSettings.Text = _
-            "Enter the gear ratio for your drivetrain.  This value has NO impact on the accuracy of the dyno results.  " & _
-            "This number is used to back calculate the RPM of the motor from the RPM of the rollers and wheels.  " & _
-            "In a simple drive train, this ratio is the number of spur teeth (A) divided by the number of pinion teeth (B).  " & _
-            "This value is typically greater than 1."
+        lblDynoSettings.Text = resources.GetString("Dyno_Help_GearRatio")
     End Sub
     Private Sub txtGearRatio_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtGearRatio.Leave
         Dim LocalMin As Double = 0.1
@@ -119,7 +99,7 @@
             Main.GearRatio = TempDouble
             UpdateMomentOfInertias()
         Else
-            MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+            MsgBox(CType(sender, TextBox).Name & resources.GetString("Dyno_ValueMustBeBetween") & LocalMin & resources.GetString("Dyno_And") & LocalMax, MsgBoxStyle.Exclamation)
             With CType(sender, TextBox)
                 .Text = Main.GearRatio.ToString
                 .Focus()
@@ -128,10 +108,7 @@
     End Sub
     Private Sub txtWheelDiameter_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtWheelDiameter.Enter
         picDynoSettings.BackgroundImage = My.Resources.WheelDiameter
-        lblDynoSettings.Text = _
-            "Enter your car's wheel diameter in mm.  This value has NO impact on the accuracy of the dyno results.  " & _
-            "The value is used to calculate wheel RPM based on roller RPM and, in conjuction with the gear ratio, " & _
-            "the value is further used to calculate  motor RPM. "
+        lblDynoSettings.Text = resources.GetString("Dyno_Help_WheelDiameter")
     End Sub
     Private Sub txtWheelDiameter_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtWheelDiameter.Leave
         Dim LocalMin As Double = 1
@@ -140,7 +117,7 @@
             WheelDiameter = TempDouble
             UpdateMomentOfInertias()
         Else
-            MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+            MsgBox(CType(sender, TextBox).Name & resources.GetString("Dyno_ValueMustBeBetween") & LocalMin & resources.GetString("Dyno_And") & LocalMax, MsgBoxStyle.Exclamation)
             With CType(sender, TextBox)
                 .Text = WheelDiameter.ToString
                 .Focus()
@@ -149,11 +126,7 @@
     End Sub
     Private Sub txtRollerDiameter_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtRollerDiameter.Enter
         picDynoSettings.BackgroundImage = My.Resources.RollerDiameter
-        lblDynoSettings.Text = _
-            "Enter the diameter of your rollers in mm.  This value is CRITICAL for accurate dyno results.  " & _
-            "This value is used to calculate the moment of inertia of your rollers and therefore impacts torque and power results.  " & _
-            "Additionally, but less critically, this value is used to calculate the speed of your vehicle and the RPM of your wheels and motor.  " & _
-            "Note that only the roller diameter (and not the car wheel diameter) is used to calculate vehicle speed"
+        lblDynoSettings.Text = resources.GetString("Dyno_Help_RollerDiameter")
     End Sub
     Private Sub txtRollerDiameter_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtRollerDiameter.Leave
         Dim LocalMin As Double = 1
@@ -162,7 +135,7 @@
             RollerDiameter = TempDouble
             UpdateMomentOfInertias()
         Else
-            MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+            MsgBox(CType(sender, TextBox).Name & resources.GetString("Dyno_ValueMustBeBetween") & LocalMin & resources.GetString("Dyno_And") & LocalMax, MsgBoxStyle.Exclamation)
             With CType(sender, TextBox)
                 .Text = RollerDiameter.ToString
                 .Focus()
@@ -171,12 +144,7 @@
     End Sub
     Private Sub txtRollerWallThickness_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtRollerWallThickness.Enter
         picDynoSettings.BackgroundImage = My.Resources.RollerWallThickness
-        lblDynoSettings.Text = _
-            "Enter the roller wall thickness in mm.  This value is CRITICAL for accurate dyno results.  " & _
-            "This value is used to calculate the moment of inertia of your rollers and therefore impacts the torque and power results.  " & _
-            "Additionally, based on the assumed design of your rollers, the roller wall thickness is used to calculate the End Cap diameter " & _
-            "(i.e. it is assumed that your End Caps fit into the end of your rollers).  Note: If you are using a solid roller, this value should be half of the entered value for Roller Diameter" &
-            " This value cannot be greater than 1/2 the value entered for Roller Diameter"
+        lblDynoSettings.Text = resources.GetString("Dyno_Help_RollerWallThickness")
     End Sub
     Private Sub txtRollerWallThickness_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtRollerWallThickness.Leave
         Dim LocalMin As Double = 1
@@ -185,7 +153,7 @@
             RollerWallThickness = TempDouble
             UpdateMomentOfInertias()
         Else
-            MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+            MsgBox(CType(sender, TextBox).Name & resources.GetString("Dyno_ValueMustBeBetween") & LocalMin & resources.GetString("Dyno_And") & LocalMax, MsgBoxStyle.Exclamation)
             With CType(sender, TextBox)
                 .Text = RollerWallThickness.ToString
                 .Focus()
@@ -194,11 +162,7 @@
     End Sub
     Private Sub txtRollerMass_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtRollerMass.Enter
         picDynoSettings.BackgroundImage = My.Resources.RollerMass
-        lblDynoSettings.Text = _
-            "Enter the roller mass in grams.  This value is CRITICAL for accurate dyno results.  " & _
-            "This value is used to calculate the moment of inertia of your rollers and therefore impacts the torque and power results.  " & _
-            "Enter the mass of the driven rollers only.  For example if you have a two roller dyno (one roller per axle) but are testing a rear wheel drive car, " & _
-            "only enter the mass of the rear roller.  If you are testing an AWD / 4WD car, enter the combined masses of both rollers."
+        lblDynoSettings.Text = resources.GetString("Dyno_Help_RollerMass")
     End Sub
     Private Sub txtRollerMass_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtRollerMass.Leave
         Dim LocalMin As Double = 1
@@ -207,7 +171,7 @@
             RollerMass = TempDouble
             UpdateMomentOfInertias()
         Else
-            MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+            MsgBox(CType(sender, TextBox).Name & resources.GetString("Dyno_ValueMustBeBetween") & LocalMin & resources.GetString("Dyno_And") & LocalMax, MsgBoxStyle.Exclamation)
             With CType(sender, TextBox)
                 .Text = RollerMass.ToString
                 .Focus()
@@ -216,10 +180,7 @@
     End Sub
     Private Sub txtAxleDiameter_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtAxleDiameter.Enter
         picDynoSettings.BackgroundImage = My.Resources.AxleDiameter
-        lblDynoSettings.Text = _
-            "Enter the axle diameter in mm.  This value is IMPORTANT for accurate dyno results.  " & _
-            "This value is used to calculate the moment of inertia of your axles and therefore impacts the torque and power results to some extent.  " & _
-            "Additionally, based on the assumed design of your rollers, the axle diameter used to calculate the end cap wall thickness."
+        lblDynoSettings.Text = resources.GetString("Dyno_Help_AxleDiameter")
     End Sub
     Private Sub txtAxleDiameter_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtAxleDiameter.Leave
         Dim LocalMin As Double = 0
@@ -228,7 +189,7 @@
             AxleDiameter = TempDouble
             UpdateMomentOfInertias()
         Else
-            MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+            MsgBox(CType(sender, TextBox).Name & resources.GetString("Dyno_ValueMustBeBetween") & LocalMin & resources.GetString("Dyno_And") & LocalMax, MsgBoxStyle.Exclamation)
             With CType(sender, TextBox)
                 .Text = AxleDiameter.ToString
                 .Focus()
@@ -237,10 +198,7 @@
     End Sub
     Private Sub txtAxleMass_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtAxleMass.Enter
         picDynoSettings.BackgroundImage = My.Resources.AxelMass
-        lblDynoSettings.Text = _
-            "Enter the axle mass in grams.  This value is IMPORTANT for accurate dyno results.  " & _
-            "This value is used to calculate the moment of inertia of your axles and therefore impacts the torque and power results.  " & _
-            "Note: Only enter a mass for your axle(s) if the axles rotate witht the roller.  If you are using a fixed axle that does not rotate with the roller, enter zero for its mass"
+        lblDynoSettings.Text = resources.GetString("Dyno_Help_AxleMass")
     End Sub
     Private Sub txtAxleMass_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtAxleMass.Leave
         Dim LocalMin As Double = 0
@@ -249,7 +207,7 @@
             AxleMass = TempDouble
             UpdateMomentOfInertias()
         Else
-            MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+            MsgBox(CType(sender, TextBox).Name & resources.GetString("Dyno_ValueMustBeBetween") & LocalMin & resources.GetString("Dyno_And") & LocalMax, MsgBoxStyle.Exclamation)
             With CType(sender, TextBox)
                 .Text = AxleMass.ToString
                 .Focus()
@@ -258,9 +216,7 @@
     End Sub
     Private Sub txtEndCapMass_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtEndCapMass.Enter
         picDynoSettings.BackgroundImage = My.Resources.EndCapMass
-        lblDynoSettings.Text = _
-            "Enter the total mass of the end caps in grams.  This value is CRITICAL for accurate dyno results.  " & _
-            "This value is used to calculate the moment of inertia of your end caps and therefore impacts the torque and power results."
+        lblDynoSettings.Text = resources.GetString("Dyno_Help_EndCapMass")
     End Sub
     Private Sub txtEndCapMass_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtEndCapMass.Leave
         Dim LocalMin As Double = 0
@@ -269,7 +225,7 @@
             EndCapMass = TempDouble
             UpdateMomentOfInertias()
         Else
-            MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+            MsgBox(CType(sender, TextBox).Name & resources.GetString("Dyno_ValueMustBeBetween") & LocalMin & resources.GetString("Dyno_And") & LocalMax, MsgBoxStyle.Exclamation)
             With CType(sender, TextBox)
                 .Text = EndCapMass.ToString
                 .Focus()
@@ -278,11 +234,7 @@
     End Sub
     Private Sub txtExtraDiameter_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtExtraDiameter.Enter
         picDynoSettings.BackgroundImage = My.Resources.ExtraDiameter
-        lblDynoSettings.Text = _
-            "Enter the extra diameter in mm.  If you are using extra components this value is CRITICAL for accurate dyno results.  " & _
-            "This value is used to calculate the moment of inertia of your extra dyno components.  These components are typically disks " & _
-            "that you can add to the ends of your rollers to increase the overall moment of inertia.  Extras can be mounted on the axle " & _
-            "or attached directly to the ends of the roller / end cap components."
+        lblDynoSettings.Text = resources.GetString("Dyno_Help_ExtraDiameter")
     End Sub
     Private Sub txtExtraDiameter_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtExtraDiameter.Leave
         Dim LocalMin As Double = 0
@@ -291,7 +243,7 @@
             ExtraDiameter = TempDouble
             UpdateMomentOfInertias()
         Else
-            MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+            MsgBox(CType(sender, TextBox).Name & resources.GetString("Dyno_ValueMustBeBetween") & LocalMin & resources.GetString("Dyno_And") & LocalMax, MsgBoxStyle.Exclamation)
             With CType(sender, TextBox)
                 .Text = ExtraDiameter.ToString
                 .Focus()
@@ -300,11 +252,7 @@
     End Sub
     Private Sub txtExtraWallThickness_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtExtraWallThickness.Enter
         picDynoSettings.BackgroundImage = My.Resources.ExtraWallThickness
-        lblDynoSettings.Text = _
-           "Enter the extra wall thickness in mm.  If you are using extra components this value is CRITICAL for accurate dyno results.  " & _
-           "This value is used to calculate the moment of inertia of your extra dyno components.  These components are typically disks " & _
-           "that you can add to the ends of your rollers to increase the overall moment of inertia.  Extras can be mounted on the axle " & _
-           "or attached directly to the ends of the roller / end cap components."
+        lblDynoSettings.Text = resources.GetString("Dyno_Help_ExtraWallThickness")
     End Sub
     Private Sub txtExtraWallThickness_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtExtraWallThickness.Leave
         Dim LocalMin As Double = 0
@@ -313,7 +261,7 @@
             ExtraWallThickness = TempDouble
             UpdateMomentOfInertias()
         Else
-            MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+            MsgBox(CType(sender, TextBox).Name & resources.GetString("Dyno_ValueMustBeBetween") & LocalMin & resources.GetString("Dyno_And") & LocalMax, MsgBoxStyle.Exclamation)
             With CType(sender, TextBox)
                 .Text = ExtraWallThickness.ToString
                 .Focus()
@@ -322,11 +270,7 @@
     End Sub
     Private Sub txtExtraMass_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtExtraMass.Enter
         picDynoSettings.BackgroundImage = My.Resources.ExtraMass
-        lblDynoSettings.Text = _
-           "Enter the masses of all the extra components in grams.  If you are using extra components this value is CRITICAL for accurate dyno results.  " & _
-           "This value is used to calculate the moment of inertia of your extra dyno components.  These components are typicall disks " & _
-           "that you can add to the ends of your rollers to increase the overall moment of inertia.  Extras can be mounted on the axle " & _
-           "or attached directly to the ends of the roller / end cap components."
+        lblDynoSettings.Text = resources.GetString("Dyno_Help_ExtraMass")
     End Sub
     Private Sub txtExtraMass_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtExtraMass.Leave
         Dim LocalMin As Double = 0
@@ -335,7 +279,7 @@
             ExtraMass = TempDouble
             UpdateMomentOfInertias()
         Else
-            MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+            MsgBox(CType(sender, TextBox).Name & resources.GetString("Dyno_ValueMustBeBetween") & LocalMin & resources.GetString("Dyno_And") & LocalMax, MsgBoxStyle.Exclamation)
             With CType(sender, TextBox)
                 .Text = ExtraMass.ToString
                 .Focus()
@@ -344,11 +288,7 @@
     End Sub
     Private Sub txtSignalsPerRPM_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtSignalsPerRPM1.Enter
         picDynoSettings.BackgroundImage = My.Resources.SignalsPerRPM
-        lblDynoSettings.Text = _
-           "Enter the number of signals that are produced with each revolution of the roller.  " & _
-           "For example, if you are using a coil and magnet system to detect the roller RPM, each magnet attached to the roller " & _
-           "will represent one signal per RPM.  Make sure that if you are using multiple magnets that they are are spaced evenly around the " & _
-           "circumference of the roller.  Slight positional differences will lead to noise in the RPM values."
+        lblDynoSettings.Text = resources.GetString("Dyno_Help_SignalsPerRPM1")
     End Sub
     Private Sub txtSignalsPerRPM_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtSignalsPerRPM1.Leave
         Dim LocalMin As Double = 0.1
@@ -357,7 +297,7 @@
             SignalsPerRPM = TempDouble
             UpdateMomentOfInertias()
         Else
-            MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+            MsgBox(CType(sender, TextBox).Name & resources.GetString("Dyno_ValueMustBeBetween") & LocalMin & resources.GetString("Dyno_And") & LocalMax, MsgBoxStyle.Exclamation)
             With CType(sender, TextBox)
                 .Text = SignalsPerRPM.ToString
                 .Focus()
@@ -366,10 +306,7 @@
     End Sub
     Private Sub txtSignalsPerRPM2_Enter(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtSignalsPerRPM2.Enter
         picDynoSettings.BackgroundImage = My.Resources.SignalsPerRPM
-        lblDynoSettings.Text = _
-           "Enter the number of signals that are produced with each revolution of the component being monitored by the second channel.  " & _
-           "This channel can be used to monitor the RPM of an IC engine or some other component of the drivetrain." & _
-           "If you are using a spark signal for a four stroke IC engine you can enter 0.5 for this value."
+        lblDynoSettings.Text = resources.GetString("Dyno_Help_SignalsPerRPM2")
     End Sub
     Private Sub txtSignalsPerRPM2_Leave(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtSignalsPerRPM2.Leave
         Dim LocalMin As Double = 0.1
@@ -378,7 +315,7 @@
             SignalsPerRPM2 = TempDouble
             UpdateMomentOfInertias()
         Else
-            MsgBox(CType(sender, TextBox).Name & " : Value must be between " & LocalMin & " and " & LocalMax, MsgBoxStyle.Exclamation)
+            MsgBox(CType(sender, TextBox).Name & resources.GetString("Dyno_ValueMustBeBetween") & LocalMin & resources.GetString("Dyno_And") & LocalMax, MsgBoxStyle.Exclamation)
             With CType(sender, TextBox)
                 .Text = SignalsPerRPM2.ToString
                 .Focus()
@@ -441,14 +378,14 @@
         Main.RollerRadsPerSecToMetersPerSec = (RollerCircumference / 1000) / (2 * Math.PI)
 
         If Main.DynoMomentOfInertia >= 0.0009 Then
-            lblActualMomentOfInertia.Text = "Actual Dyno MoI = " & Main.DynoMomentOfInertia.ToString("0.000") & " kg.m^2"
+            lblActualMomentOfInertia.Text = resources.GetString("Dyno_ActualMoiPrefix") & Main.DynoMomentOfInertia.ToString("0.000") & " kg.m^2"
         Else
-            lblActualMomentOfInertia.Text = "Actual Dyno MoI = " & (1000 * Main.DynoMomentOfInertia).ToString("0.000") & " g.m^2 "
+            lblActualMomentOfInertia.Text = resources.GetString("Dyno_ActualMoiPrefix") & (1000 * Main.DynoMomentOfInertia).ToString("0.000") & " g.m^2 "
         End If
 
-        lblTargetMomentOfInertia.Text = "% of Target Dyno MoI = " & (Main.DynoMomentOfInertia / IdealMomentOfInertia * 100).ToString("0.0") & "%"
+        lblTargetMomentOfInertia.Text = resources.GetString("Dyno_TargetMoiPrefix") & (Main.DynoMomentOfInertia / IdealMomentOfInertia * 100).ToString("0.0") & "%"
 
-        lblTargetRollerMass.Text = "Target Roller Mass = " & IdealRollerMass.ToString("0") & " grams"
+        lblTargetRollerMass.Text = resources.GetString("Dyno_TargetRollerMassPrefix") & IdealRollerMass.ToString("0") & resources.GetString("Dyno_TargetRollerMassSuffix")
 
         'Update the drag coefficient and air resistance
         Main.ForceAir = 0.5 * (FrontalArea / 1000000) * 1.2 * DragCoefficient

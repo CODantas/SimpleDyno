@@ -13,7 +13,7 @@
             Main.frmFit.cmbWhichRDFit.Enabled = False
             Main.frmFit.rdoRunDown.Enabled = False
             blnUsingLoadedRunDownFile = False
-            lblCoastDownFile.Text = "No file loaded"
+            lblCoastDownFile.Text = resources.GetString("Correction_NoFileLoaded")
         End If
     End Sub
     Private Sub chkUseCoastDownFile_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkUseCoastDownFile.CheckedChanged
@@ -35,7 +35,7 @@
         'Prevents form from actually closing, rather it hides
         If e.CloseReason <> CloseReason.FormOwnerClosing Then
             If chkUseCoastDownFile.Checked AndAlso blnUsingLoadedRunDownFile = False Then
-                MsgBox("No coast down file was selected. Please confirm your coast down selection", vbOKOnly)
+                MsgBox(resources.GetString("Correction_MsgBox_NoCoastDownFileSelected"), vbOKOnly)
                 e.Cancel = True
             Else
                 Me.Hide()
@@ -51,7 +51,7 @@
 
         With RunDownOpenFileDialog
             .Reset()
-            .Filter = "Power Run files v6.3 (*.sdp)|*.sdp"
+            .Filter = resources.GetString("Correction_PowerRunFileFilter")
             .ShowDialog()
         End With
 
@@ -64,34 +64,34 @@
                     Temp = .ReadLine
                 Loop
                 If RunDownFileInput.EndOfStream Then
-                    MsgBox("No coast down data found.", MsgBoxStyle.OkOnly)
+                    MsgBox(resources.GetString("Correction_MsgBox_NoCoastDownDataFound"), MsgBoxStyle.OkOnly)
                     blnUsingLoadedRunDownFile = False
                 Else
                     TempSplit = Split(Temp, " ")
                     If UCase(TempSplit(1)) = "FALSE" Then
-                        MsgBox("Coast Down not applied to this run", MsgBoxStyle.OkOnly)
+                        MsgBox(resources.GetString("Correction_MsgBox_CoastDownNotApplied"), MsgBoxStyle.OkOnly)
                         blnUsingLoadedRunDownFile = False
                     Else
                         If UCase(TempSplit(2)) = "TRUE" Then
                             rdoFreeRoller.Checked = True
-                            MsgBox("Free Roller Coast Down data found.", MsgBoxStyle.OkOnly)
+                            MsgBox(resources.GetString("Correction_MsgBox_FreeRollerFound"), MsgBoxStyle.OkOnly)
                             blnUsingLoadedRunDownFile = True
                             Main.frmFit.rdoRunDown.Enabled = False
                             Main.frmFit.cmbWhichRDFit.Enabled = False
                         ElseIf UCase(TempSplit(3)) = "TRUE" Then
                             rdoRollerAndWheel.Checked = True
-                            MsgBox("Free Roller + Wheel Coast Down data found.", MsgBoxStyle.OkOnly)
+                            MsgBox(resources.GetString("Correction_MsgBox_FreeRollerWheelFound"), MsgBoxStyle.OkOnly)
                             blnUsingLoadedRunDownFile = True
                             Main.frmFit.rdoRunDown.Enabled = False
                             Main.frmFit.cmbWhichRDFit.Enabled = False
                         Else
                             rdoRollerAndDrivetrain.Checked = True
-                            MsgBox("Roller + Drivetrain Coast Down data found", MsgBoxStyle.OkOnly)
+                            MsgBox(resources.GetString("Correction_MsgBox_RollerDrivetrainFound"), MsgBoxStyle.OkOnly)
                             blnUsingLoadedRunDownFile = True
                             Main.frmFit.rdoRunDown.Enabled = False
                             Main.frmFit.cmbWhichRDFit.Enabled = False
                         End If
-                        lblCoastDownFile.Text = "Using " & RunDownOpenFileDialog.FileName.ToString.Substring(RunDownOpenFileDialog.FileName.ToString.LastIndexOf("\") + 1)
+                        lblCoastDownFile.Text = resources.GetString("Correction_UsingFilePrefix") & RunDownOpenFileDialog.FileName.ToString.Substring(RunDownOpenFileDialog.FileName.ToString.LastIndexOf("\") + 1)
                     End If
                 End If
             End With

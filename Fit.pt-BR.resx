@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Ajuste de Curva do Power Run</value>
+  </data>
+  <data name="Label1.Text" xml:space="preserve">
+    <value>Iniciar Ajuste no Ponto</value>
+  </data>
+  <data name="Label7.Text" xml:space="preserve">
+    <value>Limite de Pico</value>
+  </data>
+  <data name="rdoVoltage.Text" xml:space="preserve">
+    <value>Tensão</value>
+  </data>
+  <data name="rdoCurrent.Text" xml:space="preserve">
+    <value>Corrente</value>
+  </data>
+  <data name="btnAddAnalysis.Text" xml:space="preserve">
+    <value>Ir para Análise</value>
+  </data>
+  <data name="chkAddOrNew.Text" xml:space="preserve">
+    <value>Adicionar aos dados existentes</value>
+  </data>
+  <data name="lblProgress.Text" xml:space="preserve">
+    <value>Progresso</value>
+  </data>
+  <data name="lblUsingRunDownFile.Text" xml:space="preserve">
+    <value>Arquivo de Coast Down</value>
+  </data>
+  <data name="Label2.Text" xml:space="preserve">
+    <value>Nível de Suavização</value>
+  </data>
+  <data name="btnStopFitting.Text" xml:space="preserve">
+    <value>Parar Ajuste</value>
+  </data>
+  <data name="Label3.Text" xml:space="preserve">
+    <value>Nível de Suavização</value>
+  </data>
+  <data name="Fit_FourParameter" xml:space="preserve">
+    <value>Quatro Parâmetros</value>
+  </data>
+  <data name="Fit_2ndOrderPoly" xml:space="preserve">
+    <value>Polinômio 2ª Ordem</value>
+  </data>
+  <data name="Fit_3rdOrderPoly" xml:space="preserve">
+    <value>Polinômio 3ª Ordem</value>
+  </data>
+  <data name="Fit_4thOrderPoly" xml:space="preserve">
+    <value>Polinômio 4ª Ordem</value>
+  </data>
+  <data name="Fit_5thOrderPoly" xml:space="preserve">
+    <value>Polinômio 5ª Ordem</value>
+  </data>
+  <data name="Fit_MASmooth" xml:space="preserve">
+    <value>Suavização MA</value>
+  </data>
+  <data name="Fit_ValueMustBeBetween" xml:space="preserve">
+    <value> : O valor deve estar entre </value>
+  </data>
+  <data name="Fit_And" xml:space="preserve">
+    <value> e </value>
+  </data>
+  <data name="Fit_MsgBox_ProcessDataError" xml:space="preserve">
+    <value>Erro no ProcessData: </value>
+  </data>
+  <data name="Fit_Progress_RPM1SpikeRemoval" xml:space="preserve">
+    <value>Removendo picos de RPM1...</value>
+  </data>
+  <data name="Fit_Progress_Done" xml:space="preserve">
+    <value>Concluído</value>
+  </data>
+  <data name="Fit_Progress_FittingRPM1" xml:space="preserve">
+    <value>Ajustando RPM1...</value>
+  </data>
+  <data name="Fit_NoCoastDownFileLoaded" xml:space="preserve">
+    <value>Nenhum Arquivo de Coast Down Carregado</value>
+  </data>
+  <data name="Fit_Progress_CoastDownSpikeRemoval" xml:space="preserve">
+    <value>Removendo picos do Coast Down...</value>
+  </data>
+  <data name="Fit_Progress_FittingCoastDown" xml:space="preserve">
+    <value>Ajustando Coast Down...</value>
+  </data>
+  <data name="Fit_MsgBox_SkippedFitdata" xml:space="preserve">
+    <value>Ajuste de dados ignorado</value>
+  </data>
+  <data name="Fit_Progress_SmoothingVoltage" xml:space="preserve">
+    <value>Suavizando tensão...</value>
+  </data>
+  <data name="Fit_Progress_SmoothingCurrent" xml:space="preserve">
+    <value>Suavizando corrente...</value>
+  </data>
+  <data name="Fit_Progress_SmoothingRPM1" xml:space="preserve">
+    <value>Suavizando RPM1...</value>
+  </data>
+  <data name="Fit_Progress_SmoothingCoastDown" xml:space="preserve">
+    <value>Suavizando Coast Down...</value>
+  </data>
+  <data name="Fit_MsgBox_AllCurveFitsNotCompleted" xml:space="preserve">
+    <value>Nem todos os ajustes de curva esperados foram concluídos. Confirme que todos os dados foram ajustados corretamente</value>
+  </data>
+  <data name="Fit_Axis_RPM" xml:space="preserve">
+    <value>RPM</value>
+  </data>
+  <data name="Fit_Axis_Amps" xml:space="preserve">
+    <value>Amperes</value>
+  </data>
+  <data name="Fit_Axis_Volts" xml:space="preserve">
+    <value>Volts</value>
+  </data>
+  <data name="Fit_Axis_Seconds" xml:space="preserve">
+    <value>Segundos</value>
+  </data>
+  <data name="Fit_Legend_RawData" xml:space="preserve">
+    <value>Dados Brutos</value>
+  </data>
+  <data name="Fit_Legend_FitData" xml:space="preserve">
+    <value>Dados Ajustados</value>
+  </data>
+  <data name="Fit_Legend_TorqueCurveMaxPrefix" xml:space="preserve">
+    <value>Curva de Torque (Máx = </value>
+  </data>
+  <data name="Fit_Legend_PowerCurveMaxPrefix" xml:space="preserve">
+    <value>Curva de Potência (Máx = </value>
+  </data>
+</root>

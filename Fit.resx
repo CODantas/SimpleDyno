@@ -117,6 +117,129 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Power Run Curve Fitting</value>
+  </data>
+  <data name="Label1.Text" xml:space="preserve">
+    <value>Start Fit @ Point</value>
+  </data>
+  <data name="Label7.Text" xml:space="preserve">
+    <value>Spike Threshold</value>
+  </data>
+  <data name="rdoVoltage.Text" xml:space="preserve">
+    <value>Voltage</value>
+  </data>
+  <data name="rdoCurrent.Text" xml:space="preserve">
+    <value>Current</value>
+  </data>
+  <data name="btnAddAnalysis.Text" xml:space="preserve">
+    <value>Go to Analysis</value>
+  </data>
+  <data name="chkAddOrNew.Text" xml:space="preserve">
+    <value>Add to existing data</value>
+  </data>
+  <data name="lblProgress.Text" xml:space="preserve">
+    <value>Progress</value>
+  </data>
+  <data name="lblUsingRunDownFile.Text" xml:space="preserve">
+    <value>Coast Down File</value>
+  </data>
+  <data name="Label2.Text" xml:space="preserve">
+    <value>Smooth Level</value>
+  </data>
+  <data name="btnStopFitting.Text" xml:space="preserve">
+    <value>Stop Fitting</value>
+  </data>
+  <data name="Label3.Text" xml:space="preserve">
+    <value>Smooth Level</value>
+  </data>
+  <data name="Fit_FourParameter" xml:space="preserve">
+    <value>Four Parameter</value>
+  </data>
+  <data name="Fit_2ndOrderPoly" xml:space="preserve">
+    <value>2nd Order Poly</value>
+  </data>
+  <data name="Fit_3rdOrderPoly" xml:space="preserve">
+    <value>3rd Order Poly</value>
+  </data>
+  <data name="Fit_4thOrderPoly" xml:space="preserve">
+    <value>4th Order Poly</value>
+  </data>
+  <data name="Fit_5thOrderPoly" xml:space="preserve">
+    <value>5th Order Poly</value>
+  </data>
+  <data name="Fit_MASmooth" xml:space="preserve">
+    <value>MA Smooth</value>
+  </data>
+  <data name="Fit_ValueMustBeBetween" xml:space="preserve">
+    <value> : Value must be between </value>
+  </data>
+  <data name="Fit_And" xml:space="preserve">
+    <value> and </value>
+  </data>
+  <data name="Fit_MsgBox_ProcessDataError" xml:space="preserve">
+    <value>ProcessData Error: </value>
+  </data>
+  <data name="Fit_Progress_RPM1SpikeRemoval" xml:space="preserve">
+    <value>RPM1 Spike removal...</value>
+  </data>
+  <data name="Fit_Progress_Done" xml:space="preserve">
+    <value>Done</value>
+  </data>
+  <data name="Fit_Progress_FittingRPM1" xml:space="preserve">
+    <value>Fitting RPM1...</value>
+  </data>
+  <data name="Fit_NoCoastDownFileLoaded" xml:space="preserve">
+    <value>No Coast Down File Loaded</value>
+  </data>
+  <data name="Fit_Progress_CoastDownSpikeRemoval" xml:space="preserve">
+    <value>Coast Down Spike removal...</value>
+  </data>
+  <data name="Fit_Progress_FittingCoastDown" xml:space="preserve">
+    <value>Fitting Coast Down...</value>
+  </data>
+  <data name="Fit_MsgBox_SkippedFitdata" xml:space="preserve">
+    <value>Skipped Fitdata</value>
+  </data>
+  <data name="Fit_Progress_SmoothingVoltage" xml:space="preserve">
+    <value>Smoothing voltage...</value>
+  </data>
+  <data name="Fit_Progress_SmoothingCurrent" xml:space="preserve">
+    <value>Smoothing current...</value>
+  </data>
+  <data name="Fit_Progress_SmoothingRPM1" xml:space="preserve">
+    <value>Smoothing RPM1...</value>
+  </data>
+  <data name="Fit_Progress_SmoothingCoastDown" xml:space="preserve">
+    <value>Smoothing Coast Down...</value>
+  </data>
+  <data name="Fit_MsgBox_AllCurveFitsNotCompleted" xml:space="preserve">
+    <value>All of the expected curve fits were not completed. Please make sure all data are fit appropriately</value>
+  </data>
+  <data name="Fit_Axis_RPM" xml:space="preserve">
+    <value>RPM</value>
+  </data>
+  <data name="Fit_Axis_Amps" xml:space="preserve">
+    <value>Amps</value>
+  </data>
+  <data name="Fit_Axis_Volts" xml:space="preserve">
+    <value>Volts</value>
+  </data>
+  <data name="Fit_Axis_Seconds" xml:space="preserve">
+    <value>Seconds</value>
+  </data>
+  <data name="Fit_Legend_RawData" xml:space="preserve">
+    <value>RAW Data</value>
+  </data>
+  <data name="Fit_Legend_FitData" xml:space="preserve">
+    <value>FIT Data</value>
+  </data>
+  <data name="Fit_Legend_TorqueCurveMaxPrefix" xml:space="preserve">
+    <value>Torque Curve (Max = </value>
+  </data>
+  <data name="Fit_Legend_PowerCurveMaxPrefix" xml:space="preserve">
+    <value>Power Curve (Max = </value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Análise de Dados</value>
+  </data>
+  <data name="btnAddOverlayFile.Text" xml:space="preserve">
+    <value>Carregar</value>
+  </data>
+  <data name="btnClearOverlay.Text" xml:space="preserve">
+    <value>Limpar</value>
+  </data>
+  <data name="btnSaveOverlay.Text" xml:space="preserve">
+    <value>Salvar</value>
+  </data>
+  <data name="Label48.Text" xml:space="preserve">
+    <value>Eixo Y2:</value>
+  </data>
+  <data name="Label47.Text" xml:space="preserve">
+    <value>Eixo Y1:</value>
+  </data>
+  <data name="Label46.Text" xml:space="preserve">
+    <value>Eixo X:</value>
+  </data>
+  <data name="Label51.Text" xml:space="preserve">
+    <value>Unid. Vel. Corr.:</value>
+  </data>
+  <data name="Label50.Text" xml:space="preserve">
+    <value>Eixo Y4:</value>
+  </data>
+  <data name="Label49.Text" xml:space="preserve">
+    <value>Eixo Y3:</value>
+  </data>
+  <data name="Label9.Text" xml:space="preserve">
+    <value>Valor X atual:</value>
+  </data>
+  <data name="Label1.Text" xml:space="preserve">
+    <value>Unid.:</value>
+  </data>
+  <data name="Label2.Text" xml:space="preserve">
+    <value>Unid.:</value>
+  </data>
+  <data name="Label3.Text" xml:space="preserve">
+    <value>Unid.:</value>
+  </data>
+  <data name="Label4.Text" xml:space="preserve">
+    <value>Unid.:</value>
+  </data>
+  <data name="Label5.Text" xml:space="preserve">
+    <value>Unid.:</value>
+  </data>
+  <data name="Label6.Text" xml:space="preserve">
+    <value>Selecionar arquivos para exibir:</value>
+  </data>
+  <data name="AnalysisForm_MaxPrefix" xml:space="preserve">
+    <value>Máx (</value>
+  </data>
+  <data name="AnalysisForm_MaxCorrSpeed" xml:space="preserve">
+    <value>Vel. Corr. Máx</value>
+  </data>
+  <data name="AnalysisForm_ClientNameLabel" xml:space="preserve">
+    <value>Cliente:</value>
+  </data>
+  <data name="AnalysisForm_VehicleLabel" xml:space="preserve">
+    <value>Veículo:</value>
+  </data>
+  <data name="AnalysisForm_NotesLabel" xml:space="preserve">
+    <value>Observações:</value>
+  </data>
+  <data name="AnalysisForm_ExportReportButton" xml:space="preserve">
+    <value>Exportar PDF</value>
+  </data>
+  <data name="AnalysisForm_MsgBox_NoFilesForReport" xml:space="preserve">
+    <value>Selecione ao menos um arquivo na lista antes de exportar o relatório.</value>
+  </data>
+  <data name="AnalysisForm_MsgBox_NoPdfPrinter" xml:space="preserve">
+    <value>A impressora "Microsoft Print to PDF" não foi encontrada. Ative-a em Painel de Controle &gt; Dispositivos e Impressoras, ou em Configurações &gt; Aplicativos &gt; Recursos opcionais.</value>
+  </data>
+  <data name="AnalysisForm_MsgBox_ReportSaved" xml:space="preserve">
+    <value>Relatório salvo com sucesso em: </value>
+  </data>
+  <data name="AnalysisForm_MsgBox_ReportError" xml:space="preserve">
+    <value>Erro ao exportar o relatório: </value>
+  </data>
+  <data name="AnalysisForm_ReportTitle" xml:space="preserve">
+    <value>Relatório de Ajustes - SimpleDyno</value>
+  </data>
+  <data name="AnalysisForm_ReportDateLabel" xml:space="preserve">
+    <value>Data: </value>
+  </data>
+  <data name="AnalysisForm_ReportFileColumnHeader" xml:space="preserve">
+    <value>Arquivo</value>
+  </data>
+</root>

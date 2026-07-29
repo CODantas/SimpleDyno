@@ -3,6 +3,9 @@
 Public Class SimpleDynoSubGauge
     Inherits SimpleDynoSubForm
 
+    'Resource manager for translated (resx satellite) strings.
+    Private ReadOnly resources As New System.ComponentModel.ComponentResourceManager(GetType(SimpleDynoSubGauge))
+
     Private myGaugeSurface As Rectangle
     Private myDialRectangle As Rectangle
 
@@ -284,22 +287,22 @@ Next
         'TestStrip = CreateAToolStripMenuItem("O", str1, str2, str3)
         'contextmnu.Items.Add(TestStrip)
 
-        str1 = "Configuration"
-        str2 = {"Arc width (degrees)", "Direction (degrees)"}
+        str1 = resources.GetString("SDG_Configuration")
+        str2 = {resources.GetString("SDG_ArcWidthDegrees"), resources.GetString("SDG_DirectionDegrees")}
         str3 = {"TXT"}
 
         TestStrip = CreateAToolStripMenuItem("F", str1, str2, str3)
         Contextmnu.Items.Add(TestStrip)
 
-        str1 = "Sweep Direction"
-        str2 = {"Clockwise", "Anticlockwise"}
+        str1 = resources.GetString("SDG_SweepDirection")
+        str2 = {resources.GetString("SDG_Clockwise"), resources.GetString("SDG_Anticlockwise")}
         str3 = {}
 
         TestStrip = CreateAToolStripMenuItem("O", str1, str2, str3)
         Contextmnu.Items.Add(TestStrip)
 
-        str1 = "Range"
-        str2 = {"Minimum", "Maximum"}
+        str1 = resources.GetString("SDG_Range")
+        str2 = {resources.GetString("SDG_Minimum"), resources.GetString("SDG_Maximum")}
         str3 = {"TXT"}
 
         TestStrip = CreateAToolStripMenuItem("M", str1, str2, str3)

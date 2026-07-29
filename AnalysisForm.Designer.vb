@@ -17,12 +17,15 @@ Partial Class AnalysisForm
     'Required by the Windows Form Designer
     Private components As System.ComponentModel.IContainer
 
+    'Resource manager for translated (resx satellite) strings. Promoted to a class
+    'field so AnalysisForm.vb can also look up localized text outside InitializeComponent.
+    Private ReadOnly resources As New System.ComponentModel.ComponentResourceManager(GetType(AnalysisForm))
+
     'NOTE: The following procedure is required by the Windows Form Designer
-    'It can be modified using the Windows Form Designer.  
+    'It can be modified using the Windows Form Designer.
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(AnalysisForm))
         Me.btnAddOverlayFile = New System.Windows.Forms.Button()
         Me.btnClearOverlay = New System.Windows.Forms.Button()
         Me.btnSaveOverlay = New System.Windows.Forms.Button()
@@ -99,6 +102,15 @@ Partial Class AnalysisForm
         Me.lblY4Max4 = New System.Windows.Forms.Label()
         Me.lblY4Max5 = New System.Windows.Forms.Label()
         Me.pnlDataOverlay = New SimpleDyno.DoubleBufferPanel()
+        Me.pnlClientReport = New System.Windows.Forms.Panel()
+        Me.lblReportClientName = New System.Windows.Forms.Label()
+        Me.txtClientName = New System.Windows.Forms.TextBox()
+        Me.lblReportVehicle = New System.Windows.Forms.Label()
+        Me.txtVehicleInfo = New System.Windows.Forms.TextBox()
+        Me.lblReportNotes = New System.Windows.Forms.Label()
+        Me.txtReportNotes = New System.Windows.Forms.TextBox()
+        Me.btnExportClientReport = New System.Windows.Forms.Button()
+        Me.pnlClientReport.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.TableLayoutPanel1.SuspendLayout()
         Me.TableLayoutPanel2.SuspendLayout()
@@ -111,7 +123,7 @@ Partial Class AnalysisForm
         Me.btnAddOverlayFile.Name = "btnAddOverlayFile"
         Me.btnAddOverlayFile.Size = New System.Drawing.Size(154, 29)
         Me.btnAddOverlayFile.TabIndex = 65
-        Me.btnAddOverlayFile.Text = "Load"
+        Me.btnAddOverlayFile.Text = resources.GetString("btnAddOverlayFile.Text")
         '
         'btnClearOverlay
         '
@@ -120,7 +132,7 @@ Partial Class AnalysisForm
         Me.btnClearOverlay.Name = "btnClearOverlay"
         Me.btnClearOverlay.Size = New System.Drawing.Size(154, 29)
         Me.btnClearOverlay.TabIndex = 66
-        Me.btnClearOverlay.Text = "Clear"
+        Me.btnClearOverlay.Text = resources.GetString("btnClearOverlay.Text")
         '
         'btnSaveOverlay
         '
@@ -130,7 +142,7 @@ Partial Class AnalysisForm
         Me.btnSaveOverlay.Name = "btnSaveOverlay"
         Me.btnSaveOverlay.Size = New System.Drawing.Size(154, 29)
         Me.btnSaveOverlay.TabIndex = 67
-        Me.btnSaveOverlay.Text = "Save"
+        Me.btnSaveOverlay.Text = resources.GetString("btnSaveOverlay.Text")
         '
         'cmbOverlayUnitsY2
         '
@@ -167,7 +179,7 @@ Partial Class AnalysisForm
         Me.Label48.Name = "Label48"
         Me.Label48.Size = New System.Drawing.Size(46, 13)
         Me.Label48.TabIndex = 89
-        Me.Label48.Text = "Y2 Axis:"
+        Me.Label48.Text = resources.GetString("Label48.Text")
         '
         'Label47
         '
@@ -177,7 +189,7 @@ Partial Class AnalysisForm
         Me.Label47.Name = "Label47"
         Me.Label47.Size = New System.Drawing.Size(46, 13)
         Me.Label47.TabIndex = 88
-        Me.Label47.Text = "Y1 Axis:"
+        Me.Label47.Text = resources.GetString("Label47.Text")
         '
         'Label46
         '
@@ -187,7 +199,7 @@ Partial Class AnalysisForm
         Me.Label46.Name = "Label46"
         Me.Label46.Size = New System.Drawing.Size(40, 13)
         Me.Label46.TabIndex = 87
-        Me.Label46.Text = "X Axis:"
+        Me.Label46.Text = resources.GetString("Label46.Text")
         '
         'cmbOverlayDataY2
         '
@@ -227,7 +239,7 @@ Partial Class AnalysisForm
         Me.Label51.Name = "Label51"
         Me.Label51.Size = New System.Drawing.Size(96, 13)
         Me.Label51.TabIndex = 100
-        Me.Label51.Text = "Corr. Speed Units:"
+        Me.Label51.Text = resources.GetString("Label51.Text")
         '
         'cmbOverlayCorrectedSpeedUnits
         '
@@ -264,7 +276,7 @@ Partial Class AnalysisForm
         Me.Label50.Name = "Label50"
         Me.Label50.Size = New System.Drawing.Size(46, 13)
         Me.Label50.TabIndex = 96
-        Me.Label50.Text = "Y4 Axis:"
+        Me.Label50.Text = resources.GetString("Label50.Text")
         '
         'Label49
         '
@@ -274,7 +286,7 @@ Partial Class AnalysisForm
         Me.Label49.Name = "Label49"
         Me.Label49.Size = New System.Drawing.Size(46, 13)
         Me.Label49.TabIndex = 95
-        Me.Label49.Text = "Y3 Axis:"
+        Me.Label49.Text = resources.GetString("Label49.Text")
         '
         'cmbOverlayDataY4
         '
@@ -313,7 +325,7 @@ Partial Class AnalysisForm
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(86, 13)
         Me.Label9.TabIndex = 101
-        Me.Label9.Text = "Current X value:"
+        Me.Label9.Text = resources.GetString("Label9.Text")
         '
         'OpenFileDialog1
         '
@@ -327,7 +339,7 @@ Partial Class AnalysisForm
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(34, 13)
         Me.Label1.TabIndex = 104
-        Me.Label1.Text = "Units:"
+        Me.Label1.Text = resources.GetString("Label1.Text")
         '
         'Label2
         '
@@ -336,7 +348,7 @@ Partial Class AnalysisForm
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(34, 13)
         Me.Label2.TabIndex = 105
-        Me.Label2.Text = "Units:"
+        Me.Label2.Text = resources.GetString("Label2.Text")
         '
         'Label3
         '
@@ -345,7 +357,7 @@ Partial Class AnalysisForm
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(34, 13)
         Me.Label3.TabIndex = 106
-        Me.Label3.Text = "Units:"
+        Me.Label3.Text = resources.GetString("Label3.Text")
         '
         'Label4
         '
@@ -354,7 +366,7 @@ Partial Class AnalysisForm
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(34, 13)
         Me.Label4.TabIndex = 107
-        Me.Label4.Text = "Units:"
+        Me.Label4.Text = resources.GetString("Label4.Text")
         '
         'Label5
         '
@@ -363,7 +375,7 @@ Partial Class AnalysisForm
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(34, 13)
         Me.Label5.TabIndex = 108
-        Me.Label5.Text = "Units:"
+        Me.Label5.Text = resources.GetString("Label5.Text")
         '
         'Panel1
         '
@@ -411,7 +423,7 @@ Partial Class AnalysisForm
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(108, 13)
         Me.Label6.TabIndex = 110
-        Me.Label6.Text = "Select files to display:"
+        Me.Label6.Text = resources.GetString("Label6.Text")
         '
         'clbFiles
         '
@@ -995,6 +1007,86 @@ Partial Class AnalysisForm
         Me.pnlDataOverlay.TabStop = True
         Me.pnlDataOverlay.Visible = False
         '
+        'lblReportClientName
+        '
+        Me.lblReportClientName.AutoSize = True
+        Me.lblReportClientName.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblReportClientName.Location = New System.Drawing.Point(8, 9)
+        Me.lblReportClientName.Name = "lblReportClientName"
+        Me.lblReportClientName.Size = New System.Drawing.Size(41, 13)
+        Me.lblReportClientName.TabIndex = 200
+        Me.lblReportClientName.Text = resources.GetString("AnalysisForm_ClientNameLabel")
+        '
+        'txtClientName
+        '
+        Me.txtClientName.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtClientName.Location = New System.Drawing.Point(70, 6)
+        Me.txtClientName.Name = "txtClientName"
+        Me.txtClientName.Size = New System.Drawing.Size(160, 21)
+        Me.txtClientName.TabIndex = 201
+        '
+        'lblReportVehicle
+        '
+        Me.lblReportVehicle.AutoSize = True
+        Me.lblReportVehicle.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblReportVehicle.Location = New System.Drawing.Point(240, 9)
+        Me.lblReportVehicle.Name = "lblReportVehicle"
+        Me.lblReportVehicle.Size = New System.Drawing.Size(46, 13)
+        Me.lblReportVehicle.TabIndex = 202
+        Me.lblReportVehicle.Text = resources.GetString("AnalysisForm_VehicleLabel")
+        '
+        'txtVehicleInfo
+        '
+        Me.txtVehicleInfo.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtVehicleInfo.Location = New System.Drawing.Point(292, 6)
+        Me.txtVehicleInfo.Name = "txtVehicleInfo"
+        Me.txtVehicleInfo.Size = New System.Drawing.Size(160, 21)
+        Me.txtVehicleInfo.TabIndex = 203
+        '
+        'lblReportNotes
+        '
+        Me.lblReportNotes.AutoSize = True
+        Me.lblReportNotes.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblReportNotes.Location = New System.Drawing.Point(462, 9)
+        Me.lblReportNotes.Name = "lblReportNotes"
+        Me.lblReportNotes.Size = New System.Drawing.Size(65, 13)
+        Me.lblReportNotes.TabIndex = 204
+        Me.lblReportNotes.Text = resources.GetString("AnalysisForm_NotesLabel")
+        '
+        'txtReportNotes
+        '
+        Me.txtReportNotes.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtReportNotes.Location = New System.Drawing.Point(533, 6)
+        Me.txtReportNotes.Name = "txtReportNotes"
+        Me.txtReportNotes.Size = New System.Drawing.Size(280, 21)
+        Me.txtReportNotes.TabIndex = 205
+        '
+        'btnExportClientReport
+        '
+        Me.btnExportClientReport.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnExportClientReport.Location = New System.Drawing.Point(823, 5)
+        Me.btnExportClientReport.Name = "btnExportClientReport"
+        Me.btnExportClientReport.Size = New System.Drawing.Size(120, 29)
+        Me.btnExportClientReport.TabIndex = 206
+        Me.btnExportClientReport.Text = resources.GetString("AnalysisForm_ExportReportButton")
+        Me.btnExportClientReport.UseVisualStyleBackColor = True
+        '
+        'pnlClientReport
+        '
+        Me.pnlClientReport.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.pnlClientReport.Controls.Add(Me.lblReportClientName)
+        Me.pnlClientReport.Controls.Add(Me.txtClientName)
+        Me.pnlClientReport.Controls.Add(Me.lblReportVehicle)
+        Me.pnlClientReport.Controls.Add(Me.txtVehicleInfo)
+        Me.pnlClientReport.Controls.Add(Me.lblReportNotes)
+        Me.pnlClientReport.Controls.Add(Me.txtReportNotes)
+        Me.pnlClientReport.Controls.Add(Me.btnExportClientReport)
+        Me.pnlClientReport.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.pnlClientReport.Location = New System.Drawing.Point(0, 690)
+        Me.pnlClientReport.Name = "pnlClientReport"
+        Me.pnlClientReport.Size = New System.Drawing.Size(948, 48)
+        Me.pnlClientReport.TabIndex = 199
+        '
         'AnalysisForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1002,18 +1094,21 @@ Partial Class AnalysisForm
         Me.ClientSize = New System.Drawing.Size(948, 738)
         Me.Controls.Add(Me.TableLayoutPanel1)
         Me.Controls.Add(Me.Panel1)
+        Me.Controls.Add(Me.pnlClientReport)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "AnalysisForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Data Analysis"
+        Me.Text = resources.GetString("$this.Text")
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         Me.TableLayoutPanel1.ResumeLayout(False)
         Me.TableLayoutPanel2.ResumeLayout(False)
         Me.TableLayoutPanel2.PerformLayout()
+        Me.pnlClientReport.ResumeLayout(False)
+        Me.pnlClientReport.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -1093,4 +1188,12 @@ Partial Class AnalysisForm
     Friend WithEvents lblY4Max3 As Label
     Friend WithEvents lblY4Max4 As Label
     Friend WithEvents lblY4Max5 As Label
+    Friend WithEvents pnlClientReport As Panel
+    Friend WithEvents lblReportClientName As Label
+    Friend WithEvents txtClientName As TextBox
+    Friend WithEvents lblReportVehicle As Label
+    Friend WithEvents txtVehicleInfo As TextBox
+    Friend WithEvents lblReportNotes As Label
+    Friend WithEvents txtReportNotes As TextBox
+    Friend WithEvents btnExportClientReport As Button
 End Class

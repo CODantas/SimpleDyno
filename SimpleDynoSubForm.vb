@@ -17,6 +17,10 @@ Imports System.Drawing.Drawing2D
 'End Enum
 Public MustInherit Class SimpleDynoSubForm
     Inherits Form
+
+    'Resource manager for translated (resx satellite) strings.
+    Private ReadOnly resources As New System.ComponentModel.ComponentResourceManager(GetType(SimpleDynoSubForm))
+
     Private context As BufferedGraphicsContext
 
     Friend Resizing As Boolean = False
@@ -30,8 +34,8 @@ Public MustInherit Class SimpleDynoSubForm
 
     Private AllowedCharacters As String = "-0123456789" & Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator
     Friend Splitter As String = "_"
-    Friend myMinCurMax As String() = {"Minimum", "Actual", "Maximum"}
-    Friend myMinCurMaxAbb As String() = {"Min", "", "Max"}
+    Friend myMinCurMax As String() = {resources.GetString("SDF_Minimum"), resources.GetString("SDF_Actual"), resources.GetString("SDF_Maximum")}
+    Friend myMinCurMaxAbb As String() = {resources.GetString("SDF_MinAbb"), "", resources.GetString("SDF_MaxAbb")}
     Friend Const GoldenRatio As Single = 1.61803398875
 
     Friend Grafx As BufferedGraphics
@@ -156,9 +160,9 @@ Public MustInherit Class SimpleDynoSubForm
             Y_DataBrush(Count) = New SolidBrush(Y_DataClr(Count))
             Y_DataPen(Count) = New Pen(Y_DataClr(Count))
             Y_DataFont(Count) = New Font("Arial", 5)
-            Y_PrimaryLabel(Count) = "Parameter"
-            Y_UnitsLabel(Count) = "Unit"
-            Y_MinMaxCurLabel(Count) = "Act"
+            Y_PrimaryLabel(Count) = resources.GetString("SDF_DefaultParameter")
+            Y_UnitsLabel(Count) = resources.GetString("SDF_DefaultUnit")
+            Y_MinMaxCurLabel(Count) = resources.GetString("SDF_DefaultAct")
             Y_Maximum(Count) = 1000
             Y_Minimum(Count) = 0
         Next
@@ -303,8 +307,8 @@ Public MustInherit Class SimpleDynoSubForm
         'Color options are no longer control specific - add standardized form here
 
         TestStrip = New ToolStripMenuItem
-        str1 = "Set Colors"
-        str2 = {"Background", "Axes", "Data", "Apply to All"}
+        str1 = resources.GetString("SDF_SetColors")
+        str2 = {resources.GetString("SDF_Background"), resources.GetString("SDF_Axes"), resources.GetString("SDF_Data"), resources.GetString("SDF_ApplyToAll")}
         str3 = {}
 
         TestStrip = CreateAToolStripMenuItem("C", str1, str2, str3) ', str4, str5)
@@ -312,7 +316,7 @@ Public MustInherit Class SimpleDynoSubForm
 
         '***********************************************
         'Font menu for the form
-        str1 = "Set Font"
+        str1 = resources.GetString("SDF_SetFont")
         str2 = {}
         str3 = {}
         TestStrip = CreateAToolStripMenuItem("F", str1, str2, str3) ', str4, str5)
@@ -320,7 +324,7 @@ Public MustInherit Class SimpleDynoSubForm
         '***********************************************
         'Refresh rates are common for all controls
 
-        str1 = "Refresh rate"
+        str1 = resources.GetString("SDF_RefreshRate")
         str2 = {"10 msec", "30 msec", "100 msec", "300 msec", "1000 msec"}
         str3 = {}
         TestStrip = CreateAToolStripMenuItem("R", str1, str2, str3)
