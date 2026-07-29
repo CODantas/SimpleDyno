@@ -293,7 +293,12 @@ Public Class ModernGauge
             .DrawString(Y_PrimaryLabel(XY_Selected), Y_AxisFont, AxisBrush, ParameterPosition)
             .DrawString(myMinCurMaxAbb(Y_MinCurMaxPointer(XY_Selected)) & " " & Y_UnitsLabel(XY_Selected), Y_AxisFont, AxisBrush, UnitPosition)
 
-            'Digital readout - shows the actual (non-smoothed) value, Consolas, above the label.
+            'Digital readout - shows the actual (non-smoothed) value, Consolas, in the dead zone
+            'below the hub. The dial only sweeps 270 degrees (StartAngle to StartAngle + Angle), so
+            'the bottom-center wedge below Center is never touched by ticks, the arc, or the needle
+            'at any value - unlike the space above the hub, which is already crowded by the parameter
+            'label (near the top of the dial, see TickLabelPositions(0) in ControlSpecificResize) and
+            'by the tick arc itself.
             Dim NumericText As String = NewCustomFormat(Y_Result(XY_Selected))
             Dim NumericFontSize As Single = CSng(Math.Max(6, myDialRectangle.Height * 0.11))
             Using numFont As Font = TypographyManager.NumericFont(NumericFontSize, FontStyle.Bold)
@@ -303,8 +308,8 @@ Public Class ModernGauge
                 'NumericText like every other label in this widget - clamp defensively so a wider
                 'reading (more digits) never draws past the widget edges on a narrow gauge.
                 TextX = Math.Max(0.0F, Math.Min(TextX, CSng(Me.ClientSize.Width) - TextSize.Width))
-                Dim TextY As Single = ParameterPosition.Y - TextSize.Height - 2
-                TextY = Math.Max(0.0F, TextY)
+                Dim ReadoutHubRadius As Integer = CInt(Math.Max(3, myDialRectangle.Width * 0.035))
+                Dim TextY As Single = Center.Y + ReadoutHubRadius + 4
                 Using shadowBrush As New SolidBrush(Color.FromArgb(120, Color.Black))
                     .DrawString(NumericText, numFont, shadowBrush, TextX + 1, TextY + 1)
                 End Using
