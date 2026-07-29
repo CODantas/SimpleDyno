@@ -1,0 +1,48 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: microsoft/setup-msbuild@v2
+
+      - uses: nuget/setup-nuget@v2
+
+      - name: Restore NuGet packages
+        run: nuget restore "SimpleDyno 6.5.vbproj" -SolutionDirectory .
+
+      - name: Build (Release)
+        run: msbuild "SimpleDyno 6.5.vbproj" /p:Configuration=Release /p:Platform=AnyCPU /nologo /v:minimal
+
+      - name: Package executable + dependencies
+        shell: pwsh
+        run: |
+          $rel = "bin\Release"
+          $pkg = "package"
+          New-Item -ItemType Directory -Path $pkg | Out-Null
+          Copy-Item "$rel\SimpleDyno.exe" $pkg
+          Copy-Item "$rel\SimpleDyno.exe.config" $pkg
+          Copy-Item "$rel\LiveCharts.dll" $pkg
+          Copy-Item "$rel\LiveCharts.WinForms.dll" $pkg
+          Copy-Item "$rel\LiveCharts.Wpf.dll" $pkg
+          Copy-Item "$rel\OxyPlot.dll" $pkg
+          Copy-Item "$rel\OxyPlot.WindowsForms.dll" $pkg
+          Copy-Item "$rel\pt-BR" $pkg -Recurse
+          Compress-Archive -Path "$pkg\*" -DestinationPath "SimpleDyno_$($env:GITHUB_REF_NAME.TrimStart('v')).zip"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: SimpleDyno_*.zip
+          generate_release_notes: true
