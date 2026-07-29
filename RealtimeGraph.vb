@@ -111,6 +111,10 @@ Public Class RealtimeGraph
         Next
     End Sub
 
+    Protected Overrides Sub ReapplyTheme()
+        ApplyDefaultTheme()
+    End Sub
+
     Public Overrides Sub ControlSpecificResize()
 
         If Not ThemeApplied Then

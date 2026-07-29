@@ -43,6 +43,10 @@ Public Class DigitalCard
         Y_DataFont(XY_Selected) = TypographyManager.NumericFont(Y_DataFont(XY_Selected).Size, FontStyle.Bold)
     End Sub
 
+    Protected Overrides Sub ReapplyTheme()
+        ApplyDefaultTheme()
+    End Sub
+
     Public Overrides Sub ControlSpecificResize()
 
         If Not ThemeApplied Then

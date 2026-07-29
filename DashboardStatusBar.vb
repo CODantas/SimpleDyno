@@ -6,6 +6,11 @@ Imports System.Drawing.Drawing2D
 ''' this class never reads Main's shared state directly and has no timer of its own, so it has
 ''' zero coupling to acquisition/calculation code. Named DashboardStatusBar (not StatusBar) to
 ''' avoid any ambiguity with the legacy System.Windows.Forms.StatusBar control.
+'''
+''' Also hosts the Dark/Light theme switch (Fase 6): a small "Claro / Escuro" control at the
+''' right edge, the active word highlighted. It only calls ThemeManager.SetTheme - every other
+''' themed window/widget repaints itself independently via ColorPalette.ThemeChanged, so this
+''' class still never needs to know about Main or any other widget.
 ''' </summary>
 Public Class DashboardStatusBar
     Inherits Panel
@@ -14,11 +19,34 @@ Public Class DashboardStatusBar
     Private _comStatus As String = String.Empty
     Private _recordingState As Main.AcquisitionStatus = Main.AcquisitionStatus.Idle
 
+    Private Const LightLabel As String = "Claro"
+    Private Const DarkLabel As String = "Escuro"
+    Private Const ThemeToggleMargin As Integer = 8
+    Private Const ThemeToggleSeparator As String = " / "
+
+    'Hit-test rectangles recomputed on every OnPaint (the strip is fixed-height and rarely
+    'resized, so this is cheap) - MouseDown/MouseMove only ever read them, never compute layout.
+    Private _lightRect As RectangleF
+    Private _darkRect As RectangleF
+
     Public Sub New()
         Me.DoubleBuffered = True
         SetStyle(ControlStyles.AllPaintingInWmPaint Or ControlStyles.DoubleBuffer Or ControlStyles.ResizeRedraw Or ControlStyles.UserPaint, True)
         UpdateStyles()
         Me.BackColor = ColorPalette.Surface
+        AddHandler ColorPalette.ThemeChanged, AddressOf Me.OnThemeChanged
+    End Sub
+
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        If disposing Then
+            RemoveHandler ColorPalette.ThemeChanged, AddressOf Me.OnThemeChanged
+        End If
+        MyBase.Dispose(disposing)
+    End Sub
+
+    Private Sub OnThemeChanged(ByVal sender As Object, ByVal e As EventArgs)
+        Me.BackColor = ColorPalette.Surface
+        Invalidate()
     End Sub
 
     Public Property AcquisitionStatus As String
@@ -100,17 +128,74 @@ Public Class DashboardStatusBar
             textLeft = 8 + DotDiameter + 6
         End If
 
-        Using textBrush As New SolidBrush(ColorPalette.TextSecondary)
-            Using font As Font = TypographyManager.UiFont(8.0F)
+        Using font As Font = TypographyManager.UiFont(8.0F)
+            Dim themeToggleWidth As Single = DrawThemeToggle(g, font)
+
+            Using textBrush As New SolidBrush(ColorPalette.TextSecondary)
                 Using sf As New StringFormat()
                     sf.LineAlignment = StringAlignment.Center
                     sf.Alignment = StringAlignment.Near
                     sf.FormatFlags = StringFormatFlags.NoWrap
                     sf.Trimming = StringTrimming.EllipsisCharacter
-                    Dim textRect As New RectangleF(textLeft, 0, Me.Width - textLeft - 8, Me.Height)
+                    Dim textRect As New RectangleF(textLeft, 0, Me.Width - textLeft - themeToggleWidth - ThemeToggleMargin, Me.Height)
                     g.DrawString(displayText, font, textBrush, textRect, sf)
                 End Using
             End Using
         End Using
+    End Sub
+
+    ''' <summary>
+    ''' Draws "Claro / Escuro" right-aligned, the active word in TextPrimary and the other in
+    ''' TextSecondary, and records _lightRect/_darkRect for OnMouseDown. Returns the total width
+    ''' consumed (including the right margin) so OnPaint can keep the status text from running
+    ''' under it.
+    ''' </summary>
+    Private Function DrawThemeToggle(g As Graphics, font As Font) As Single
+        Dim lightSize As SizeF = g.MeasureString(LightLabel, font)
+        Dim sepSize As SizeF = g.MeasureString(ThemeToggleSeparator, font)
+        Dim darkSize As SizeF = g.MeasureString(DarkLabel, font)
+
+        Dim totalWidth As Single = lightSize.Width + sepSize.Width + darkSize.Width
+        Dim startX As Single = Me.Width - ThemeToggleMargin - totalWidth
+        Dim centerY As Single = Me.Height / 2.0F
+
+        Dim isDark As Boolean = (ColorPalette.Current = ColorPalette.ThemeKind.Dark)
+
+        _lightRect = New RectangleF(startX, 0, lightSize.Width, Me.Height)
+        Dim sepRect As New RectangleF(_lightRect.Right, 0, sepSize.Width, Me.Height)
+        _darkRect = New RectangleF(sepRect.Right, 0, darkSize.Width, Me.Height)
+
+        Using sf As New StringFormat()
+            sf.LineAlignment = StringAlignment.Center
+            sf.Alignment = StringAlignment.Near
+            sf.FormatFlags = StringFormatFlags.NoWrap
+
+            Using activeBrush As New SolidBrush(ColorPalette.TextPrimary)
+                Using inactiveBrush As New SolidBrush(ColorPalette.TextSecondary)
+                    g.DrawString(LightLabel, font, If(isDark, inactiveBrush, activeBrush), _lightRect, sf)
+                    g.DrawString(ThemeToggleSeparator, font, inactiveBrush, sepRect, sf)
+                    g.DrawString(DarkLabel, font, If(isDark, activeBrush, inactiveBrush), _darkRect, sf)
+                End Using
+            End Using
+        End Using
+
+        Return ThemeToggleMargin + totalWidth
+    End Function
+
+    Protected Overrides Sub OnMouseDown(e As MouseEventArgs)
+        MyBase.OnMouseDown(e)
+        If e.Button <> MouseButtons.Left Then Return
+        Dim p As New PointF(e.X, e.Y)
+        If _lightRect.Contains(p) Then
+            ThemeManager.SetTheme(ColorPalette.ThemeKind.Light)
+        ElseIf _darkRect.Contains(p) Then
+            ThemeManager.SetTheme(ColorPalette.ThemeKind.Dark)
+        End If
+    End Sub
+
+    Protected Overrides Sub OnMouseMove(e As MouseEventArgs)
+        MyBase.OnMouseMove(e)
+        Dim p As New PointF(e.X, e.Y)
+        Me.Cursor = If(_lightRect.Contains(p) OrElse _darkRect.Contains(p), Cursors.Hand, Cursors.Default)
     End Sub
 End Class

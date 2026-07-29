@@ -65,6 +65,18 @@ Namespace My
                 Me("Idioma") = value
             End Set
         End Property
+
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Escuro")>  _
+        Public Property Tema() As String
+            Get
+                Return CType(Me("Tema"),String)
+            End Get
+            Set
+                Me("Tema") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

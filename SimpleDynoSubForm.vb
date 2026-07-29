@@ -33,6 +33,12 @@ Public MustInherit Class SimpleDynoSubForm
     Friend myConfiguration As String
     Friend myNumber As Integer
 
+    'True while this widget's colors still follow ColorPalette.Current (the theme). Set False the
+    'moment the user picks a color by hand (right-click menu) or a saved .sdi restores a genuine
+    'custom color, so a later Dark/Light toggle never overwrites a deliberate choice - see
+    'CreateFromSerializedData and ClickTheMenu's "C_0"/"C_1"/"C_2" cases.
+    Friend UsingThemeDefaults As Boolean = True
+
     Private AllowedCharacters As String = "-0123456789" & Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator
     Friend Splitter As String = "_"
     Friend myMinCurMax As String() = {resources.GetString("SDF_Minimum"), resources.GetString("SDF_Actual"), resources.GetString("SDF_Maximum")}
@@ -183,6 +189,11 @@ Public MustInherit Class SimpleDynoSubForm
 
         SDForm_Resize(Me, System.EventArgs.Empty)
 
+        'Subscribed after the first resize so Grafx already exists - see SDForm_ThemeChanged.
+        'ColorPalette.ThemeChanged is a Shared/static event: unhooked in Dispose() below, otherwise
+        'a closed widget would stay referenced forever and keep repainting a disposed buffer.
+        AddHandler ColorPalette.ThemeChanged, AddressOf Me.SDForm_ThemeChanged
+
         timer1.Start()
 
         Me.Show()
@@ -234,6 +245,9 @@ Public MustInherit Class SimpleDynoSubForm
         Dim SavedAxisClr As Color = ColorTranslator.FromHtml(Parameters(8))
         If SavedBackClr.ToArgb() <> Color.White.ToArgb() OrElse SavedAxisClr.ToArgb() <> Color.Black.ToArgb() Then
             BackClr = SavedBackClr : AxisClr = SavedAxisClr
+            UsingThemeDefaults = False 'a real saved color choice - a later theme toggle must leave it alone
+        Else
+            UsingThemeDefaults = True 'legacy pre-theme save - keep following ColorPalette.Current
         End If
         AxisBrush.Color = AxisClr : AxisPen.Color = AxisClr
         X_PrimaryPointer = CInt(Parameters(9)) : X_MinCurMaxPointer = CInt(Parameters(10)) : X_UnitPointer = CInt(Parameters(11))  'X data pointer
@@ -443,18 +457,21 @@ Public MustInherit Class SimpleDynoSubForm
             Case Is = "C_0" 'Background
                 Colormnu.ShowDialog()
                 BackClr = Colormnu.Color
+                UsingThemeDefaults = False 'hand-picked - a later Dark/Light toggle must not override it
                 Contextmnu.Close()
             Case Is = "C_1" 'Axis
                 Colormnu.ShowDialog()
                 AxisClr = Colormnu.Color
                 AxisBrush.Color = AxisClr
                 AxisPen.Color = AxisClr
+                UsingThemeDefaults = False
                 Contextmnu.Close()
             Case Is = "C_2" 'Data
                 Colormnu.ShowDialog()
                 Y_DataClr(XY_Selected) = Colormnu.Color
                 Y_DataBrush(XY_Selected).Color = Y_DataClr(XY_Selected)
                 Y_DataPen(XY_Selected).Color = Y_DataClr(XY_Selected)
+                UsingThemeDefaults = False
                 Contextmnu.Close()
             Case Is = "C_3" 'Apply format to all
                 RaiseEvent SetToMyFormat(GetMyFormat)
@@ -664,16 +681,17 @@ Public MustInherit Class SimpleDynoSubForm
     'Every gauge/card/graph widget is its own top-level Form (FormBorderStyle.SizableToolWindow,
     'set above) so its resize border can be dragged natively - there is no custom edge hit-testing
     'in this class, only whole-window dragging (SDForm_MouseMove). Windows draws that native border
-    'in the light system frame color unless told otherwise, which - now that the widgets themselves
-    'draw dark, sometimes rounded/circular content right up to the edge (ModernGauge, DigitalCard) -
-    'shows up as a pale square frame clashing with the dark theme, most visible where round content
-    'leaves the window's square corners exposed. DWMWA_USE_IMMERSIVE_DARK_MODE asks Windows 10 2004+
-    '/ 11 to draw that frame in dark colors instead, matching the rest of the UI. Best-effort: older
+    'in the light system frame color unless told otherwise, which - when the widget itself draws
+    'dark, sometimes rounded/circular content right up to the edge (ModernGauge, DigitalCard) -
+    'shows up as a pale square frame clashing with the theme, most visible where round content
+    'leaves the window's square corners exposed. DWMWA_USE_IMMERSIVE_DARK_MODE asks Windows 10
+    '2004+ / 11 to draw that frame in dark colors instead, matching Dark theme; turned back off for
+    'Light so the native frame matches that theme's light content instead. Best-effort: older
     'Windows versions or a failed call just keep the default (light) frame, nothing else breaks.
-    Private Sub ApplyDarkWindowFrame()
+    Private Sub ApplyWindowFrameForCurrentTheme()
         Const DWMWA_USE_IMMERSIVE_DARK_MODE As Integer = 20
         Const DWMWA_USE_IMMERSIVE_DARK_MODE_OLD As Integer = 19
-        Dim UseDarkMode As Integer = 1
+        Dim UseDarkMode As Integer = If(ColorPalette.Current = ColorPalette.ThemeKind.Dark, 1, 0)
         Try
             If DwmSetWindowAttribute(Me.Handle, DWMWA_USE_IMMERSIVE_DARK_MODE, UseDarkMode, Marshal.SizeOf(Of Integer)()) <> 0 Then
                 DwmSetWindowAttribute(Me.Handle, DWMWA_USE_IMMERSIVE_DARK_MODE_OLD, UseDarkMode, Marshal.SizeOf(Of Integer)())
@@ -685,7 +703,37 @@ Public MustInherit Class SimpleDynoSubForm
 
     Protected Overrides Sub OnHandleCreated(ByVal e As EventArgs)
         MyBase.OnHandleCreated(e)
-        ApplyDarkWindowFrame()
+        ApplyWindowFrameForCurrentTheme()
+    End Sub
+
+    'Override in each theme-aware subclass (ModernGauge/DigitalCard/RealtimeGraph) to re-run its
+    'own private ApplyDefaultTheme(), pulling fresh colors from ColorPalette.Current. Base no-op:
+    'the legacy widgets (SimpleDynoSubGauge/Label/MultiYTimeGraph) never adopted ColorPalette, so
+    'they have nothing to refresh.
+    Protected Overridable Sub ReapplyTheme()
+    End Sub
+
+    'ColorPalette.ThemeChanged fires for every open widget, but only those still following the
+    'theme (UsingThemeDefaults) should react - a widget with a hand-picked color must not jump
+    'back to the theme's default the next time someone flips Dark/Light. ApplyDefaultTheme() alone
+    'only resets colors + a base font size; ControlSpecificResize() is needed right after to refit
+    'that font/positions back to the widget's actual current size (exactly what already happens on
+    'the very first resize - see SDForm_Resize/ControlSpecificResize in each subclass).
+    Private Sub SDForm_ThemeChanged(ByVal sender As Object, ByVal e As EventArgs)
+        ApplyWindowFrameForCurrentTheme()
+        If UsingThemeDefaults AndAlso Me.WindowState <> FormWindowState.Minimized Then
+            ReapplyTheme()
+            ControlSpecificResize()
+            DrawToBuffer(Grafx.Graphics)
+            Me.Refresh()
+        End If
+    End Sub
+
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        If disposing Then
+            RemoveHandler ColorPalette.ThemeChanged, AddressOf Me.SDForm_ThemeChanged
+        End If
+        MyBase.Dispose(disposing)
     End Sub
     Private Sub AlignTheForm()
         Dim NewLocation As System.Drawing.Point

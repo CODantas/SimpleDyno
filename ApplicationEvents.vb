@@ -11,6 +11,10 @@ Namespace My
             Catch ex As Exception
                 System.Threading.Thread.CurrentThread.CurrentUICulture = New System.Globalization.CultureInfo("pt-BR")
             End Try
+
+            'Restore the user's last-picked Dark/Light theme before any themed form/widget is
+            'created (Main's constructor calls ApplyDashboardTheme() immediately after this).
+            ThemeManager.LoadSavedTheme()
         End Sub
 
     End Class

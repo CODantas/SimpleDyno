@@ -449,6 +449,12 @@ Public Class Main
     Public Sub New()
         MyBase.New()
 
+        'Also called from MyApplication_Startup (ApplicationEvents.vb), which should already run
+        'before this constructor - kept here too, directly, so the very first ApplyDashboardTheme()
+        'call a few lines down is never a beat behind My.Settings.Tema regardless of exactly how/when
+        'the WindowsFormsApplicationBase Startup event ends up firing relative to MainForm construction.
+        ThemeManager.LoadSavedTheme()
+
         'This call is required by the Windows Form Designer.
         InitializeComponent()
 
@@ -456,6 +462,15 @@ Public Class Main
         ApplyDashboardTheme()
         InitializeDashboardChrome()
 
+        'Re-skins the toolbar/buttons/labels whenever the user flips Dark/Light from the status
+        'bar toggle - every open gauge/card/graph widget reacts to the same event independently
+        '(see SimpleDynoSubForm.SDForm_ThemeChanged), Main only owns its own chrome here.
+        AddHandler ColorPalette.ThemeChanged, AddressOf Main_ThemeChanged
+
+    End Sub
+
+    Private Sub Main_ThemeChanged(ByVal sender As Object, ByVal e As EventArgs)
+        ApplyDashboardTheme()
     End Sub
 
     'Form overrides dispose to clean up the component list.
@@ -1017,6 +1032,9 @@ Public Class Main
                 btn.UseVisualStyleBackColor = False
                 btn.AutoEllipsis = True
                 btn.ForeColor = If(btn.Enabled, ColorPalette.TextPrimary, ColorPalette.TextSecondary)
+                'ApplyDashboardTheme now also runs on every Dark/Light toggle (not just once at
+                'startup) - RemoveHandler first so re-running it never stacks duplicate subscriptions.
+                RemoveHandler btn.EnabledChanged, AddressOf DashboardButton_EnabledChanged
                 AddHandler btn.EnabledChanged, AddressOf DashboardButton_EnabledChanged
                 ShrinkButtonFontToFit(btn)
             ElseIf TypeOf ctrl Is Label Then
@@ -1072,13 +1090,21 @@ Public Class Main
         Const DashboardStatusBarHeight As Integer = 22
         Dim originalHeight As Integer = Me.ClientSize.Height
 
+        'Grow the form to its FINAL size before parenting the strip. Anchor=Bottom bakes in
+        '"distance from the parent's current bottom edge" the moment a control is parented - doing
+        'that while Me.ClientSize was still the pre-growth height (the previous order: parent first,
+        'grow second) baked in a distance equal to the strip's own height, which pushed the whole
+        'strip below the window's visible client area on every subsequent layout pass. Confirmed by
+        'direct measurement: Bounds.Y ended up equal to ClientSize.Height, i.e. entirely off-screen -
+        'the strip (and anything drawn in it, including the Fase 6 theme toggle) was never visible.
+        Me.ClientSize = New Size(Me.ClientSize.Width, originalHeight + DashboardStatusBarHeight)
+
         pnlDashboardStatusBar = New DashboardStatusBar() With {
             .Location = New Point(0, originalHeight),
             .Size = New Size(Me.ClientSize.Width, DashboardStatusBarHeight),
             .Anchor = AnchorStyles.Left Or AnchorStyles.Right Or AnchorStyles.Bottom
         }
         Me.Controls.Add(pnlDashboardStatusBar)
-        Me.ClientSize = New Size(Me.ClientSize.Width, originalHeight + DashboardStatusBarHeight)
 
         DashboardStatusBarRefreshTimer.Start()
     End Sub
