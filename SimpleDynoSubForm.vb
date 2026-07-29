@@ -3,6 +3,7 @@ Imports System.ComponentModel
 Imports System.Drawing
 Imports System.Windows.Forms
 Imports System.Drawing.Drawing2D
+Imports System.Runtime.InteropServices
 
 'Friend Enum SerialParameters
 '    'Enumerate the basic components of each display object 
@@ -221,7 +222,19 @@ Public MustInherit Class SimpleDynoSubForm
 
         NewLocation.X = CInt(Parameters(0)) : NewLocation.Y = CInt(Parameters(1)) : NewSize.Height = CInt(Parameters(2)) : NewSize.Width = CInt(Parameters(3)) 'position and size
         myConfiguration = Parameters(4) : Y_Number_Allowed = CInt(Parameters(5)) : timer1.Interval = CInt(Parameters(6)) 'basic configuration
-        BackClr = ColorTranslator.FromHtml(Parameters(7)) : AxisClr = ColorTranslator.FromHtml(Parameters(8)) 'basic colors
+
+        'basic colors - saved layouts from before the dark-theme modernization always wrote the
+        'old hardcoded pre-theme defaults here (White/Black, see BackClr/AxisClr just above in
+        'Initialize()), because that is what every widget used before ApplyDefaultTheme existed.
+        'Restoring that pair literally would silently undo ApplyDefaultTheme's dark colors on every
+        'legacy .sdi load - the "white rounded widgets sitting inside the new dark app" look. Only
+        'skip the restore when BOTH match that exact legacy pair, so a real user color choice (from
+        'the right-click menu) is never discarded.
+        Dim SavedBackClr As Color = ColorTranslator.FromHtml(Parameters(7))
+        Dim SavedAxisClr As Color = ColorTranslator.FromHtml(Parameters(8))
+        If SavedBackClr.ToArgb() <> Color.White.ToArgb() OrElse SavedAxisClr.ToArgb() <> Color.Black.ToArgb() Then
+            BackClr = SavedBackClr : AxisClr = SavedAxisClr
+        End If
         AxisBrush.Color = AxisClr : AxisPen.Color = AxisClr
         X_PrimaryPointer = CInt(Parameters(9)) : X_MinCurMaxPointer = CInt(Parameters(10)) : X_UnitPointer = CInt(Parameters(11))  'X data pointer
         X_PrimaryLabel = CopyOfDataNames(X_PrimaryPointer)
@@ -642,6 +655,37 @@ Public MustInherit Class SimpleDynoSubForm
     End Sub
     Protected Overrides Sub OnPaint(ByVal e As PaintEventArgs)
         Grafx.Render(e.Graphics)
+    End Sub
+
+    <DllImport("dwmapi.dll", PreserveSig:=True)>
+    Private Shared Function DwmSetWindowAttribute(hwnd As IntPtr, attribute As Integer, ByRef value As Integer, valueSize As Integer) As Integer
+    End Function
+
+    'Every gauge/card/graph widget is its own top-level Form (FormBorderStyle.SizableToolWindow,
+    'set above) so its resize border can be dragged natively - there is no custom edge hit-testing
+    'in this class, only whole-window dragging (SDForm_MouseMove). Windows draws that native border
+    'in the light system frame color unless told otherwise, which - now that the widgets themselves
+    'draw dark, sometimes rounded/circular content right up to the edge (ModernGauge, DigitalCard) -
+    'shows up as a pale square frame clashing with the dark theme, most visible where round content
+    'leaves the window's square corners exposed. DWMWA_USE_IMMERSIVE_DARK_MODE asks Windows 10 2004+
+    '/ 11 to draw that frame in dark colors instead, matching the rest of the UI. Best-effort: older
+    'Windows versions or a failed call just keep the default (light) frame, nothing else breaks.
+    Private Sub ApplyDarkWindowFrame()
+        Const DWMWA_USE_IMMERSIVE_DARK_MODE As Integer = 20
+        Const DWMWA_USE_IMMERSIVE_DARK_MODE_OLD As Integer = 19
+        Dim UseDarkMode As Integer = 1
+        Try
+            If DwmSetWindowAttribute(Me.Handle, DWMWA_USE_IMMERSIVE_DARK_MODE, UseDarkMode, Marshal.SizeOf(Of Integer)()) <> 0 Then
+                DwmSetWindowAttribute(Me.Handle, DWMWA_USE_IMMERSIVE_DARK_MODE_OLD, UseDarkMode, Marshal.SizeOf(Of Integer)())
+            End If
+        Catch
+            'dwmapi.dll missing/blocked - leave the default frame.
+        End Try
+    End Sub
+
+    Protected Overrides Sub OnHandleCreated(ByVal e As EventArgs)
+        MyBase.OnHandleCreated(e)
+        ApplyDarkWindowFrame()
     End Sub
     Private Sub AlignTheForm()
         Dim NewLocation As System.Drawing.Point
