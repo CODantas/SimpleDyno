@@ -2565,8 +2565,8 @@ Public Class Main
                             'removing the power calc based on average 06DEC13
                             'Data(POWER, ACTUAL) = Data(TORQUE_ROLLER, ACTUAL) * ((Data(RPM1_ROLLER, ACTUAL) + OldAngularVelocity) / 2) 'calculate power based on torque and average angular velocity between two points
                             Data(POWER, ACTUAL) = Data(TORQUE_ROLLER, ACTUAL) * Data(RPM1_ROLLER, ACTUAL) ' + OldAngularVelocity) / 2) 'calculate power based on torque and average angular velocity between two points
-                            If Data(POWER, ACTUAL) > 0 Then
-                                Data(EFFICIENCY, ACTUAL) = Data(WATTS_IN, ACTUAL) / Data(POWER, ACTUAL)
+                            If Data(WATTS_IN, ACTUAL) <> 0 Then
+                                Data(EFFICIENCY, ACTUAL) = Data(POWER, ACTUAL) / Data(WATTS_IN, ACTUAL) * 100
                             Else
                                 Data(EFFICIENCY, ACTUAL) = 0
                             End If
@@ -3233,8 +3233,8 @@ Public Class Main
                                 'calculate torque based on angular acceleration (delta speed per time) and MOI
                                 Data(TORQUE_ROLLER, ACTUAL) = (Data(RPM1_ROLLER, ACTUAL) - OldAngularVelocity) / (RPM1NewTriggerTime - RPM1OldTriggerTime) * DynoMomentOfInertia
                                 Data(POWER, ACTUAL) = Data(TORQUE_ROLLER, ACTUAL) * Data(RPM1_ROLLER, ACTUAL) ' + OldAngularVelocity) / 2) 'calculate power based on torque and average angular velocity between two points
-                                If Data(POWER, ACTUAL) > 0 Then
-                                    Data(EFFICIENCY, ACTUAL) = Data(WATTS_IN, ACTUAL) / Data(POWER, ACTUAL)
+                                If Data(WATTS_IN, ACTUAL) <> 0 Then
+                                    Data(EFFICIENCY, ACTUAL) = Data(POWER, ACTUAL) / Data(WATTS_IN, ACTUAL) * 100
                                 Else
                                     Data(EFFICIENCY, ACTUAL) = 0
                                 End If

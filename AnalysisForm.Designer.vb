@@ -109,6 +109,7 @@ Partial Class AnalysisForm
         Me.txtVehicleInfo = New System.Windows.Forms.TextBox()
         Me.lblReportNotes = New System.Windows.Forms.Label()
         Me.txtReportNotes = New System.Windows.Forms.TextBox()
+        Me.txtExtraMetrics = New System.Windows.Forms.TextBox()
         Me.btnExportClientReport = New System.Windows.Forms.Button()
         Me.pnlClientReport.SuspendLayout()
         Me.Panel1.SuspendLayout()
@@ -455,14 +456,15 @@ Partial Class AnalysisForm
         Me.TableLayoutPanel1.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.TableLayoutPanel1.Controls.Add(Me.TableLayoutPanel2, 0, 0)
         Me.TableLayoutPanel1.Controls.Add(Me.PlotView1, 0, 1)
+        Me.TableLayoutPanel1.Controls.Add(Me.txtExtraMetrics, 0, 2)
         Me.TableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TableLayoutPanel1.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TableLayoutPanel1.Location = New System.Drawing.Point(181, 0)
         Me.TableLayoutPanel1.Name = "TableLayoutPanel1"
-        Me.TableLayoutPanel1.RowCount = 2
+        Me.TableLayoutPanel1.RowCount = 3
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.41885!))
         Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 79.58115!))
-        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.TableLayoutPanel1.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 110.0!))
         Me.TableLayoutPanel1.Size = New System.Drawing.Size(767, 738)
         Me.TableLayoutPanel1.TabIndex = 109
         '
@@ -1061,6 +1063,20 @@ Partial Class AnalysisForm
         Me.txtReportNotes.Size = New System.Drawing.Size(280, 21)
         Me.txtReportNotes.TabIndex = 205
         '
+        'txtExtraMetrics
+        '
+        Me.txtExtraMetrics.BackColor = System.Drawing.Color.White
+        Me.txtExtraMetrics.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtExtraMetrics.Font = New System.Drawing.Font("Consolas", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtExtraMetrics.Location = New System.Drawing.Point(3, 631)
+        Me.txtExtraMetrics.Multiline = True
+        Me.txtExtraMetrics.Name = "txtExtraMetrics"
+        Me.txtExtraMetrics.ReadOnly = True
+        Me.txtExtraMetrics.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.txtExtraMetrics.Size = New System.Drawing.Size(761, 104)
+        Me.txtExtraMetrics.TabIndex = 250
+        Me.txtExtraMetrics.TabStop = False
+        '
         'btnExportClientReport
         '
         Me.btnExportClientReport.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -1195,5 +1211,6 @@ Partial Class AnalysisForm
     Friend WithEvents txtVehicleInfo As TextBox
     Friend WithEvents lblReportNotes As Label
     Friend WithEvents txtReportNotes As TextBox
+    Friend WithEvents txtExtraMetrics As TextBox
     Friend WithEvents btnExportClientReport As Button
 End Class

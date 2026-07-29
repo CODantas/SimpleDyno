@@ -745,7 +745,7 @@ Public Class Fit
             Else
                 .WriteLine("No_Baud_Rate_Selected")
             End If
-            .WriteLine("Car_Mass: " & Main.frmDyno.CarMass.ToString & " grams")
+            .WriteLine("Car_Mass: " & Main.frmDyno.CarMass.ToString(System.Globalization.CultureInfo.InvariantCulture) & " grams")
             .WriteLine("Frontal_Area: " & Main.frmDyno.FrontalArea.ToString & " mm2")
             .WriteLine("Drag_Coefficient: " & Main.frmDyno.DragCoefficient.ToString)
             .WriteLine("Gear_Ratio: " & Main.GearRatio.ToString)
@@ -887,7 +887,10 @@ Public Class Fit
                 tempstring = "" 'count.ToString & " "
                 For paramcount = 0 To Main.LAST - 1
                     tempsplit = Split(Main.DataUnitTags(paramcount), " ") ' How many units are there
-                    tempstring = tempstring & FitData(paramcount, Count) * Main.DataUnits(paramcount, 0) & " " 'DataTags(paramcount).Replace(" ", "_") & "(" & tempsplit(unitcount) & ") "
+                        'Always write with "." as the decimal point regardless of regional settings, so the file
+                    'parses correctly (via Double.Parse(..., InvariantCulture) in DataInputFileReader) on any
+                    'machine, including ones using "," as the decimal separator (e.g. pt-BR).
+                    tempstring = tempstring & (FitData(paramcount, Count) * Main.DataUnits(paramcount, 0)).ToString(System.Globalization.CultureInfo.InvariantCulture) & " " 'DataTags(paramcount).Replace(" ", "_") & "(" & tempsplit(unitcount) & ") "
                 Next
                 '...and write it
                 .WriteLine(tempstring)
@@ -899,7 +902,7 @@ Public Class Fit
             .WriteLine("Time_(Sec) RPM1_Roller_(rad/s)")
             If UBound(CoastDownFY) > 1 Then
                 For Count = 1 To UBound(CoastDownFY)
-                    .WriteLine(CoastDownX(Count) & " " & CoastDownFY(Count))
+                    .WriteLine(CoastDownX(Count).ToString(System.Globalization.CultureInfo.InvariantCulture) & " " & CoastDownFY(Count).ToString(System.Globalization.CultureInfo.InvariantCulture))
                 Next
             End If
 
@@ -958,7 +961,7 @@ Public Class Fit
                 tempstring = ""
                 For paramcount = 0 To Main.LAST - 1 'CHECK - time is now the last column which will mess up the overlay routine .
                     tempsplit = Split(Main.DataUnitTags(paramcount), " ") ' How many units are there
-                    tempstring = tempstring & Main.CollectedData(paramcount, Count) * Main.DataUnits(paramcount, 0) & " " 'DataTags(paramcount).Replace(" ", "_") & "(" & tempsplit(unitcount) & ") "
+                    tempstring = tempstring & (Main.CollectedData(paramcount, Count) * Main.DataUnits(paramcount, 0)).ToString(System.Globalization.CultureInfo.InvariantCulture) & " " 'DataTags(paramcount).Replace(" ", "_") & "(" & tempsplit(unitcount) & ") "
                 Next
                 '...and write it
                 .WriteLine(tempstring)

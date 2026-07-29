@@ -31,6 +31,9 @@ Public Class AnalysisForm
     Private OverlayPlotMax As Boolean = True
     Private plotModel As OxyPlot.PlotModel
     Private dataRecordsList As List(Of List(Of DataRecord)) = New List(Of List(Of DataRecord))()
+    'Car mass (grams) per loaded file, parallel to dataRecordsList - each overlaid file can be a
+    'different kart (comercial or particular), so this is captured per file, not from the live Dyno settings.
+    Private fileCarMassGrams As New List(Of Double)
 
     Friend Sub Analysis_Setup()
         ReDim OverlayFiles(MAXDATAFILES)
@@ -477,6 +480,7 @@ Public Class AnalysisForm
                     OverlayFileCount = .OverlayFileCount
                     OverlayFiles = .OverlayFiles
                     AnalyzedData = .AnalyzedData
+                    Me.fileCarMassGrams.Add(.LastCarMassGrams)
                 End With
             Catch ex As FileNotFoundException
                 MessageBox.Show("Could not find the The file '" & ex.FileName & "'!. Please try another file!", "File error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
@@ -836,8 +840,141 @@ Public Class AnalysisForm
             row = row + 1
         Next
 
+        UpdateExtraMetrics()
+
         Me.ResumeLayout()
     End Sub
+
+    'Computes summary metrics that sit outside the point-by-point Y-axis overlay above: power-to-weight,
+    'usable power band, average torque across the RPM range, acceleration times, and (when 2+ files are
+    'checked) a fleet-consistency comparison of peak power - useful for spotting an underperforming engine
+    'in a rental/comercial fleet where the karts are nominally identical. Runs on every SetupDiagram() call
+    'so it always reflects the currently checked files.
+    Private Sub UpdateExtraMetrics()
+        Const HpPerWatt As Double = 0.00134
+        Const RadPerSecToRPM As Double = 60.0 / (2.0 * Math.PI)
+        Const MsToKph As Double = 3.6
+        Const PowerBandThreshold As Double = 0.9
+
+        Dim lines As New List(Of String)
+        Dim checkedIndices As New List(Of Integer)
+        Dim peakPowerW As New List(Of Double)
+
+        Dim i As Integer
+        For i = 0 To dataRecordsList.Count - 1
+            If Not clbFiles.CheckedIndices.Contains(i) Then Continue For
+
+            Dim records As List(Of DataRecord) = dataRecordsList(i)
+            If records Is Nothing OrElse records.Count = 0 Then Continue For
+
+            Dim carMassGrams As Double = 0
+            If i < fileCarMassGrams.Count Then carMassGrams = fileCarMassGrams(i)
+
+            'Peak power and the motor RPM it occurs at
+            Dim peakP As Double = 0
+            Dim r As DataRecord
+            For Each r In records
+                If r.Power > peakP Then peakP = r.Power
+            Next
+            peakPowerW.Add(peakP)
+            checkedIndices.Add(i)
+
+            'Power-to-weight - HP and kg to match the units already used throughout the app
+            Dim hpPerKgText As String = "n/d (massa não informada)"
+            If carMassGrams > 0 Then
+                Dim hpPerKg As Double = (peakP * HpPerWatt) / (carMassGrams / 1000.0)
+                hpPerKgText = Main.NewCustomFormat(hpPerKg) & " HP/kg"
+            End If
+
+            'Usable power band - RPM range where power stays above PowerBandThreshold * peak.
+            'Narrow bands matter most for 2-stroke particular karts; commercial 4-stroke engines
+            'typically show a much wider band.
+            Dim bandMinRPM As Double = Double.MaxValue
+            Dim bandMaxRPM As Double = Double.MinValue
+            For Each r In records
+                If r.Power >= PowerBandThreshold * peakP Then
+                    Dim rpm As Double = r.RPM1_Motor * RadPerSecToRPM
+                    If rpm < bandMinRPM Then bandMinRPM = rpm
+                    If rpm > bandMaxRPM Then bandMaxRPM = rpm
+                End If
+            Next
+            Dim bandText As String = "n/d"
+            If bandMaxRPM > bandMinRPM Then
+                bandText = Main.NewCustomFormat(bandMinRPM) & "-" & Main.NewCustomFormat(bandMaxRPM) & " RPM (largura " & Main.NewCustomFormat(bandMaxRPM - bandMinRPM) & ")"
+            End If
+
+            'Average motor torque across the RPM range, via trapezoidal integration over RPM
+            '(area under the torque-vs-RPM curve divided by the RPM span) rather than a plain
+            'sample mean, which would be biased by how densely points happen to be sampled.
+            Dim sortedRecords As New List(Of DataRecord)(records)
+            sortedRecords.Sort(Function(a, b) a.RPM1_Motor.CompareTo(b.RPM1_Motor))
+            Dim torqueArea As Double = 0
+            Dim rpmSpan As Double = 0
+            Dim p As Integer
+            For p = 1 To sortedRecords.Count - 1
+                Dim rpm0 As Double = sortedRecords(p - 1).RPM1_Motor
+                Dim rpm1 As Double = sortedRecords(p).RPM1_Motor
+                Dim dRpm As Double = rpm1 - rpm0
+                If dRpm > 0 Then
+                    torqueArea += dRpm * (sortedRecords(p - 1).Motor_Torque + sortedRecords(p).Motor_Torque) / 2.0
+                    rpmSpan += dRpm
+                End If
+            Next
+            Dim avgTorqueText As String = "n/d"
+            If rpmSpan > 0 Then
+                avgTorqueText = Main.NewCustomFormat(torqueArea / rpmSpan) & " N.m"
+            End If
+
+            'Acceleration times (0-40 and 0-60 km/h), interpolated from the recorded speed/time curve -
+            'ties dyno results back to something that correlates with lap-time performance.
+            Dim t40 As String = TimeToReachSpeed(records, 40.0 / MsToKph)
+            Dim t60 As String = TimeToReachSpeed(records, 60.0 / MsToKph)
+
+            lines.Add(clbFiles.Items.Item(i).ToString() & ": " & hpPerKgText &
+                      " | Faixa útil (90%): " & bandText &
+                      " | Torque médio: " & avgTorqueText &
+                      " | 0-40km/h: " & t40 & "s | 0-60km/h: " & t60 & "s")
+        Next
+
+        If peakPowerW.Count >= 2 Then
+            Dim avgPeak As Double = 0
+            Dim v As Double
+            For Each v In peakPowerW
+                avgPeak += v
+            Next
+            avgPeak /= peakPowerW.Count
+
+            If avgPeak > 0 Then
+                lines.Add("")
+                lines.Add("Consistência de frota (pico de potência vs média do grupo):")
+                Dim p2 As Integer
+                For p2 = 0 To checkedIndices.Count - 1
+                    Dim deviationPct As Double = (peakPowerW(p2) - avgPeak) / avgPeak * 100.0
+                    Dim flag As String = ""
+                    If Math.Abs(deviationPct) > 15.0 Then flag = "  <-- fora da tolerância (±15%)"
+                    lines.Add("  " & clbFiles.Items.Item(checkedIndices(p2)).ToString() & ": " & Main.NewCustomFormat(deviationPct) & "%" & flag)
+                Next
+            End If
+        End If
+
+        txtExtraMetrics.Text = String.Join(Environment.NewLine, lines)
+    End Sub
+
+    'Finds the elapsed time to reach targetSpeedMs (m/s), interpolating linearly between the two
+    'recorded points that straddle it. Returns "não atingido" if the run never reaches that speed.
+    Private Function TimeToReachSpeed(records As List(Of DataRecord), targetSpeedMs As Double) As String
+        Dim p As Integer
+        For p = 1 To records.Count - 1
+            If records(p - 1).Speed < targetSpeedMs AndAlso records(p).Speed >= targetSpeedMs Then
+                Dim speedSpan As Double = records(p).Speed - records(p - 1).Speed
+                If speedSpan <= 0 Then Return Main.NewCustomFormat(records(p).Time)
+                Dim fraction As Double = (targetSpeedMs - records(p - 1).Speed) / speedSpan
+                Dim interpolatedTime As Double = records(p - 1).Time + fraction * (records(p).Time - records(p - 1).Time)
+                Return Main.NewCustomFormat(interpolatedTime)
+            End If
+        Next
+        Return "não atingido"
+    End Function
 
     Friend Sub btnClearOverlay_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClearOverlay.Click
         ReDim AnalyzedData(MAXDATAFILES, Main.LAST, Main.MAXDATAPOINTS)
@@ -846,6 +983,7 @@ Public Class AnalysisForm
         Main.frmFit.chkAddOrNew.Enabled = True
 
         dataRecordsList.Clear()
+        fileCarMassGrams.Clear()
         clbFiles.Items.Clear()
         SetupDiagram()
         'pnlOverlaySetup()

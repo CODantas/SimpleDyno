@@ -5,6 +5,9 @@ Public Class DataInputFileReader
     Public OverlayFileCount As Integer = 0
     Public OverlayFiles() As String
     Public AnalyzedData(MAXDATAFILES, Main.LAST, Main.MAXDATAPOINTS) As Double
+    'Car mass (grams) read from the "Car_Mass:" header line of the last file read via ReadDataFile2 - used
+    'by AnalysisForm to compute power-to-weight, since each overlaid file can be a different vehicle/kart.
+    Public LastCarMassGrams As Double = 0
 
     Private Const MAXDATAFILES As Integer = 5
 
@@ -301,8 +304,12 @@ Public Class DataInputFileReader
                 Select Case temp
                     Case Is = Main.PowerRunVersion, "POWER_RUN_6_3", "POWER_RUN_6_4" 'This is a valid current version file
 
+                        LastCarMassGrams = 0
                         Do
                             temp = .ReadLine
+                            If temp.StartsWith("Car_Mass:") Then
+                                LastCarMassGrams = Double.Parse(temp.Split(CChar(" "))(1), System.Globalization.CultureInfo.InvariantCulture)
+                            End If
                         Loop Until temp.StartsWith("NUMBER_OF_POINTS_FIT")
 
                         Dim noOfRecords As Integer = CInt(temp.Substring(temp.LastIndexOf(" "))) 'used the empty holder to remember the number of fit points
@@ -332,7 +339,11 @@ Public Class DataInputFileReader
                                 SearchString = Main.DataTags(ParamCount).Replace(" ", "_") & "_(" & UnitName(0) & ")"
                                 ParamPosition = Array.IndexOf(TitlesSplit, SearchString)
                                 If ParamPosition <> -1 Then
-                                    Dim value As Double = CDbl(DataLine(ParamPosition))
+                                    'The file always stores numbers with "." as the decimal point (see Fit.WritePowerFile),
+                                    'regardless of the machine's regional settings, so it must be parsed the same way -
+                                    'otherwise on any culture that uses "," as the decimal separator (e.g. pt-BR), CDbl()
+                                    'reads "." as a thousands separator and inflates every value by orders of magnitude.
+                                    Dim value As Double = Double.Parse(DataLine(ParamPosition), System.Globalization.CultureInfo.InvariantCulture)
 
 
                                     Select Case SearchString
