@@ -1560,27 +1560,27 @@ Public Class Main
                 Else
                     .WriteLine("No_Baud_Rate_Selected")
                 End If
-                .WriteLine("Car_Mass: " & Main.frmDyno.CarMass.ToString & " grams")
-                .WriteLine("Frontal_Area: " & Main.frmDyno.FrontalArea.ToString & " mm2")
-                .WriteLine("Drag_Coefficient: " & Main.frmDyno.DragCoefficient.ToString)
-                .WriteLine("Gear_Ratio: " & Main.GearRatio.ToString)
-                .WriteLine("Wheel_Diameter: " & Main.frmDyno.WheelDiameter.ToString & " mm")
-                .WriteLine("Roller_Diameter: " & Main.frmDyno.RollerDiameter.ToString & " mm")
-                .WriteLine("Roller_Wall_Thickness: " & Main.frmDyno.RollerWallThickness.ToString & " mm")
-                .WriteLine("Roller_Mass: " & Main.frmDyno.RollerMass.ToString & " grams")
-                .WriteLine("Axle_Diameter: " & Main.frmDyno.AxleDiameter.ToString & " mm")
-                .WriteLine("Axle_Mass: " & Main.frmDyno.AxleMass.ToString & " grams")
-                .WriteLine("End_Cap_Mass: " & Main.frmDyno.EndCapMass.ToString & " grams")
-                .WriteLine("Extra_Diameter: " & Main.frmDyno.ExtraDiameter.ToString & " mm")
-                .WriteLine("Extra_Wall_Thickness: " & Main.frmDyno.ExtraWallThickness.ToString & " mm")
-                .WriteLine("Extra_Mass: " & Main.frmDyno.ExtraMass.ToString & " grams")
-                .WriteLine("Target_MOI: " & Main.IdealMomentOfInertia.ToString & " kg/m2")
-                .WriteLine("Actual_MOI: " & Main.DynoMomentOfInertia.ToString & " kg/m2")
-                .WriteLine("Target_Roller_Mass: " & Main.IdealRollerMass.ToString & " grams")
-                .WriteLine("Signals_Per_RPM1: " & Main.frmDyno.SignalsPerRPM.ToString)
-                .WriteLine("Signals_Per_RPM2: " & Main.frmDyno.SignalsPerRPM2.ToString)
-                .WriteLine("Channel_1_Threshold " & HighSignalThreshold.ToString)
-                .WriteLine("Channel_2_Threshold " & HighSignalThreshold2.ToString)
+                .WriteLine("Car_Mass: " & Main.frmDyno.CarMass.ToString(System.Globalization.CultureInfo.InvariantCulture) & " grams")
+                .WriteLine("Frontal_Area: " & Main.frmDyno.FrontalArea.ToString(System.Globalization.CultureInfo.InvariantCulture) & " mm2")
+                .WriteLine("Drag_Coefficient: " & Main.frmDyno.DragCoefficient.ToString(System.Globalization.CultureInfo.InvariantCulture))
+                .WriteLine("Gear_Ratio: " & Main.GearRatio.ToString(System.Globalization.CultureInfo.InvariantCulture))
+                .WriteLine("Wheel_Diameter: " & Main.frmDyno.WheelDiameter.ToString(System.Globalization.CultureInfo.InvariantCulture) & " mm")
+                .WriteLine("Roller_Diameter: " & Main.frmDyno.RollerDiameter.ToString(System.Globalization.CultureInfo.InvariantCulture) & " mm")
+                .WriteLine("Roller_Wall_Thickness: " & Main.frmDyno.RollerWallThickness.ToString(System.Globalization.CultureInfo.InvariantCulture) & " mm")
+                .WriteLine("Roller_Mass: " & Main.frmDyno.RollerMass.ToString(System.Globalization.CultureInfo.InvariantCulture) & " grams")
+                .WriteLine("Axle_Diameter: " & Main.frmDyno.AxleDiameter.ToString(System.Globalization.CultureInfo.InvariantCulture) & " mm")
+                .WriteLine("Axle_Mass: " & Main.frmDyno.AxleMass.ToString(System.Globalization.CultureInfo.InvariantCulture) & " grams")
+                .WriteLine("End_Cap_Mass: " & Main.frmDyno.EndCapMass.ToString(System.Globalization.CultureInfo.InvariantCulture) & " grams")
+                .WriteLine("Extra_Diameter: " & Main.frmDyno.ExtraDiameter.ToString(System.Globalization.CultureInfo.InvariantCulture) & " mm")
+                .WriteLine("Extra_Wall_Thickness: " & Main.frmDyno.ExtraWallThickness.ToString(System.Globalization.CultureInfo.InvariantCulture) & " mm")
+                .WriteLine("Extra_Mass: " & Main.frmDyno.ExtraMass.ToString(System.Globalization.CultureInfo.InvariantCulture) & " grams")
+                .WriteLine("Target_MOI: " & Main.IdealMomentOfInertia.ToString(System.Globalization.CultureInfo.InvariantCulture) & " kg/m2")
+                .WriteLine("Actual_MOI: " & Main.DynoMomentOfInertia.ToString(System.Globalization.CultureInfo.InvariantCulture) & " kg/m2")
+                .WriteLine("Target_Roller_Mass: " & Main.IdealRollerMass.ToString(System.Globalization.CultureInfo.InvariantCulture) & " grams")
+                .WriteLine("Signals_Per_RPM1: " & Main.frmDyno.SignalsPerRPM.ToString(System.Globalization.CultureInfo.InvariantCulture))
+                .WriteLine("Signals_Per_RPM2: " & Main.frmDyno.SignalsPerRPM2.ToString(System.Globalization.CultureInfo.InvariantCulture))
+                .WriteLine("Channel_1_Threshold " & HighSignalThreshold.ToString(System.Globalization.CultureInfo.InvariantCulture))
+                .WriteLine("Channel_2_Threshold " & HighSignalThreshold2.ToString(System.Globalization.CultureInfo.InvariantCulture))
                 'The following not needed for Log Raw
                 '.WriteLine("Run_RPM_Threshold " & PowerRunThreshold.ToString)
                 '.WriteLine("Run_Spike_Removal_Threshold " & Fit.PowerRunSpikeLevel.ToString)
@@ -1640,7 +1640,9 @@ Public Class Main
                     tempstring = ""
                     For paramcount = 0 To Main.LAST - 1
                         tempsplit = Split(Main.DataUnitTags(paramcount), " ") ' How many units are there
-                        tempstring = tempstring & Main.CollectedData(paramcount, count) * Main.DataUnits(paramcount, 0) & " " 'DataTags(paramcount).Replace(" ", "_") & "(" & tempsplit(unitcount) & ") "
+                        'The file always stores numbers with "." as the decimal point (see Fit.WritePowerFile /
+                        'DataInputFileReader.ReadDataFile2), regardless of the machine's regional settings.
+                        tempstring = tempstring & (Main.CollectedData(paramcount, count) * Main.DataUnits(paramcount, 0)).ToString(System.Globalization.CultureInfo.InvariantCulture) & " " 'DataTags(paramcount).Replace(" ", "_") & "(" & tempsplit(unitcount) & ") "
                     Next
                     '...and write it
                     .WriteLine(tempstring)
