@@ -1988,43 +1988,42 @@ Public Class Main
         Try
             Dim cmbNew As ComboBox
             Dim scrlNew As VScrollBar
-            Dim ParameterOutputFile As New System.IO.StreamWriter(SettingsDirectory & SettingsFile)
-            ParameterOutputFile.WriteLine(MainTitle)
+            Using ParameterOutputFile As New System.IO.StreamWriter(SettingsDirectory & SettingsFile)
+                ParameterOutputFile.WriteLine(MainTitle)
 
-            Dim SortedControls As New List(Of Control)
-            For Each c As Control In Me.Controls
-                SortedControls.Add(c)
-            Next
-            For Each c As Control In frmDyno.Controls
-                SortedControls.Add(c)
-            Next
-            For Each c As Control In frmCOM.Controls
-                SortedControls.Add(c)
-            Next
-            For Each c As Control In frmAnalysis.Controls
-                SortedControls.Add(c)
-            Next
-            For Each c As Control In frmFit.Controls
-                SortedControls.Add(c)
-            Next
+                Dim SortedControls As New List(Of Control)
+                For Each c As Control In Me.Controls
+                    SortedControls.Add(c)
+                Next
+                For Each c As Control In frmDyno.Controls
+                    SortedControls.Add(c)
+                Next
+                For Each c As Control In frmCOM.Controls
+                    SortedControls.Add(c)
+                Next
+                For Each c As Control In frmAnalysis.Controls
+                    SortedControls.Add(c)
+                Next
+                For Each c As Control In frmFit.Controls
+                    SortedControls.Add(c)
+                Next
 
-            For Each c As Control In SortedControls
-                If TypeOf c Is TextBox Then
-                    ParameterOutputFile.WriteLine("[" & c.Name.ToString & "]" & c.Text)
-                End If
-                If TypeOf c Is ComboBox Then
-                    cmbNew = DirectCast(c, ComboBox)
-                    If cmbNew.SelectedIndex <> -1 Then
-                        ParameterOutputFile.WriteLine("[" & c.Name.ToString & "]" & cmbNew.SelectedItem.ToString)
+                For Each c As Control In SortedControls
+                    If TypeOf c Is TextBox Then
+                        ParameterOutputFile.WriteLine("[" & c.Name.ToString & "]" & c.Text)
                     End If
-                End If
-                If TypeOf c Is VScrollBar Then
-                    scrlNew = DirectCast(c, VScrollBar)
-                    ParameterOutputFile.WriteLine("[" & c.Name.ToString & "]" & scrlNew.Value)
-                End If
-            Next
-
-            ParameterOutputFile.Close()
+                    If TypeOf c Is ComboBox Then
+                        cmbNew = DirectCast(c, ComboBox)
+                        If cmbNew.SelectedIndex <> -1 Then
+                            ParameterOutputFile.WriteLine("[" & c.Name.ToString & "]" & cmbNew.SelectedItem.ToString)
+                        End If
+                    End If
+                    If TypeOf c Is VScrollBar Then
+                        scrlNew = DirectCast(c, VScrollBar)
+                        ParameterOutputFile.WriteLine("[" & c.Name.ToString & "]" & scrlNew.Value)
+                    End If
+                Next
+            End Using
 
         Catch e As Exception
             btnHide_Click(Me, EventArgs.Empty)
