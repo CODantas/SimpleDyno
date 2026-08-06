@@ -1,5 +1,7 @@
 Imports System
+Imports System.Globalization
 Imports System.IO
+Imports System.Threading
 Imports Microsoft.VisualStudio.TestTools.UnitTesting
 Imports SimpleDyno
 
@@ -27,11 +29,12 @@ Public Class DataInputFileReaderTests
     End Sub
 
     ''' <summary>
-    ''' ReadDataFile2 converts each field with CDbl(String), which parses using the process's
-    ''' CurrentCulture (not necessarily period-as-decimal - on a pt-BR machine "." is a group separator,
-    ''' so CDbl("0.4") <> 0.4). Comparing against CDbl(literal) instead of a hardcoded Double keeps this
-    ''' test a valid regression guard for column-name-to-field mapping under any host culture, without
-    ''' asserting a specific (possibly wrong here) numeric interpretation of the fixture text.
+    ''' ReadDataFile2 converts each field with Double.Parse(..., CultureInfo.InvariantCulture) (fixed by
+    ''' commit ad1c6c7), so the fixture's "." is always the decimal point regardless of the machine's
+    ''' regional settings. Expected values are hardcoded Double literals (parsed by the VB compiler, not
+    ''' at test-run time) rather than CDbl(String) - using CDbl(String) here would silently reintroduce
+    ''' the exact bug this test is meant to guard against, since CDbl parses using the CurrentCulture of
+    ''' whatever machine runs the test (see ReadDataFile2_ParsesCorrectlyUnderPtBrCulture below).
     ''' </summary>
     <TestMethod>
     Public Sub ReadDataFile2_FirstRecordMatchesKnownValues()
@@ -39,11 +42,11 @@ Public Class DataInputFileReaderTests
         Dim records = reader.ReadDataFile2(FixturePath)
         Dim first = records(0)
 
-        Assert.AreEqual(CDbl("0.4"), first.Time, 0.0001)
-        Assert.AreEqual(CDbl("111.0029"), first.RPM1_Roller, 0.0001)
-        Assert.AreEqual(CDbl("992.2116"), first.Power, 0.0001)
-        Assert.AreEqual(CDbl("48.0"), first.Voltage, 0.0001)
-        Assert.AreEqual(CDbl("28.885"), first.Current, 0.0001)
+        Assert.AreEqual(0.4, first.Time, 0.0001)
+        Assert.AreEqual(111.0029, first.RPM1_Roller, 0.0001)
+        Assert.AreEqual(992.2116, first.Power, 0.0001)
+        Assert.AreEqual(48.0, first.Voltage, 0.0001)
+        Assert.AreEqual(28.885, first.Current, 0.0001)
     End Sub
 
     <TestMethod>
@@ -52,9 +55,36 @@ Public Class DataInputFileReaderTests
         Dim records = reader.ReadDataFile2(FixturePath)
         Dim last = records(records.Count - 1)
 
-        Assert.AreEqual(CDbl("8.0"), last.Time, 0.0001)
-        Assert.AreEqual(CDbl("628.3185"), last.RPM1_Roller, 0.0001)
-        Assert.AreEqual(CDbl("5026.5482"), last.Power, 0.0001)
+        Assert.AreEqual(8.0, last.Time, 0.0001)
+        Assert.AreEqual(628.3185, last.RPM1_Roller, 0.0001)
+        Assert.AreEqual(5026.5482, last.Power, 0.0001)
+    End Sub
+
+    ''' <summary>
+    ''' Regression guard for commit ad1c6c7 (culture-dependent number parsing). The app never forces
+    ''' Thread.CurrentThread.CurrentCulture to Invariant (only CurrentUICulture is changed, in
+    ''' ApplicationEvents.vb) - so on a Windows machine set to pt-BR, this test's CurrentCulture during
+    ''' the run is pt-BR too, same as the target user's PC. Under pt-BR, "." is a group separator, not a
+    ''' decimal point (e.g. CDbl("111.0029") = 1110029, confirmed empirically), so if ReadDataFile2 ever
+    ''' regresses back to CDbl/culture-dependent parsing instead of Double.Parse(InvariantCulture), this
+    ''' test fails loudly instead of only failing silently on an actual user's machine.
+    ''' </summary>
+    <TestMethod>
+    Public Sub ReadDataFile2_ParsesCorrectlyUnderPtBrCulture()
+        Dim originalCulture = Thread.CurrentThread.CurrentCulture
+        Try
+            Thread.CurrentThread.CurrentCulture = New CultureInfo("pt-BR")
+
+            Dim reader As New DataInputFileReader()
+            Dim records = reader.ReadDataFile2(FixturePath)
+            Dim first = records(0)
+
+            Assert.AreEqual(0.4, first.Time, 0.0001)
+            Assert.AreEqual(111.0029, first.RPM1_Roller, 0.0001)
+            Assert.AreEqual(992.2116, first.Power, 0.0001)
+        Finally
+            Thread.CurrentThread.CurrentCulture = originalCulture
+        End Try
     End Sub
 
     <TestMethod>
